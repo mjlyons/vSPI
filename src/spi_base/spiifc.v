@@ -62,6 +62,114 @@ module spiifc(
   // Registers
   // 
   
+  reg  [ 7: 0] debug_reg;
+  
+  reg  [ 7: 0] rcByteReg;
+  reg          rcStarted;
+  reg  [ 2: 0] rcBitIndexReg;
+  reg  [11: 0] rcMemAddrReg;
+  
+  reg          ssPrev;
+  
+  reg          ssFastToggleReg;
+  reg          ssSlowToggle;
+  
+  reg          ssTurnOnReg;
+  reg          ssTurnOnHandled;
+  
+  //
+  // Wires
+  //
+  wire         rcByteValid; 
+  wire [ 7: 0] rcByte;
+  wire         rcStarting;
+  wire [ 2: 0] rcBitIndex;
+  
+  wire         ssTurnOn;
+  
+  wire         ssFastToggle;
+  
+  //
+  // Output assigns
+  //
+  assign debug_out = debug_reg;
+  
+  assign SPI_MISO = 0;
+  assign txMemAddr = 0;
+  
+  assign rcMemAddr = rcMemAddrReg;
+  assign rcMemData = rcByte;
+  assign rcMemWE = rcByteValid;
+  
+  assign ssFastToggle = 
+      (ssPrev == 1 && SPI_SS == 0 ? ~ssFastToggleReg : ssFastToggleReg);
+  
+  //
+  // Wire assigns
+  //
+  assign rcByteValid = rcStarted && rcBitIndex == 0;
+  assign rcByte = {rcByteReg[7:1], SPI_MOSI};
+  assign rcStarting = ssTurnOn;
+  assign rcBitIndex = (rcStarting ? 3'd7 : rcBitIndexReg);
+  
+  //assign ssTurnOn = ~ssTurnOnHandled & (ssTurnOnReg | (ssPrev & (~SPI_SS)));
+  assign ssTurnOn = ssSlowToggle ^ ssFastToggle;
+  
+  initial begin
+    ssSlowToggle <= 0;
+  end
+  
+  always @(posedge SysClk) begin
+    ssPrev <= SPI_SS;
+    
+    if (Reset) begin
+      ssTurnOnReg <= 0;
+      ssFastToggleReg <= 0;
+
+    end else begin
+      if (ssPrev & (~SPI_SS)) begin
+        ssTurnOnReg <= 1;
+        ssFastToggleReg <= ~ssFastToggleReg;
+        
+      end else if (ssTurnOnHandled) begin
+        ssTurnOnReg <= 0;
+      end
+    end
+    
+  end
+  
+  always @(posedge SPI_CLK) begin
+    ssSlowToggle <= ssFastToggle;
+  
+    if (Reset) begin
+      // Resetting
+      rcByteReg <= 8'h00;
+      rcStarted <= 0;
+      rcBitIndexReg <= 3'd7;
+      ssTurnOnHandled <= 0;
+      debug_reg <= 8'hFF;
+      
+    end else begin
+      // Not resetting
+      ssTurnOnHandled <= ssTurnOn;
+          
+      if (~SPI_SS) begin
+        rcByteReg[rcBitIndex] <= SPI_MOSI;
+        rcBitIndexReg <= rcBitIndex - 3'd1;
+        rcStarted <= 1;
+      end
+      
+      // We've just received a byte (well, currently receiving the last bit)
+      
+    if (rcByteValid) begin
+      // For now, just display on LEDs
+      debug_reg <= rcByte;
+    end
+      
+    end // Reset/Reset'
+  end
+  
+/*
 reg rcByte_valid;
 wire rcClockBridgeEmpty;
 wire readRcByte;
@@ -103,10 +211,12 @@ fifo_8bit_to_8bit txCmdClkBridge(
   .full(txCmdClkBridgeFull), // output full
   .empty(txCmdClkBridgeEmpty) // output empty
 );
-  
-  /*
-   * TRANSMIT: FPGA TO PC
-   */
+
+
+
+  //
+  // TRANSMIT: FPGA TO PC
+  //
   assign SPI_MISO = txMemData[bitIndex]; 
   
   reg [2:0]          bitIndex;
@@ -138,9 +248,9 @@ fifo_8bit_to_8bit txCmdClkBridge(
     end
   end
   
-  /*
-   * RECEIVE: PC TO FPGA 
-   */
+  //
+  // RECEIVE: PC TO FPGA 
+  //
    
   // Detect start of receive
   reg       ss_prev;
@@ -171,22 +281,22 @@ fifo_8bit_to_8bit txCmdClkBridge(
   assign rcMemWE   = rcMemWE_reg;
   
   always @(posedge SysClk) begin
-    /*
-    // About to receive
-    if (ss_negedge) begin
-      rcBitIndex <= 3'd7;
-      rcState <= `RC_STATE_CMD;
-      
-      debug_reg[0] <= 1;
-    end
     
-    // Receiving
-    if (receiving) begin
-      rcByte[rcBitIndex] <= SPI_MOSI;
-      rcBitIndex <= rcBitIndex - 3'd1;
-    end
-    rcByte_valid <= (receiving && rcBitIndex == 3'd0 ? 1'b1 : 1'b0);
-    */
+//    // About to receive
+//    if (ss_negedge) begin
+//      rcBitIndex <= 3'd7;
+//      rcState <= `RC_STATE_CMD;
+//      
+//      debug_reg[0] <= 1;
+//    end
+//    
+//    // Receiving
+//    if (receiving) begin
+//      rcByte[rcBitIndex] <= SPI_MOSI;
+//      rcBitIndex <= rcBitIndex - 3'd1;
+//    end
+//    rcByte_valid <= (receiving && rcBitIndex == 3'd0 ? 1'b1 : 1'b0);
+    
     
     // Handle the complete incoming byte
     if (rcByte_valid) begin
@@ -270,40 +380,40 @@ fifo_8bit_to_8bit txCmdClkBridge(
   //wire  [7:0]          rcByte;
   //assign rcByte = {rcByteReg[7:1], (SPI_SS == 1'b0 && bitIndex == 
   
-  /*
-  //
-  // Receive (GPU to SPI)
-  //
-  reg        SPI_SS_prev_cycle;
-  
-  // This is the register backing rcByteId. It is always one cycle
-  // behind the true value of rcByteId, which we have to do a little
-  // work to get instantaneously correct using wire logic.
-  reg   [31:0]  rcByteIdPrev;    
-  wire  [31:0]  rcByteId;
-  assign rcByteId = (SPI_SS_prev_cycle == 1 && SPI_SS == 0 ? 32'd0 : 32'd1 + rcByteIdPrev);
 
-  // 1 if we're receiving from GPC, 0 if not.
-  wire isRecv;
-  assign isRecv = ~SPI_SS;
-  
-  // Bits to Byte aggregator
-  reg [2:0] rcBitId;
-  reg [7:0] rcByte;
-  
-  
-  reg [31:0]    rcSizeBytes;
-  
-  always @(posedge SPI_CLK) begin
-    if (1 == isRecv) begin
-      case (rcByteId)
-        0: rcSizeBytes[ 7: 0] <= 
-    end
-    
-    // Update registers for next cycle
-    SPI_SS_prev_cycle <= SPI_SS;
-    rcByteId <= rcByteIdPrev;
-  end
-  */
+//  //
+//  // Receive (GPU to SPI)
+//  //
+//  reg        SPI_SS_prev_cycle;
+//  
+//  // This is the register backing rcByteId. It is always one cycle
+//  // behind the true value of rcByteId, which we have to do a little
+//  // work to get instantaneously correct using wire logic.
+//  reg   [31:0]  rcByteIdPrev;    
+//  wire  [31:0]  rcByteId;
+//  assign rcByteId = (SPI_SS_prev_cycle == 1 && SPI_SS == 0 ? 32'd0 : 32'd1 + rcByteIdPrev);
+//
+//  // 1 if we're receiving from GPC, 0 if not.
+//  wire isRecv;
+//  assign isRecv = ~SPI_SS;
+//  
+//  // Bits to Byte aggregator
+//  reg [2:0] rcBitId;
+//  reg [7:0] rcByte;
+//  
+//  
+//  reg [31:0]    rcSizeBytes;
+//  
+//  always @(posedge SPI_CLK) begin
+//    if (1 == isRecv) begin
+//      case (rcByteId)
+//        0: rcSizeBytes[ 7: 0] <= 
+//    end
+//    
+//    // Update registers for next cycle
+//    SPI_SS_prev_cycle <= SPI_SS;
+//    rcByteId <= rcByteIdPrev;
+//  end
+*/
   
 endmodule

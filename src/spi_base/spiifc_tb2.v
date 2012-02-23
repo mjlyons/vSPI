@@ -39,6 +39,7 @@ module spiifc_tb2;
 	wire [11:0] rcMemAddr;
 	wire [7:0] rcMemData;
 	wire rcMemWE;
+  wire [7:0] debug_out;
 
 	// Instantiate the Unit Under Test (UUT)
 	spiifc uut (
@@ -52,7 +53,8 @@ module spiifc_tb2;
 		.txMemData(txMemData), 
 		.rcMemAddr(rcMemAddr), 
 		.rcMemData(rcMemData), 
-		.rcMemWE(rcMemWE)
+		.rcMemWE(rcMemWE),
+    .debug_out(debug_out)
 	);
 
   task recvByte;
@@ -71,8 +73,16 @@ module spiifc_tb2;
     #20 SysClk = ~SysClk;
   end
 
+  reg SPI_CLK_en;
+  initial begin
+    #310
+    SPI_CLK_en = 1;
+  end
   always begin
-    #50 SPI_CLK = ~SPI_CLK;
+    #10
+    if (SPI_CLK_en) begin
+      #40 SPI_CLK = ~SPI_CLK;
+    end
   end
 
   integer fdRcBytes;
@@ -87,12 +97,19 @@ module spiifc_tb2;
     SysClk = 0;
     
 		SPI_CLK = 0;
+    SPI_CLK_en = 0;
 		SPI_MOSI = 0;
 		SPI_SS = 1;
 		txMemData = 0;
 
 		// Wait 100 ns for global reset to finish
 		#100;
+    Reset = 1;
+    
+    #100;
+    Reset = 0;
+    
+    #100;
       
 		// Add stimulus here
     SPI_SS = 0;
