@@ -12,9 +12,9 @@ if (len(sys.argv) < 2):
   sys.exit(1)
 
 port      = int(sys.argv[1])
-mode      = 2
-bitrate   = 40000  # kbps
-byteCount = 11   # bytes
+mode      = 3
+bitrate   = 30000  # kbps
+byteCount = 4096   # bytes
 
 # Open the device
 handle = ch_open(port)
@@ -44,10 +44,10 @@ sys.stdout.flush()
 
 # Create 4KB of fake data so we can exchange it for real data
 data_in = array('B', [0 for i in range(byteCount)])
+
 ch_spi_queue_clear(handle)
 ch_spi_queue_oe(handle, 1)
 ch_spi_queue_ss(handle, 0x1)
-
 ch_spi_queue_byte(handle, 1, 1)    # Sending data to FPGA
 ch_spi_queue_byte(handle, 1, 0xFF)   # Sending bytes
 ch_spi_queue_byte(handle, 1, 0xF0)   # Sending bytes
@@ -58,22 +58,24 @@ ch_spi_queue_byte(handle, 1, 0x34)   # Sending bytes
 ch_spi_queue_byte(handle, 1, 0x56)   # Sending bytes
 ch_spi_queue_byte(handle, 1, 0x78)   # Sending bytes
 ch_spi_queue_byte(handle, 1, 0x9A)   # Sending bytes
-
 ch_spi_queue_ss(handle, 0)
-
-#ch_spi_queue_byte(handle, 1, 0x00) # Send an empty byte, SS high
-
-
 (actualByteCount, data_in) = ch_spi_batch_shift(handle, byteCount)
-
-#if (actualByteCount < 0):
-#  print "error: %s" % ch_status_string(count)
-#elif (actualByteCount != byteCount):
-#  print "error: read %d bytes (expected %d)" % (actualByteCount, byteCount)
-#else:
 for i in range(actualByteCount):
-  sys.stdout.write("%d " % data_in[i])
+  sys.stdout.write("%x " % data_in[i])
 sys.stdout.write("\n")
+
+ch_spi_queue_clear(handle)
+ch_spi_queue_oe(handle, 1)
+ch_spi_queue_ss(handle, 0x1)
+ch_spi_queue_byte(handle, 1, 3)      # Receiving data from FPGA
+for i in range(1024):
+  ch_spi_queue_byte(handle, 1, 0x00)   # Sending bytes (1024 bytes of gibberish)
+ch_spi_queue_ss(handle, 0)
+(actualByteCount, data_in) = ch_spi_batch_shift(handle, byteCount)
+for i in range(actualByteCount):
+  sys.stdout.write("%x " % data_in[i])
+sys.stdout.write("\n")
+
 
 # Close and exit
 ch_close(handle)
