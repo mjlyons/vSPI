@@ -41,10 +41,11 @@ module spiifc(
   // Defines
   `define  CMD_READ_START   8'd1
   `define  CMD_READ_MORE    8'd2
+  `define  CMD_WRITE_START  8'd3
   
   `define  STATE_GET_CMD    8'd0
   `define  STATE_READING    8'd1
-  
+  `define  STATE_WRITING    8'd2
   
   //
   // Input/Output defs
@@ -91,6 +92,9 @@ module spiifc(
   reg  [ 7: 0] cmd;
   reg  [ 7: 0] stateReg;
   
+  reg  [11: 0] txMemAddrReg;
+  reg  [ 2: 0] txBitAddr;
+  
   //
   // Wires
   //
@@ -105,17 +109,20 @@ module spiifc(
   
   wire [ 7: 0] state;
   
+  wire         txMemAddrReset;
+  
   //
   // Output assigns
   //
   assign debug_out = debug_reg;
   
-  assign SPI_MISO = 0;
-  assign txMemAddr = 0;
-  
   assign rcMemAddr = rcMemAddrReg;
   assign rcMemData = rcMemDataReg;
   assign rcMemWE = rcMemWEReg;
+  
+  assign txMemAddrReset = (rcByteValid && rcByte == `CMD_WRITE_START ? 1 : 0);
+  assign txMemAddr = (txMemAddrReset ? 0 : txMemAddrReg);
+  assign SPI_MISO = txMemData[txBitAddr];
   
   assign ssFastToggle = 
       (ssPrev == 1 && SPI_SS == 0 ? ~ssFastToggleReg : ssFastToggleReg);
@@ -156,7 +163,6 @@ module spiifc(
   
   always @(posedge SPI_CLK) begin
     ssSlowToggle <= ssFastToggle;
-
   
     if (Reset) begin
       // Resetting
@@ -168,6 +174,7 @@ module spiifc(
       
     end else begin
       // Not resetting
+      
       ssTurnOnHandled <= ssTurnOn;
       stateReg <= state;
       rcMemAddrReg <= rcMemAddrNext;
@@ -176,6 +183,14 @@ module spiifc(
         rcByteReg[rcBitIndex] <= SPI_MOSI;
         rcBitIndexReg <= rcBitIndex - 3'd1;
         rcStarted <= 1;
+        
+        // Update txBitAddr if writing out
+        if (`STATE_WRITING == state) begin
+          if (txBitAddr == 3'd1) begin
+            txMemAddrReg <= txMemAddr + 1;
+          end 
+          txBitAddr <= txBitAddr - 1;
+        end
       end
       
       // We've just received a byte (well, currently receiving the last bit)
@@ -192,12 +207,20 @@ module spiifc(
             stateReg <= `STATE_READING;
           end else if (`CMD_READ_MORE == rcByte) begin
             stateReg <= `STATE_READING;
+          end else if (`CMD_WRITE_START == rcByte) begin
+            txBitAddr <= 3'd7;
+            stateReg <= `STATE_WRITING;
+            txMemAddrReg <= txMemAddr;  // Keep at 0
           end
          
         end else if (`STATE_READING == state) begin
           rcMemDataReg <= rcByte;
           rcMemAddrNext <= rcMemAddr + 1;
           rcMemWEReg <= 1;
+        
+//        end else if (`STATE_WRITING == state) begin
+//          txBitAddr <= 3'd7;
+//          stateReg <= `STATE_WRITING;
         end
       
       end else begin

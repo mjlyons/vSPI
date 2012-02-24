@@ -86,6 +86,7 @@ module spiifc_tb2;
   end
 
   integer fdRcBytes;
+  integer fdTxBytes;
   integer dummy;
   integer currRcByte;
   integer rcBytesNotEmpty;
