@@ -46,19 +46,18 @@ sys.stdout.flush()
 data_in = array('B', [0 for i in range(byteCount)])
 ch_spi_queue_clear(handle)
 ch_spi_queue_oe(handle, 1)
-#ch_spi_queue_byte(handle, 1, 0x00) # Send an empty byte, pre SS low
 ch_spi_queue_ss(handle, 0x1)
-#ch_spi_queue_byte(handle, 1, 0x02)  # Send to MOSI buffer
-#ch_spi_queue_byte(handle, 3, 0x00)  # Sending 4 bytes
-#ch_spi_queue_byte(handle, 1, 0x04)
-#ch_spi_queue_byte(handle, 1, 0xFF)  # Sending byte: 1111_1111
-#ch_spi_queue_byte(handle, 1, 0xF0)  # Sending byte: 1111_0000
-#ch_spi_queue_byte(handle, 1, 0x33)  # Sending byte: 0011_0011
-ch_spi_queue_byte(handle, 1, 42)  # Sending byte: 0101_0101
 
-#ch_spi_queue_byte(handle, 1, 0x55) # Test byte
-#ch_spi_queue_byte(handle, 1, 0x66)
-
+ch_spi_queue_byte(handle, 1, 1)    # Sending data to FPGA
+ch_spi_queue_byte(handle, 1, 0xFF)   # Sending bytes
+ch_spi_queue_byte(handle, 1, 0xF0)   # Sending bytes
+ch_spi_queue_byte(handle, 1, 0x33)   # Sending bytes
+ch_spi_queue_byte(handle, 1, 0x55)   # Sending bytes
+ch_spi_queue_byte(handle, 1, 0x12)   # Sending bytes
+ch_spi_queue_byte(handle, 1, 0x34)   # Sending bytes
+ch_spi_queue_byte(handle, 1, 0x56)   # Sending bytes
+ch_spi_queue_byte(handle, 1, 0x78)   # Sending bytes
+ch_spi_queue_byte(handle, 1, 0x9A)   # Sending bytes
 
 ch_spi_queue_ss(handle, 0)
 
