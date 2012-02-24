@@ -32,6 +32,7 @@ wire [31:0] douta_dummy;
 
 wire [11:0] spi_addr;
 wire [ 7:0] spi_data;
+wire [31:0] rcMem_douta;
 
 reg        initMem;
 reg [ 9:0] initMemAddr;
@@ -82,8 +83,8 @@ spimem spiMemRc (
   .clka(SysClk),
   .ena(1'b1),
   .wea(1'b0),
-  .addra(10'h000),
-  .douta(debug_out),
+  .addra(10'h001),
+  .douta(rcMem_douta),
   .clkb(spi_clk),
   .enb(1'b1),
   .web(spi_rcMem_we),
@@ -104,11 +105,11 @@ spiifc mySpiIfc (
   .rcMemAddr(spi_rcMem_addr),
   .rcMemData(spi_rcMem_data),
   .rcMemWE(spi_rcMem_we),
-  .debug_out(leds)
+  .debug_out(debug_out)
 );
 
 
 
-//assign leds = debug_out;
+assign leds = rcMem_douta[31:24];
 
 endmodule

@@ -38,6 +38,14 @@ module spiifc(
   //
   parameter AddrBits = 12;
   
+  // Defines
+  `define  CMD_READ_START   8'd1
+  `define  CMD_READ_MORE    8'd2
+  
+  `define  STATE_GET_CMD    8'd0
+  `define  STATE_READING    8'd1
+  
+  
   //
   // Input/Output defs
   //
@@ -68,6 +76,9 @@ module spiifc(
   reg          rcStarted;
   reg  [ 2: 0] rcBitIndexReg;
   reg  [11: 0] rcMemAddrReg;
+  reg  [11: 0] rcMemAddrNext;
+  reg  [ 7: 0] rcMemDataReg;
+  reg          rcMemWEReg;
   
   reg          ssPrev;
   
@@ -76,6 +87,9 @@ module spiifc(
   
   reg          ssTurnOnReg;
   reg          ssTurnOnHandled;
+  
+  reg  [ 7: 0] cmd;
+  reg  [ 7: 0] stateReg;
   
   //
   // Wires
@@ -89,6 +103,8 @@ module spiifc(
   
   wire         ssFastToggle;
   
+  wire [ 7: 0] state;
+  
   //
   // Output assigns
   //
@@ -98,8 +114,8 @@ module spiifc(
   assign txMemAddr = 0;
   
   assign rcMemAddr = rcMemAddrReg;
-  assign rcMemData = rcByte;
-  assign rcMemWE = rcByteValid;
+  assign rcMemData = rcMemDataReg;
+  assign rcMemWE = rcMemWEReg;
   
   assign ssFastToggle = 
       (ssPrev == 1 && SPI_SS == 0 ? ~ssFastToggleReg : ssFastToggleReg);
@@ -112,8 +128,8 @@ module spiifc(
   assign rcStarting = ssTurnOn;
   assign rcBitIndex = (rcStarting ? 3'd7 : rcBitIndexReg);
   
-  //assign ssTurnOn = ~ssTurnOnHandled & (ssTurnOnReg | (ssPrev & (~SPI_SS)));
   assign ssTurnOn = ssSlowToggle ^ ssFastToggle;
+  assign state = (rcStarting ? `STATE_GET_CMD : stateReg);
   
   initial begin
     ssSlowToggle <= 0;
@@ -140,6 +156,7 @@ module spiifc(
   
   always @(posedge SPI_CLK) begin
     ssSlowToggle <= ssFastToggle;
+
   
     if (Reset) begin
       // Resetting
@@ -152,6 +169,8 @@ module spiifc(
     end else begin
       // Not resetting
       ssTurnOnHandled <= ssTurnOn;
+      stateReg <= state;
+      rcMemAddrReg <= rcMemAddrNext;
           
       if (~SPI_SS) begin
         rcByteReg[rcBitIndex] <= SPI_MOSI;
@@ -161,10 +180,31 @@ module spiifc(
       
       // We've just received a byte (well, currently receiving the last bit)
       
-    if (rcByteValid) begin
-      // For now, just display on LEDs
-      debug_reg <= rcByte;
-    end
+      if (rcByteValid) begin
+        // For now, just display on LEDs
+        debug_reg <= rcByte;
+      
+        if (`STATE_GET_CMD == state) begin
+          cmd <= rcByte;    // Will take effect next cycle
+          
+          if (`CMD_READ_START == rcByte) begin
+            rcMemAddrNext <= 0;
+            stateReg <= `STATE_READING;
+          end else if (`CMD_READ_MORE == rcByte) begin
+            stateReg <= `STATE_READING;
+          end
+         
+        end else if (`STATE_READING == state) begin
+          rcMemDataReg <= rcByte;
+          rcMemAddrNext <= rcMemAddr + 1;
+          rcMemWEReg <= 1;
+        end
+      
+      end else begin
+        // Not a valid byte
+        rcMemWEReg <= 0;
+        
+      end // valid/valid' byte
       
     end // Reset/Reset'
   end
