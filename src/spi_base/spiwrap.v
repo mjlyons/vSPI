@@ -42,9 +42,7 @@ always @(posedge SysClk) begin
   if (Reset) begin
     initMem <= 1'b1;
     initMemAddr <= 10'h000;
-    //initMemData <= 32'hFF00_FF00;
-    initMemData <= 32'h5A6C_C6A5; /*32'h55CC_55CC*/;
-    
+    initMemData <= 32'h5A6C_C6A5;
   end else begin
     if (initMem == 1'b1) begin
       // Turn off init mem mode if formatted memory 
@@ -54,7 +52,6 @@ always @(posedge SysClk) begin
     
       // Increment init mem addr/data
       initMemAddr <= initMemAddr + 10'h001;
-      //initMemData <= ~initMemData;
     end
   end
 end

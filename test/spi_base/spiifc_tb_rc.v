@@ -19,6 +19,9 @@
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
+//
+// This testbench tests the spiifc module's ability to receive and buffer
+// data sent from the master, such as the Cheetah SPI/USB adapter
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -115,7 +118,7 @@ module spiifc_tb2;
 		// Add stimulus here
     SPI_SS = 0;
     // For each byte, transmit its bits
-    fdRcBytes = $fopen("rc-bytes.txt", "r");
+    fdRcBytes = $fopen("rc-bytes-rc-test.txt", "r");
     rcBytesNotEmpty = 1;
     while (rcBytesNotEmpty) begin
       rcBytesNotEmpty = $fgets(rcBytesStr, fdRcBytes);

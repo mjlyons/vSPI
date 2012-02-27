@@ -20,9 +20,12 @@
 // Revision 0.01 - File Created
 // Additional Comments:
 // 
+// This testbench tests sending data from the SPI IFC module to a 
+// master device, such as the Cheetah SPI/USB adapter.
+//
 ////////////////////////////////////////////////////////////////////////////////
 
-module spiifc_tb;
+module spiifc_tb_tx;
 
 	// Inputs
 	reg Reset;
