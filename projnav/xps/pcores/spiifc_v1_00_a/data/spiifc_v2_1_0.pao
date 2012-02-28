@@ -1,0 +1,11 @@
+##############################################################################
+## Filename:          C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/data/spiifc_v2_1_0.pao
+## Description:       Peripheral Analysis Order
+## Date:              Tue Feb 28 11:11:15 2012 (by Create and Import Peripheral Wizard)
+##############################################################################
+
+lib proc_common_v3_00_a  all 
+lib plbv46_slave_burst_v1_01_a  all 
+lib interrupt_control_v2_01_a  all 
+lib spiifc_v1_00_a user_logic verilog
+lib spiifc_v1_00_a spiifc vhdl
