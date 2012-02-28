@@ -1,83 +1,77 @@
 from cheetah_py import *
 from time import *
 
-def print_usage():
-  print \
-"""
-usage: spitest.py PORT
-"""
+class SpiComm:
+  """Controls a Cheetah USB/SPI adapter to talk over SPI to the spiifc
+  module"""
+  
+  _port = 0         # Change if using multiple Cheetahs
+  _mode = 3         # spiifc SPI mode
+  _bitrate = 30000  # bytes
 
-if (len(sys.argv) < 2):
-  print_usage()
-  sys.exit(1)
+  handle = None     # handle to Cheetah SPI
 
-port      = int(sys.argv[1])
-mode      = 3
-bitrate   = 30000  # kbps
-byteCount = 4096   # bytes
+  class SpiCommError(Exception):
+    """There was some error interacting with the Cheetah SPI adapter"""
+    def __init__(self, msg):
+      self.msg = msg
 
-# Open the device
-handle = ch_open(port)
-if (handle <= 0):
-  print "Unable to open Cheetah device on port %d" % port
-  print "Error code = %d (%s)" % (handle, ch_status_string(handle))
-  sys.exit(1)
+  def __init__(self):
+    self.handle = ch_open(self._port)
+    if (self.handle <= 0):
+      raise SpiCommError("Unable to open Cheetah device on port %d.\nError code = %d (%s)" % (self._port, self.handle, ch_status_string(self.handle)))
+    ch_host_ifce_speed(self.handle)
+    ch_spi_configure(self.handle, (self._mode >> 1), self._mode & 1, 
+        CH_SPI_BITORDER_MSB, 0x0)
+    ch_spi_bitrate(self.handle, self._bitrate)
 
-print "Opened Cheetah device on port %d" % port
+  def __del__(self):
+    ch_close(self.handle)
 
-ch_host_ifce_speed_string = ""
-if (ch_host_ifce_speed(handle)):
-  ch_host_ifce_speed_string = "high speed"
-else:
-  ch_host_ifce_speed_string = "full speed"
-print "Host interface is %s" % ch_host_ifce_speed_string
+  def SendToSlave(self, byteArray):
+    byteCount = len(byteArray) + 1
+    data_in = array('B', [0 for i in range(byteCount)])
+    actualByteCount = 0
+    ch_spi_queue_clear(self.handle)
+    ch_spi_queue_oe(self.handle, 1)
+    ch_spi_queue_ss(self.handle, 0x1)
+    ch_spi_queue_byte(self.handle, 1, 1)     # Sending data to slave
+    for byte in byteArray:
+      ch_spi_queue_byte(self.handle, 1, byte)
+    ch_spi_queue_ss(self.handle, 0)
+    (actualByteCount, data_in) = ch_spi_batch_shift(self.handle, byteCount)
+    
+  def RecvFromSlave(self, byteCount):
+    totalByteCount = byteCount + 1          # Extra byte for cmd
+    data_in = array('B', [0 for i in range(totalByteCount)])
+    actualByteCount = 0
+    ch_spi_queue_clear(self.handle)
+    ch_spi_queue_oe(self.handle, 1)
+    ch_spi_queue_ss(self.handle, 0x1)
+    ch_spi_queue_byte(self.handle, 1, 3)    # Receive data from slave
+    for byteIndex in range(byteCount):
+      ch_spi_queue_byte(self.handle, 1, 0)
+    ch_spi_queue_ss(self.handle, 0)
+    (actualByteCount, data_in) = ch_spi_batch_shift(self.handle,
+        totalByteCount)
+    return data_in
 
-# Ensure that SPI subsystem is configured
-ch_spi_configure(handle, (mode >> 1), mode & 1, CH_SPI_BITORDER_MSB, 0x0)
-print "SPI configuration set to mode %d, MSB shift, SS[2:0] active low" % mode
-sys.stdout.flush()
+# Initialize Cheetah SPI/USB adapter
+spi = SpiComm()
 
-# Set the bitrate
-bitrate = ch_spi_bitrate(handle, bitrate)
-print "Bitrate set to %d kHz" % bitrate
-sys.stdout.flush()
+# Send some data to the slave
+sys.stdout.write("Sending data to slave...");
+spi.SendToSlave([0xFF, 0xF0, 0x33, 0x55, 0x12, 0x34, 0x56, 0x53, 0x9A])
+sys.stdout.write("done!")
 
-# Create 4KB of fake data so we can exchange it for real data
-data_in = array('B', [0 for i in range(byteCount)])
-
-ch_spi_queue_clear(handle)
-ch_spi_queue_oe(handle, 1)
-ch_spi_queue_ss(handle, 0x1)
-ch_spi_queue_byte(handle, 1, 1)    # Sending data to FPGA
-ch_spi_queue_byte(handle, 1, 0xFF)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0xF0)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x33)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x55)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x12)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x34)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x56)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x78)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x9A)   # Sending bytes
-ch_spi_queue_ss(handle, 0)
-(actualByteCount, data_in) = ch_spi_batch_shift(handle, byteCount)
-for i in range(actualByteCount):
-  sys.stdout.write("%x " % data_in[i])
-sys.stdout.write("\n")
-
-ch_spi_queue_clear(handle)
-ch_spi_queue_oe(handle, 1)
-ch_spi_queue_ss(handle, 0x1)
-ch_spi_queue_byte(handle, 1, 3)      # Receiving data from FPGA
-for i in range(1024):
-  ch_spi_queue_byte(handle, 1, 0x00)   # Sending bytes (1024 bytes of gibberish)
-ch_spi_queue_ss(handle, 0)
-(actualByteCount, data_in) = ch_spi_batch_shift(handle, byteCount)
-for i in range(actualByteCount):
-  sys.stdout.write("%x " % data_in[i])
-sys.stdout.write("\n")
-
+# Receive some data from the slave
+recvData = spi.RecvFromSlave(4096)
+sys.stdout.write("Received data from slave:\n")
+for recvByte in recvData:
+  sys.stdout.write("%x " % recvByte)
+sys.stdout.write("\nDone!\n")
 
 # Close and exit
-ch_close(handle)
+sys.stdout.write("Exiting...\n")
 sys.exit(0)
 
