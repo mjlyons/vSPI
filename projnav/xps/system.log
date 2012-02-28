@@ -1,0 +1,49 @@
+Xilinx Platform Studio (XPS)
+Xilinx EDK 13.2 Build EDK_O.61xd
+Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+
+
+********************************************************************************
+At Local date and time: Tue Feb 28 11:00:26 2012
+ make -f system.make clean started...
+rm -f implementation/system.ngc
+rm -f platgen.log
+rm -f __xps/ise/_xmsgs/platgen.xmsgs
+rm -f implementation/system.bmm
+rm -f implementation/system.bit
+rm -f implementation/system.ncd
+rm -f implementation/system_bd.bmm 
+rm -f implementation/system_map.ncd 
+rm -f implementation/download.bit 
+rm -f __xps/system_routed
+rm -rf implementation synthesis xst hdl
+rm -rf xst.srp system.srp
+rm -f __xps/ise/_xmsgs/bitinit.xmsgs
+rm -rf simulation/behavioral
+rm -f simgen.log
+rm -f __xps/ise/_xmsgs/simgen.xmsgs
+rm -f _impact.cmd
+Done!
+
+********************************************************************************
+At Local date and time: Tue Feb 28 11:00:42 2012
+ make -f system.make hwclean started...
+rm -f implementation/system.ngc
+rm -f platgen.log
+rm -f __xps/ise/_xmsgs/platgen.xmsgs
+rm -f implementation/system.bmm
+rm -f implementation/system.bit
+rm -f implementation/system.ncd
+rm -f implementation/system_bd.bmm 
+rm -f implementation/system_map.ncd 
+rm -f implementation/download.bit 
+rm -f __xps/system_routed
+rm -rf implementation synthesis xst hdl
+rm -rf xst.srp system.srp
+rm -f __xps/ise/_xmsgs/bitinit.xmsgs
+Done!
+Writing filter settings....
+Done writing filter settings to:
+	C:\Users\mjlyons\workspace\vSPI\projnav\xps\etc\system.filters
+Done writing Tab View settings to:
+	C:\Users\mjlyons\workspace\vSPI\projnav\xps\etc\system.gui
