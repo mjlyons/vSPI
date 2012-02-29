@@ -123,7 +123,25 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
 //----------------------------------------------------------------------------
 
   // --USER nets declarations added here, as needed for user logic
-
+  
+  // Memmap memory logic lines
+  wire       [0 : 1 ]                       mem_ena;      // Port A: spiifc
+  wire       [0 : 1 ]                       mem_enb;      // Port B: sysbus/dma
+  wire                                      mem_web;
+  reg        [0 : 1 ]                       mem_read_prev;
+  //   mosiMem (mem0): data received from master
+  wire       [0 : 11]                       mosiMem_addra;
+  wire       [0 : 7 ]                       mosiMem_dina;
+  wire       [0 : 9 ]                       mosiMem_addrb;
+  wire       [0 : 31]                       mosiMem_dinb;
+  wire       [0 : 31]                       mosiMem_doutb;           
+  //   misoMem (mem1): data to send to master
+  wire       [0 : 11]                       misoMem_addra;
+  wire       [0 : 7 ]                       misoMem_douta;
+  wire       [0 : 9 ]                       misoMem_addrb;
+  wire       [0 : 31]                       misoMem_dinb;
+  wire       [0 : 31]                       misoMem_doutb;
+  
   // Nets for user logic slave model s/w accessible register example
   reg        [0 : C_SLV_DWIDTH-1]           slv_reg0;
   reg        [0 : C_SLV_DWIDTH-1]           slv_reg1;
@@ -149,6 +167,54 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
   integer                                   byte_index, bit_index;
 
   // --USER logic implementation added here
+  
+  //   memory interface logic
+  assign mem_ena       = 2'd0;          // TODO: interface with spiifc
+  assign mem_enb       = Bus2IP_CS & {C_NUM_MEM{Bus2IP_RdReq | Bus2IP_WrReq}};
+  assign mem_web       = (~Bus2IP_RNW) & Bus2IP_WrReq;
+  assign mosiMem_addra = 12'h000;       // TODO: interface with spiifc
+  assign mosiMem_dina  = 8'd00;         // TODO: interface with spiifc
+  assign mosiMem_addrb = Bus2IP_Addr[2:11];
+  assign mosiMem_dinb  = Bus2IP_Data;
+  assign misoMem_addra = 12'h000;       // TODO: interface with spiifc
+  assign misoMem_addrb = Bus2IP_Addr[2:11];
+  assign misoMem_dinb  = Bus2IP_Data;
+  
+  always @(posedge Bus2IP_Clk) begin
+    mem_read_prev <= mem_enb & {C_NUM_MEM{Bus2IP_RdReq & (~mem_web)}};
+  end
+  
+  // Mem0: Memory buffer storing data coming from master
+  buffermem mosiMem (
+    .clka(Bus2IP_Clk), // input clka
+    .ena(mem_ena[0]), // input ena
+    .wea(1'b1),         // Always writing, never reading
+    .addra({mosiMem_addra}), // input [11 : 0] addra
+    .dina({mosiMem_dina}), // input [7 : 0] dina
+ // NEVER USED:   .douta(mosiMem_douta), // output [7 : 0] douta
+    .clkb(Bus2IP_Clk), // input clkb
+    .enb(mem_enb[0]), // input enb
+    .web(mem_web), // input [0 : 0] web
+    .addrb({mosiMem_addrb}), // input [9 : 0] addrb
+    .dinb({mosiMem_dinb}), // input [31 : 0] dinb
+    .doutb({mosiMem_doutb}) // output [31 : 0] doutb
+  );
+
+  // Mem1: Memory buffer storing data to send to master
+  buffermem misoMem (
+    .clka(Bus2IP_Clk), // input clka
+    .ena(mem_ena[1]), // input ena
+    .wea(1'b0), // Always reading, never writing
+    .addra({misoMem_addra}), // input [11 : 0] addra
+// NEVER USED:    .dina(dina), // input [7 : 0] dina
+    .douta({misoMem_douta}), // output [7 : 0] douta
+    .clkb(Bus2IP_Clk), // input clkb
+    .enb(mem_enb[1]), // input enb
+    .web(mem_web), // input [0 : 0] web
+    .addrb({misoMem_addrb}), // input [9 : 0] addrb
+    .dinb({misoMem_dinb}), // input [31 : 0] dinb
+    .doutb({misoMem_doutb}) // output [31 : 0] doutb
+  );
 
   // ------------------------------------------------------
   // Example code to read/write user logic slave model s/w accessible registers
@@ -171,14 +237,14 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
 
   assign
     slv_reg_write_sel = Bus2IP_WrCE[0:15],
-    slv_reg_read_sel  = Bus2IP_RdCE[0:15],
-    slv_write_ack     = Bus2IP_WrCE[0] || Bus2IP_WrCE[1] || Bus2IP_WrCE[2] || Bus2IP_WrCE[3] || Bus2IP_WrCE[4] || Bus2IP_WrCE[5] || Bus2IP_WrCE[6] || Bus2IP_WrCE[7] || Bus2IP_WrCE[8] || Bus2IP_WrCE[9] || Bus2IP_WrCE[10] || Bus2IP_WrCE[11] || Bus2IP_WrCE[12] || Bus2IP_WrCE[13] || Bus2IP_WrCE[14] || Bus2IP_WrCE[15],
-    slv_read_ack      = Bus2IP_RdCE[0] || Bus2IP_RdCE[1] || Bus2IP_RdCE[2] || Bus2IP_RdCE[3] || Bus2IP_RdCE[4] || Bus2IP_RdCE[5] || Bus2IP_RdCE[6] || Bus2IP_RdCE[7] || Bus2IP_RdCE[8] || Bus2IP_RdCE[9] || Bus2IP_RdCE[10] || Bus2IP_RdCE[11] || Bus2IP_RdCE[12] || Bus2IP_RdCE[13] || Bus2IP_RdCE[14] || Bus2IP_RdCE[15];
+    slv_reg_read_sel  = Bus2IP_RdCE[0:15], 
+    slv_write_ack     = ((|(mem_enb)) & mem_web) || Bus2IP_WrCE[0] || Bus2IP_WrCE[1] || Bus2IP_WrCE[2] || Bus2IP_WrCE[3] || Bus2IP_WrCE[4] || Bus2IP_WrCE[5] || Bus2IP_WrCE[6] || Bus2IP_WrCE[7] || Bus2IP_WrCE[8] || Bus2IP_WrCE[9] || Bus2IP_WrCE[10] || Bus2IP_WrCE[11] || Bus2IP_WrCE[12] || Bus2IP_WrCE[13] || Bus2IP_WrCE[14] || Bus2IP_WrCE[15],
+    slv_read_ack      = mem_read_prev || Bus2IP_RdCE[0] || Bus2IP_RdCE[1] || Bus2IP_RdCE[2] || Bus2IP_RdCE[3] || Bus2IP_RdCE[4] || Bus2IP_RdCE[5] || Bus2IP_RdCE[6] || Bus2IP_RdCE[7] || Bus2IP_RdCE[8] || Bus2IP_RdCE[9] || Bus2IP_RdCE[10] || Bus2IP_RdCE[11] || Bus2IP_RdCE[12] || Bus2IP_RdCE[13] || Bus2IP_RdCE[14] || Bus2IP_RdCE[15];
 
   // implement slave model register(s)
   always @( posedge Bus2IP_Clk )
     begin: SLAVE_REG_WRITE_PROC
-
+    
       if ( Bus2IP_Reset == 1 )
         begin
           slv_reg0 <= 0;
@@ -316,7 +382,9 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
   // ------------------------------------------------------------
 
   assign IP2Bus_AddrAck = slv_write_ack || slv_read_ack;
-  assign IP2Bus_Data    = slv_ip2bus_data;
+  assign IP2Bus_Data    = (mem_read_prev[0] ? mosiMem_doutb : (
+                           mem_read_prev[1] ? misoMem_doutb : 
+                           slv_ip2bus_data));
   assign IP2Bus_WrAck   = slv_write_ack;
   assign IP2Bus_RdAck   = slv_read_ack;
   assign IP2Bus_Error   = 0;
