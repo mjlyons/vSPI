@@ -15,6 +15,7 @@
     </HEADERS>
     <SPLITTERS COLLAPSIBLE="1" HANDLEWIDTH="4" MARKER="255" ORIENTATION="1" RESIZE="1" SIZES="180,450,180" VERSION="0"/>
     <SET ID="spiifc_0" IS_EXPANDED="TRUE"/>
+    <SET ID="xps_central_dma_0" IS_EXPANDED="TRUE"/>
     <STATUS>
       <SELECTIONS/>
     </STATUS>
@@ -26,13 +27,14 @@
       <VARIABLE ID="dlmb_cntlr" ROW_INDEX="5"/>
       <VARIABLE ID="ilmb_cntlr" ROW_INDEX="6"/>
       <VARIABLE ID="lmb_bram" ROW_INDEX="4"/>
-      <VARIABLE ID="DIP_Switches_8Bits" ROW_INDEX="9"/>
-      <VARIABLE ID="LEDs_8Bits" ROW_INDEX="10"/>
-      <VARIABLE ID="Push_Buttons_5Bits" ROW_INDEX="11"/>
-      <VARIABLE ID="clock_generator_0" ROW_INDEX="12"/>
+      <VARIABLE ID="DIP_Switches_8Bits" ROW_INDEX="10"/>
+      <VARIABLE ID="LEDs_8Bits" ROW_INDEX="11"/>
+      <VARIABLE ID="Push_Buttons_5Bits" ROW_INDEX="12"/>
+      <VARIABLE ID="clock_generator_0" ROW_INDEX="13"/>
       <VARIABLE ID="mdm_0" ROW_INDEX="8"/>
-      <VARIABLE ID="proc_sys_reset_0" ROW_INDEX="13"/>
+      <VARIABLE ID="proc_sys_reset_0" ROW_INDEX="14"/>
       <VARIABLE ID="spiifc_0" IS_EXPANDED="TRUE" ROW_INDEX="7"/>
+      <VARIABLE ID="xps_central_dma_0" IS_EXPANDED="TRUE" ROW_INDEX="9"/>
     </SEQUENCES>
   </SET>
 
@@ -93,6 +95,7 @@
     </HEADERS>
     <SPLITTERS COLLAPSIBLE="1" HANDLEWIDTH="4" MARKER="255" ORIENTATION="1" RESIZE="1" SIZES="0,630,180" VERSION="0"/>
     <SET ID="spiifc_0" IS_EXPANDED="TRUE"/>
+    <SET ID="xps_central_dma_0" IS_EXPANDED="TRUE"/>
     <STATUS>
       <SELECTIONS/>
     </STATUS>
@@ -105,13 +108,14 @@
       <VARIABLE ID="dlmb_cntlr" ROW_INDEX="6"/>
       <VARIABLE ID="ilmb_cntlr" ROW_INDEX="7"/>
       <VARIABLE ID="lmb_bram" ROW_INDEX="5"/>
-      <VARIABLE ID="DIP_Switches_8Bits" ROW_INDEX="10"/>
-      <VARIABLE ID="LEDs_8Bits" ROW_INDEX="11"/>
-      <VARIABLE ID="Push_Buttons_5Bits" ROW_INDEX="12"/>
-      <VARIABLE ID="clock_generator_0" ROW_INDEX="13"/>
+      <VARIABLE ID="DIP_Switches_8Bits" ROW_INDEX="11"/>
+      <VARIABLE ID="LEDs_8Bits" ROW_INDEX="12"/>
+      <VARIABLE ID="Push_Buttons_5Bits" ROW_INDEX="13"/>
+      <VARIABLE ID="clock_generator_0" ROW_INDEX="14"/>
       <VARIABLE ID="mdm_0" ROW_INDEX="9"/>
-      <VARIABLE ID="proc_sys_reset_0" ROW_INDEX="14"/>
+      <VARIABLE ID="proc_sys_reset_0" ROW_INDEX="15"/>
       <VARIABLE ID="spiifc_0" IS_EXPANDED="TRUE" ROW_INDEX="8"/>
+      <VARIABLE ID="xps_central_dma_0" IS_EXPANDED="TRUE" ROW_INDEX="10"/>
     </SEQUENCES>
   </SET>
 

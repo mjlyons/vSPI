@@ -73,7 +73,8 @@ implementation/push_buttons_5bits_wrapper.ngc \
 implementation/clock_generator_0_wrapper.ngc \
 implementation/mdm_0_wrapper.ngc \
 implementation/proc_sys_reset_0_wrapper.ngc \
-implementation/spiifc_0_wrapper.ngc
+implementation/spiifc_0_wrapper.ngc \
+implementation/xps_central_dma_0_wrapper.ngc
 
 POSTSYN_NETLIST = implementation/$(SYSTEM).ngc
 
