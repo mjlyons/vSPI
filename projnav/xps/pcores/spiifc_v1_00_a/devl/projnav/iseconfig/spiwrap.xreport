@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2012-03-06T15:48:54</DateModified>
-  <ModuleName>spiifc</ModuleName>
-  <SummaryTimeStamp>Unknown</SummaryTimeStamp>
+  <DateModified>2012-03-07T16:13:02</DateModified>
+  <ModuleName>spiwrap</ModuleName>
+  <SummaryTimeStamp>2012-03-07T14:29:36</SummaryTimeStamp>
   <SavedFilePath>C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/devl/projnav/iseconfig/spiwrap.xreport</SavedFilePath>
   <ImplementationReportsDirectory>C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/devl/projnav\</ImplementationReportsDirectory>
   <DateInitialized>2012-03-06T15:48:54</DateInitialized>

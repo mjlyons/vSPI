@@ -108,6 +108,6 @@ spiifc mySpiIfc (
   .debug_out(debug_out)
 );
 
-assign leds = /*rcMem_douta[31:24]*/ debug_out;
+assign leds = /* rcMem_douta[7:0] */ debug_out ;
 
 endmodule

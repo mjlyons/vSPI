@@ -71,13 +71,19 @@ output          [7:0] debug_out;
 //
 // Registers
 //
+reg                   SPI_CLK_reg;    // Stabalized version of SPI_CLK
+reg                   SPI_CLK_reg1;
+reg                   SPI_SS_reg;     // Stabalized version of SPI_SS
+reg                   SPI_SS_reg1;
+reg                   SPI_MOSI_reg;   // Stabalized version of SPI_MOSI
+reg                   SPI_MOSI_reg1;
 reg                   prev_spiClk;    // Value of SPI_CLK during last SysClk cycle
 reg                   prev_spiSS;     // Value of SPI_SS during last SysClk cycle
 reg             [7:0] state_reg;      // Register backing the 'state' wire
 reg             [7:0] rcByte_reg;     // Register backing 'rcByte'
 reg             [2:0] rcBitIndex_reg; // Register backing 'rcBitIndex'
 reg    [AddrBits-1:0] rcMemAddr_reg;  // Byte addr to write MOSI data to
-
+reg             [7:0] debug_reg;      // register backing debug_out signal
 //
 // Wires
 //
@@ -88,30 +94,40 @@ wire                  rcByteValid;    // rcByte is valid and new
 wire            [7:0] rcByte;         // Byte received from master
 wire            [2:0] rcBitIndex;     // Bit of rcByte to write to next
 
+// Save buffered SPI inputs
+always @(posedge SysClk) begin
+  SPI_CLK_reg1 <= SPI_CLK;
+  SPI_CLK_reg <= SPI_CLK_reg1;
+  SPI_SS_reg1 <= SPI_SS;
+  SPI_SS_reg <= SPI_SS_reg1;
+  SPI_MOSI_reg1 <= SPI_MOSI;
+  SPI_MOSI_reg <= SPI_MOSI_reg1;
+end
+
 // Detect new valid bit
 always @(posedge SysClk) begin
-  prev_spiClk <= SPI_CLK;
+  prev_spiClk <= SPI_CLK_reg;
 end
-assign risingSpiClk = SPI_CLK & (~prev_spiClk);
-assign validSpiBit = risingSpiClk & (~SPI_SS);
+assign risingSpiClk = SPI_CLK_reg & (~prev_spiClk);
+assign validSpiBit = risingSpiClk & (~SPI_SS_reg);
 
 // Detect new SPI packet (SS dropped low)
 always @(posedge SysClk) begin
-  prev_spiSS <= SPI_SS;
+  prev_spiSS <= SPI_SS_reg;
 end
-assign packetStart = prev_spiSS & (~SPI_SS);
+assign packetStart = prev_spiSS & (~SPI_SS_reg);
 
 // Build incoming byte
 always @(posedge SysClk) begin
   if (validSpiBit) begin
-    rcByte_reg[rcBitIndex] <= SPI_MOSI;
+    rcByte_reg[rcBitIndex] <= SPI_MOSI_reg;
     rcBitIndex_reg <= (rcBitIndex > 0 ? rcBitIndex - 1 : 7);
   end else begin
     rcBitIndex_reg <= rcBitIndex;
   end
 end
 assign rcBitIndex = (Reset || packetStart ? 7 : rcBitIndex_reg); 
-assign rcByte = {rcByte_reg[7:1], SPI_MOSI};
+assign rcByte = {rcByte_reg[7:1], SPI_MOSI_reg};
 assign rcByteValid = (validSpiBit && rcBitIndex == 0 ? 1 : 0);
 
 // Incoming MOSI data buffer management
@@ -127,6 +143,10 @@ always @(posedge SysClk) begin
     rcMemAddr_reg <= rcMemAddr;
   end
 end
+
+// Outgoing MISO data buffer management
+// TODO: implement
+assign SPI_MISO = 1'b0;
 
 // State machine
 always @(*) begin
@@ -156,5 +176,13 @@ always @(posedge SysClk) begin
     state_reg <= state;
   end
 end
+
+// Debugging
+always @(posedge SysClk) begin
+  if (rcByteValid) begin
+    debug_reg <= rcByte;
+  end
+end
+assign debug_out = debug_reg;
 
 endmodule
