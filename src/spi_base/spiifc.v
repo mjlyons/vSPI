@@ -132,8 +132,9 @@ end
 always @(*) begin
   if (Reset || packetStart) begin
     state <= `STATE_GET_CMD;
-  end else if (state_reg == `STATE_GET_CMD && rcByteValid) begin
-    state <= rcByte;
+// Handled in state_reg logic, should be latched, not immediate.
+//  end else if (state_reg == `STATE_GET_CMD && rcByteValid) begin
+//    state <= rcByte;
   end else begin
     state <= state_reg;
   end
