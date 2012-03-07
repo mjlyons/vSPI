@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    19:24:33 10/18/2011 
+// Create Date:    16:46:12 03/02/2012 
 // Design Name: 
 // Module Name:    spiifc 
 // Project Name: 
@@ -31,205 +31,158 @@ module spiifc(
   rcMemData,
   rcMemWE,
   debug_out
-  );
-  
-  //
-  // Parameters
-  //
-  parameter AddrBits = 12;
-  
-  // Defines
-  `define  CMD_READ_START   8'd1
-  `define  CMD_READ_MORE    8'd2
-  `define  CMD_WRITE_START  8'd3
-  
-  `define  STATE_GET_CMD    8'd0
-  `define  STATE_READING    8'd1
-  `define  STATE_WRITING    8'd2
-  
-  //
-  // Input/Output defs
-  //
-  input  Reset;
-  input  SysClk;
-  
-  input  SPI_CLK;
-  output SPI_MISO;
-  input  SPI_MOSI;
-  input  SPI_SS;
-  
-  output [AddrBits-1:0] txMemAddr;
-  input  [7:0]          txMemData;
-  
-  output  [AddrBits-1:0] rcMemAddr;
-  output  [7:0]          rcMemData;
-  output                 rcMemWE;
-  
-  output  [7:0]          debug_out;
-  
-  //
-  // Registers
-  // 
-  
-  reg  [ 7: 0] debug_reg;
-  
-  reg  [ 7: 0] rcByteReg;
-  reg          rcStarted;
-  reg  [ 2: 0] rcBitIndexReg;
-  reg  [11: 0] rcMemAddrReg;
-  reg  [11: 0] rcMemAddrNext;
-  reg  [ 7: 0] rcMemDataReg;
-  reg          rcMemWEReg;
-  
-  reg          ssPrev;
-  
-  reg          ssFastToggleReg;
-  reg          ssSlowToggle;
-  
-  reg          ssTurnOnReg;
-  reg          ssTurnOnHandled;
-  
-  reg  [ 7: 0] cmd;
-  reg  [ 7: 0] stateReg;
-  
-  reg  [11: 0] txMemAddrReg;
-  reg  [ 2: 0] txBitAddr;
-  
-  //
-  // Wires
-  //
-  wire         rcByteValid; 
-  wire [ 7: 0] rcByte;
-  wire         rcStarting;
-  wire [ 2: 0] rcBitIndex;
-  
-  wire         ssTurnOn;
-  
-  wire         ssFastToggle;
-  
-  wire [ 7: 0] state;
-  
-  wire         txMemAddrReset;
-  
-  //
-  // Output assigns
-  //
-  assign debug_out = debug_reg;
-  
-  assign rcMemAddr = rcMemAddrReg;
-  assign rcMemData = rcMemDataReg;
-  assign rcMemWE = rcMemWEReg;
-  
-  assign txMemAddrReset = (rcByteValid && rcByte == `CMD_WRITE_START ? 1 : 0);
-  assign txMemAddr = (txMemAddrReset ? 0 : txMemAddrReg);
-  assign SPI_MISO = txMemData[txBitAddr];
-  
-  assign ssFastToggle = 
-      (ssPrev == 1 && SPI_SS == 0 ? ~ssFastToggleReg : ssFastToggleReg);
-  
-  //
-  // Wire assigns
-  //
-  assign rcByteValid = rcStarted && rcBitIndex == 0;
-  assign rcByte = {rcByteReg[7:1], SPI_MOSI};
-  assign rcStarting = ssTurnOn;
-  assign rcBitIndex = (rcStarting ? 3'd7 : rcBitIndexReg);
-  
-  assign ssTurnOn = ssSlowToggle ^ ssFastToggle;
-  assign state = (rcStarting ? `STATE_GET_CMD : stateReg);
-  
-  initial begin
-    ssSlowToggle <= 0;
-  end
-  
-  always @(posedge SysClk) begin
-    ssPrev <= SPI_SS;
-    
-    if (Reset) begin
-      ssTurnOnReg <= 0;
-      ssFastToggleReg <= 0;
+);
 
-    end else begin
-      if (ssPrev & (~SPI_SS)) begin
-        ssTurnOnReg <= 1;
-        ssFastToggleReg <= ~ssFastToggleReg;
-        
-      end else if (ssTurnOnHandled) begin
-        ssTurnOnReg <= 0;
-      end
-    end
-    
+//
+// Parameters
+//
+parameter AddrBits = 12;
+
+//
+// Defines
+//
+`define CMD_READ_START    8'd1
+`define CMD_READ_MORE     8'd2
+`define CMD_WRITE_START   8'd3
+`define CMD_WRITE_MORE    8'd4
+`define CMD_INTERRUPT     8'd5
+
+`define STATE_GET_CMD     8'd0
+`define STATE_READING     8'd1
+`define STATE_WRITING     8'd2
+`define STATE_WRITE_INTR  8'd3
+
+//
+// Input/Outputs
+//
+input                 Reset;
+input                 SysClk;
+input                 SPI_CLK;
+output                SPI_MISO;     // outgoing (from respect of this module)
+input                 SPI_MOSI;     // incoming (from respect of this module)
+input                 SPI_SS;
+output [AddrBits-1:0] txMemAddr;    // outgoing data
+input           [7:0] txMemData;
+output [AddrBits-1:0] rcMemAddr;    // incoming data
+output          [7:0] rcMemData;
+output                rcMemWE;
+output          [7:0] debug_out;
+
+//
+// Registers
+//
+reg                   SPI_CLK_reg;    // Stabalized version of SPI_CLK
+reg                   SPI_CLK_reg1;
+reg                   SPI_SS_reg;     // Stabalized version of SPI_SS
+reg                   SPI_SS_reg1;
+reg                   SPI_MOSI_reg;   // Stabalized version of SPI_MOSI
+reg                   SPI_MOSI_reg1;
+reg                   prev_spiClk;    // Value of SPI_CLK during last SysClk cycle
+reg                   prev_spiSS;     // Value of SPI_SS during last SysClk cycle
+reg             [7:0] state_reg;      // Register backing the 'state' wire
+reg             [7:0] rcByte_reg;     // Register backing 'rcByte'
+reg             [2:0] rcBitIndex_reg; // Register backing 'rcBitIndex'
+reg    [AddrBits-1:0] rcMemAddr_reg;  // Byte addr to write MOSI data to
+reg             [7:0] debug_reg;      // register backing debug_out signal
+//
+// Wires
+//
+wire                  risingSpiClk;   // Did the SPI_CLK rise since last SysClk cycle?
+wire                  validSpiBit;    // Are the SPI MOSI/MISO bits new and valid?
+reg                   state;          // Current state in the module's state machine (always @* effectively wire)
+wire                  rcByteValid;    // rcByte is valid and new
+wire            [7:0] rcByte;         // Byte received from master
+wire            [2:0] rcBitIndex;     // Bit of rcByte to write to next
+
+// Save buffered SPI inputs
+always @(posedge SysClk) begin
+  SPI_CLK_reg1 <= SPI_CLK;
+  SPI_CLK_reg <= SPI_CLK_reg1;
+  SPI_SS_reg1 <= SPI_SS;
+  SPI_SS_reg <= SPI_SS_reg1;
+  SPI_MOSI_reg1 <= SPI_MOSI;
+  SPI_MOSI_reg <= SPI_MOSI_reg1;
+end
+
+// Detect new valid bit
+always @(posedge SysClk) begin
+  prev_spiClk <= SPI_CLK_reg;
+end
+assign risingSpiClk = SPI_CLK_reg & (~prev_spiClk);
+assign validSpiBit = risingSpiClk & (~SPI_SS_reg);
+
+// Detect new SPI packet (SS dropped low)
+always @(posedge SysClk) begin
+  prev_spiSS <= SPI_SS_reg;
+end
+assign packetStart = prev_spiSS & (~SPI_SS_reg);
+
+// Build incoming byte
+always @(posedge SysClk) begin
+  if (validSpiBit) begin
+    rcByte_reg[rcBitIndex] <= SPI_MOSI_reg;
+    rcBitIndex_reg <= (rcBitIndex > 0 ? rcBitIndex - 1 : 7);
+  end else begin
+    rcBitIndex_reg <= rcBitIndex;
   end
-  
-  always @(posedge SPI_CLK) begin
-    ssSlowToggle <= ssFastToggle;
-  
-    if (Reset) begin
-      // Resetting
-      rcByteReg <= 8'h00;
-      rcStarted <= 0;
-      rcBitIndexReg <= 3'd7;
-      ssTurnOnHandled <= 0;
-      debug_reg <= 8'hFF;
-      
-    end else begin
-      // Not resetting
-      
-      ssTurnOnHandled <= ssTurnOn;
-      stateReg <= state;
-      rcMemAddrReg <= rcMemAddrNext;
-          
-      if (~SPI_SS) begin
-        rcByteReg[rcBitIndex] <= SPI_MOSI;
-        rcBitIndexReg <= rcBitIndex - 3'd1;
-        rcStarted <= 1;
-        
-        // Update txBitAddr if writing out
-        if (`STATE_WRITING == state) begin
-          if (txBitAddr == 3'd1) begin
-            txMemAddrReg <= txMemAddr + 1;
-          end 
-          txBitAddr <= txBitAddr - 1;
-        end
-      end
-      
-      // We've just received a byte (well, currently receiving the last bit)
-      
-      if (rcByteValid) begin
-        // For now, just display on LEDs
-        debug_reg <= rcByte;
-      
-        if (`STATE_GET_CMD == state) begin
-          cmd <= rcByte;    // Will take effect next cycle
-          
-          if (`CMD_READ_START == rcByte) begin
-            rcMemAddrNext <= 0;
-            stateReg <= `STATE_READING;
-          end else if (`CMD_READ_MORE == rcByte) begin
-            stateReg <= `STATE_READING;
-          end else if (`CMD_WRITE_START == rcByte) begin
-            txBitAddr <= 3'd7;
-            stateReg <= `STATE_WRITING;
-            txMemAddrReg <= txMemAddr;  // Keep at 0
-          end
-         
-        end else if (`STATE_READING == state) begin
-          rcMemDataReg <= rcByte;
-          rcMemAddrNext <= rcMemAddr + 1;
-          rcMemWEReg <= 1;
-        
-        end else if (`STATE_WRITING == state) begin
-          txBitAddr <= 3'd7;
-          stateReg <= `STATE_WRITING;
-        end
-      
-      end else begin
-        // Not a valid byte
-        rcMemWEReg <= 0;
-        
-      end // valid/valid' byte
-      
-    end // Reset/Reset'
+end
+assign rcBitIndex = (Reset || packetStart ? 7 : rcBitIndex_reg); 
+assign rcByte = {rcByte_reg[7:1], SPI_MOSI_reg};
+assign rcByteValid = (validSpiBit && rcBitIndex == 0 ? 1 : 0);
+
+// Incoming MOSI data buffer management
+assign rcMemAddr = rcMemAddr_reg;
+assign rcMemData = rcByte;
+assign rcMemWE = (state == `STATE_READING && rcByteValid ? 1 : 0);
+always @(posedge SysClk) begin
+  if (Reset || (`STATE_GET_CMD == state && rcByteValid)) begin
+    rcMemAddr_reg <= 0;
+  end else if (rcMemWE) begin
+    rcMemAddr_reg <= rcMemAddr + 1;
+  end else begin
+    rcMemAddr_reg <= rcMemAddr;
   end
-  
+end
+
+// Outgoing MISO data buffer management
+// TODO: implement
+assign SPI_MISO = 1'b0;
+
+// State machine
+always @(*) begin
+  if (Reset || packetStart) begin
+    state <= `STATE_GET_CMD;
+// Handled in state_reg logic, should be latched, not immediate.
+//  end else if (state_reg == `STATE_GET_CMD && rcByteValid) begin
+//    state <= rcByte;
+  end else begin
+    state <= state_reg;
+  end
+end
+always @(posedge SysClk) begin
+  if (`STATE_GET_CMD == state && rcByteValid) begin
+    if (`CMD_READ_START == rcByte) begin
+      state_reg <= `STATE_READING;
+    end else if (`CMD_READ_MORE == rcByte) begin
+      state_reg <= `STATE_READING;
+    end else if (`CMD_WRITE_START == rcByte) begin
+      state_reg <= `STATE_WRITING;
+    end else if (`CMD_WRITE_MORE == rcByte) begin
+      state_reg <= `STATE_WRITING;
+    end else if (`CMD_INTERRUPT == rcByte) begin
+      // TODO: NYI
+    end   
+  end else begin
+    state_reg <= state;
+  end
+end
+
+// Debugging
+always @(posedge SysClk) begin
+  if (rcByteValid) begin
+    debug_reg <= rcByte;
+  end
+end
+assign debug_out = debug_reg;
+
 endmodule
