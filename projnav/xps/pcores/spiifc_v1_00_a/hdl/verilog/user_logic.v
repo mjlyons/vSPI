@@ -52,6 +52,10 @@ module user_logic
 (
   // -- ADD USER PORTS BELOW THIS LINE ---------------
   // --USER ports added here 
+  SPI_CLK,
+  SPI_MOSI,
+  SPI_MISO,
+  SPI_SS,
   // -- ADD USER PORTS ABOVE THIS LINE ---------------
 
   // -- DO NOT EDIT BELOW THIS LINE ------------------
@@ -93,6 +97,10 @@ parameter C_NUM_INTR                     = 1;
 
 // -- ADD USER PORTS BELOW THIS LINE -----------------
 // --USER ports added here 
+input                                     SPI_CLK;
+input                                     SPI_MOSI;
+output                                    SPI_MISO;
+input                                     SPI_SS;
 // -- ADD USER PORTS ABOVE THIS LINE -----------------
 
 // -- DO NOT EDIT BELOW THIS LINE --------------------
@@ -125,7 +133,6 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
   // --USER nets declarations added here, as needed for user logic
   
   // Memmap memory logic lines
-  wire       [0 : C_NUM_MEM-1 ]             mem_ena;      // Port A: spiifc
   wire       [0 : C_NUM_MEM-1 ]             mem_enb;      // Port B: sysbus/dma
   wire       [0 : C_NUM_MEM-1 ]             mem_web;
   wire       [0 : C_NUM_MEM-1]              mem_write;
@@ -133,6 +140,7 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
   reg        [0 : C_NUM_MEM-1 ]             mem_read_prev;
 
   //   mosiMem (mem0): data received from master
+  wire                                      mosiMem_wea;
   wire       [0 : 11]                       mosiMem_addra;
   wire       [0 : 7 ]                       mosiMem_dina;
   wire       [0 : 9 ]                       mosiMem_addrb;
@@ -172,14 +180,10 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
   // --USER logic implementation added here
   
   //   memory interface logic
-  assign mem_ena       = 2'd0;          // TODO: interface with spiifc
   assign mem_enb       = mem_write | mem_read /*& {C_NUM_MEM{Bus2IP_RdReq | Bus2IP_WrReq}}*/;
   assign mem_web       = mem_write;
-  assign mosiMem_addra = 12'h000;       // TODO: interface with spiifc
-  assign mosiMem_dina  = 8'd00;         // TODO: interface with spiifc
   assign mosiMem_addrb = Bus2IP_Addr[20:29];
   assign mosiMem_dinb  = Bus2IP_Data;
-  assign misoMem_addra = 12'h000;       // TODO: interface with spiifc
   assign misoMem_addrb = Bus2IP_Addr[20:29];
   assign misoMem_dinb  = Bus2IP_Data;
   
@@ -192,9 +196,9 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
   
   // Mem0: Memory buffer storing data coming from master
   buffermem mosiMem (
-    .clka(Bus2IP_Clk),        // input clka
-    .ena(mem_ena[0]),         // input ena
-    .wea(1'b1),               // Always writing, never reading
+    .clka(SPI_CLK),        // input clka
+    .ena(1'b1),         // input ena
+    .wea(mosiMem_wea),               // Always writing, never reading
     .addra({mosiMem_addra}),  // input [11 : 0] addra
     .dina({mosiMem_dina}),    // input [7 : 0] dina
  // .douta(mosiMem_douta),    // NEVER USED: output [7 : 0] douta
@@ -208,8 +212,8 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
 
   // Mem1: Memory buffer storing data to send to master
   buffermem misoMem (
-    .clka(Bus2IP_Clk),        // input clka
-    .ena(mem_ena[1]),         // input ena
+    .clka(SPI_CLK),        // input clka
+    .ena(1'b1),               // input ena
     .wea(1'b0),               // Always reading, never writing
     .addra({misoMem_addra}),  // input [11 : 0] addra
 //  .dina(dina),              // input [7 : 0] dina
@@ -220,6 +224,20 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
     .addrb({misoMem_addrb}),  // input [9 : 0] addrb
     .dinb({misoMem_dinb}),    // input [31 : 0] dinb
     .doutb({misoMem_doutb})   // output [31 : 0] doutb
+  );
+  
+  spiifc spi (
+    .Reset(Bus2IP_Reset),
+    .SysClk(Bus2IP_Clk),
+    .SPI_CLK(SPI_CLK),
+    .SPI_MISO(SPI_MISO),
+    .SPI_MOSI(SPI_MOSI),
+    .SPI_SS(SPI_SS),
+    .txMemAddr(misoMem_addra),
+    .txMemData(misoMem_douta),
+    .rcMemAddr(mosiMem_addra),
+    .rcMemData(mosiMem_dina),
+    .rcMemWE(mosiMem_wea)
   );
 
   // ------------------------------------------------------

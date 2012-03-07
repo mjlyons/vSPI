@@ -218,9 +218,9 @@ module spiifc(
           rcMemAddrNext <= rcMemAddr + 1;
           rcMemWEReg <= 1;
         
-        end else if (`STATE_WRITING == state) begin
-          txBitAddr <= 3'd7;
-          stateReg <= `STATE_WRITING;
+//        end else if (`STATE_WRITING == state) begin
+//          txBitAddr <= 3'd7;
+//          stateReg <= `STATE_WRITING;
         end
       
       end else begin

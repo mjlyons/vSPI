@@ -1,0 +1,1121 @@
+Release 13.2 - xst O.61xd (nt64)
+Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.27 secs
+ 
+--> Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.28 secs
+ 
+--> Reading design: user_logic.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "user_logic.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "user_logic"
+Output Format                      : NGC
+Target Device                      : xc6slx45-2-csg324
+
+---- Source Options
+Top Module Name                    : user_logic
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Shift Register Extraction          : YES
+ROM Style                          : Auto
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Shift Register Minimum Size        : 2
+Use DSP Block                      : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+LUT Combining                      : Auto
+Reduce Control Sets                : Auto
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 100000
+Add Generic Clock Buffer(BUFG)     : 16
+Register Duplication               : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Auto
+Use Synchronous Set                : Auto
+Use Synchronous Reset              : Auto
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Power Reduction                    : NO
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+DSP48 Utilization Ratio            : 100
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+---- Other Options
+Cores Search Directories           : {"ipcore_dir"  }
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Analyzing Verilog file \"C:\Users\mjlyons\workspace\vSPI\src\spi_base\spiifc.v\" into library work
+Parsing module <spiifc>.
+Analyzing Verilog file \"C:\Users\mjlyons\workspace\vSPI\projnav\xps\pcores\spiifc_v1_00_a\devl\projnav\ipcore_dir\buffermem.v\" into library work
+Parsing module <buffermem>.
+Analyzing Verilog file \"C:\Users\mjlyons\workspace\vSPI\projnav\xps\pcores\spiifc_v1_00_a\hdl\verilog\user_logic.v\" into library work
+Parsing module <user_logic>.
+
+=========================================================================
+*                            HDL Elaboration                            *
+=========================================================================
+WARNING:HDLCompiler:1016 - "C:\Users\mjlyons\workspace\vSPI\projnav\xps\pcores\spiifc_v1_00_a\hdl\verilog\user_logic.v" Line 196: Port douta is not connected to this instance
+WARNING:HDLCompiler:1016 - "C:\Users\mjlyons\workspace\vSPI\projnav\xps\pcores\spiifc_v1_00_a\hdl\verilog\user_logic.v" Line 212: Port dina is not connected to this instance
+WARNING:HDLCompiler:1016 - "C:\Users\mjlyons\workspace\vSPI\projnav\xps\pcores\spiifc_v1_00_a\hdl\verilog\user_logic.v" Line 228: Port debug_out is not connected to this instance
+
+Elaborating module <user_logic>.
+
+Elaborating module <buffermem>.
+WARNING:HDLCompiler:1499 - "C:\Users\mjlyons\workspace\vSPI\projnav\xps\pcores\spiifc_v1_00_a\devl\projnav\ipcore_dir\buffermem.v" Line 39: Empty module <buffermem> remains a black box.
+
+Elaborating module <spiifc>.
+WARNING:HDLCompiler:413 - "C:\Users\mjlyons\workspace\vSPI\src\spi_base\spiifc.v" Line 123: Result of 32-bit expression is truncated to fit in 1-bit target.
+WARNING:HDLCompiler:413 - "C:\Users\mjlyons\workspace\vSPI\src\spi_base\spiifc.v" Line 124: Result of 32-bit expression is truncated to fit in 12-bit target.
+WARNING:HDLCompiler:1127 - "C:\Users\mjlyons\workspace\vSPI\src\spi_base\spiifc.v" Line 145: Assignment to ssTurnOnReg ignored, since the identifier is never used
+WARNING:HDLCompiler:413 - "C:\Users\mjlyons\workspace\vSPI\src\spi_base\spiifc.v" Line 190: Result of 13-bit expression is truncated to fit in 12-bit target.
+WARNING:HDLCompiler:413 - "C:\Users\mjlyons\workspace\vSPI\src\spi_base\spiifc.v" Line 192: Result of 32-bit expression is truncated to fit in 3-bit target.
+WARNING:HDLCompiler:413 - "C:\Users\mjlyons\workspace\vSPI\src\spi_base\spiifc.v" Line 218: Result of 13-bit expression is truncated to fit in 12-bit target.
+WARNING:HDLCompiler:1127 - "C:\Users\mjlyons\workspace\vSPI\src\spi_base\spiifc.v" Line 164: Assignment to cmd ignored, since the identifier is never used
+WARNING:HDLCompiler:552 - "C:\Users\mjlyons\workspace\vSPI\projnav\xps\pcores\spiifc_v1_00_a\hdl\verilog\user_logic.v" Line 212: Input port dina[7] is not connected on this instance
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Synthesizing Unit <user_logic>.
+    Related source file is "c:/users/mjlyons/workspace/vspi/projnav/xps/pcores/spiifc_v1_00_a/hdl/verilog/user_logic.v".
+        C_SLV_AWIDTH = 32
+        C_SLV_DWIDTH = 32
+        C_NUM_REG = 16
+        C_NUM_MEM = 2
+        C_NUM_INTR = 1
+WARNING:Xst:647 - Input <Bus2IP_Addr<0:19>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <Bus2IP_Addr<30:31>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <Bus2IP_BurstLength<0:8>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <Bus2IP_Burst> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+INFO:Xst:3210 - "c:/users/mjlyons/workspace/vspi/projnav/xps/pcores/spiifc_v1_00_a/hdl/verilog/user_logic.v" line 196: Output port <douta> of the instance <mosiMem> is unconnected or connected to loadless signal.
+INFO:Xst:3210 - "c:/users/mjlyons/workspace/vspi/projnav/xps/pcores/spiifc_v1_00_a/hdl/verilog/user_logic.v" line 228: Output port <debug_out> of the instance <spi> is unconnected or connected to loadless signal.
+    Found 1-bit register for signal <slv_reg0<0>>.
+    Found 1-bit register for signal <slv_reg0<1>>.
+    Found 1-bit register for signal <slv_reg0<2>>.
+    Found 1-bit register for signal <slv_reg0<3>>.
+    Found 1-bit register for signal <slv_reg0<4>>.
+    Found 1-bit register for signal <slv_reg0<5>>.
+    Found 1-bit register for signal <slv_reg0<6>>.
+    Found 1-bit register for signal <slv_reg0<7>>.
+    Found 1-bit register for signal <slv_reg0<8>>.
+    Found 1-bit register for signal <slv_reg0<9>>.
+    Found 1-bit register for signal <slv_reg0<10>>.
+    Found 1-bit register for signal <slv_reg0<11>>.
+    Found 1-bit register for signal <slv_reg0<12>>.
+    Found 1-bit register for signal <slv_reg0<13>>.
+    Found 1-bit register for signal <slv_reg0<14>>.
+    Found 1-bit register for signal <slv_reg0<15>>.
+    Found 1-bit register for signal <slv_reg0<16>>.
+    Found 1-bit register for signal <slv_reg0<17>>.
+    Found 1-bit register for signal <slv_reg0<18>>.
+    Found 1-bit register for signal <slv_reg0<19>>.
+    Found 1-bit register for signal <slv_reg0<20>>.
+    Found 1-bit register for signal <slv_reg0<21>>.
+    Found 1-bit register for signal <slv_reg0<22>>.
+    Found 1-bit register for signal <slv_reg0<23>>.
+    Found 1-bit register for signal <slv_reg0<24>>.
+    Found 1-bit register for signal <slv_reg0<25>>.
+    Found 1-bit register for signal <slv_reg0<26>>.
+    Found 1-bit register for signal <slv_reg0<27>>.
+    Found 1-bit register for signal <slv_reg0<28>>.
+    Found 1-bit register for signal <slv_reg0<29>>.
+    Found 1-bit register for signal <slv_reg0<30>>.
+    Found 1-bit register for signal <slv_reg0<31>>.
+    Found 1-bit register for signal <slv_reg1<0>>.
+    Found 1-bit register for signal <slv_reg1<1>>.
+    Found 1-bit register for signal <slv_reg1<2>>.
+    Found 1-bit register for signal <slv_reg1<3>>.
+    Found 1-bit register for signal <slv_reg1<4>>.
+    Found 1-bit register for signal <slv_reg1<5>>.
+    Found 1-bit register for signal <slv_reg1<6>>.
+    Found 1-bit register for signal <slv_reg1<7>>.
+    Found 1-bit register for signal <slv_reg1<8>>.
+    Found 1-bit register for signal <slv_reg1<9>>.
+    Found 1-bit register for signal <slv_reg1<10>>.
+    Found 1-bit register for signal <slv_reg1<11>>.
+    Found 1-bit register for signal <slv_reg1<12>>.
+    Found 1-bit register for signal <slv_reg1<13>>.
+    Found 1-bit register for signal <slv_reg1<14>>.
+    Found 1-bit register for signal <slv_reg1<15>>.
+    Found 1-bit register for signal <slv_reg1<16>>.
+    Found 1-bit register for signal <slv_reg1<17>>.
+    Found 1-bit register for signal <slv_reg1<18>>.
+    Found 1-bit register for signal <slv_reg1<19>>.
+    Found 1-bit register for signal <slv_reg1<20>>.
+    Found 1-bit register for signal <slv_reg1<21>>.
+    Found 1-bit register for signal <slv_reg1<22>>.
+    Found 1-bit register for signal <slv_reg1<23>>.
+    Found 1-bit register for signal <slv_reg1<24>>.
+    Found 1-bit register for signal <slv_reg1<25>>.
+    Found 1-bit register for signal <slv_reg1<26>>.
+    Found 1-bit register for signal <slv_reg1<27>>.
+    Found 1-bit register for signal <slv_reg1<28>>.
+    Found 1-bit register for signal <slv_reg1<29>>.
+    Found 1-bit register for signal <slv_reg1<30>>.
+    Found 1-bit register for signal <slv_reg1<31>>.
+    Found 1-bit register for signal <slv_reg2<0>>.
+    Found 1-bit register for signal <slv_reg2<1>>.
+    Found 1-bit register for signal <slv_reg2<2>>.
+    Found 1-bit register for signal <slv_reg2<3>>.
+    Found 1-bit register for signal <slv_reg2<4>>.
+    Found 1-bit register for signal <slv_reg2<5>>.
+    Found 1-bit register for signal <slv_reg2<6>>.
+    Found 1-bit register for signal <slv_reg2<7>>.
+    Found 1-bit register for signal <slv_reg2<8>>.
+    Found 1-bit register for signal <slv_reg2<9>>.
+    Found 1-bit register for signal <slv_reg2<10>>.
+    Found 1-bit register for signal <slv_reg2<11>>.
+    Found 1-bit register for signal <slv_reg2<12>>.
+    Found 1-bit register for signal <slv_reg2<13>>.
+    Found 1-bit register for signal <slv_reg2<14>>.
+    Found 1-bit register for signal <slv_reg2<15>>.
+    Found 1-bit register for signal <slv_reg2<16>>.
+    Found 1-bit register for signal <slv_reg2<17>>.
+    Found 1-bit register for signal <slv_reg2<18>>.
+    Found 1-bit register for signal <slv_reg2<19>>.
+    Found 1-bit register for signal <slv_reg2<20>>.
+    Found 1-bit register for signal <slv_reg2<21>>.
+    Found 1-bit register for signal <slv_reg2<22>>.
+    Found 1-bit register for signal <slv_reg2<23>>.
+    Found 1-bit register for signal <slv_reg2<24>>.
+    Found 1-bit register for signal <slv_reg2<25>>.
+    Found 1-bit register for signal <slv_reg2<26>>.
+    Found 1-bit register for signal <slv_reg2<27>>.
+    Found 1-bit register for signal <slv_reg2<28>>.
+    Found 1-bit register for signal <slv_reg2<29>>.
+    Found 1-bit register for signal <slv_reg2<30>>.
+    Found 1-bit register for signal <slv_reg2<31>>.
+    Found 1-bit register for signal <slv_reg3<0>>.
+    Found 1-bit register for signal <slv_reg3<1>>.
+    Found 1-bit register for signal <slv_reg3<2>>.
+    Found 1-bit register for signal <slv_reg3<3>>.
+    Found 1-bit register for signal <slv_reg3<4>>.
+    Found 1-bit register for signal <slv_reg3<5>>.
+    Found 1-bit register for signal <slv_reg3<6>>.
+    Found 1-bit register for signal <slv_reg3<7>>.
+    Found 1-bit register for signal <slv_reg3<8>>.
+    Found 1-bit register for signal <slv_reg3<9>>.
+    Found 1-bit register for signal <slv_reg3<10>>.
+    Found 1-bit register for signal <slv_reg3<11>>.
+    Found 1-bit register for signal <slv_reg3<12>>.
+    Found 1-bit register for signal <slv_reg3<13>>.
+    Found 1-bit register for signal <slv_reg3<14>>.
+    Found 1-bit register for signal <slv_reg3<15>>.
+    Found 1-bit register for signal <slv_reg3<16>>.
+    Found 1-bit register for signal <slv_reg3<17>>.
+    Found 1-bit register for signal <slv_reg3<18>>.
+    Found 1-bit register for signal <slv_reg3<19>>.
+    Found 1-bit register for signal <slv_reg3<20>>.
+    Found 1-bit register for signal <slv_reg3<21>>.
+    Found 1-bit register for signal <slv_reg3<22>>.
+    Found 1-bit register for signal <slv_reg3<23>>.
+    Found 1-bit register for signal <slv_reg3<24>>.
+    Found 1-bit register for signal <slv_reg3<25>>.
+    Found 1-bit register for signal <slv_reg3<26>>.
+    Found 1-bit register for signal <slv_reg3<27>>.
+    Found 1-bit register for signal <slv_reg3<28>>.
+    Found 1-bit register for signal <slv_reg3<29>>.
+    Found 1-bit register for signal <slv_reg3<30>>.
+    Found 1-bit register for signal <slv_reg3<31>>.
+    Found 1-bit register for signal <slv_reg4<0>>.
+    Found 1-bit register for signal <slv_reg4<1>>.
+    Found 1-bit register for signal <slv_reg4<2>>.
+    Found 1-bit register for signal <slv_reg4<3>>.
+    Found 1-bit register for signal <slv_reg4<4>>.
+    Found 1-bit register for signal <slv_reg4<5>>.
+    Found 1-bit register for signal <slv_reg4<6>>.
+    Found 1-bit register for signal <slv_reg4<7>>.
+    Found 1-bit register for signal <slv_reg4<8>>.
+    Found 1-bit register for signal <slv_reg4<9>>.
+    Found 1-bit register for signal <slv_reg4<10>>.
+    Found 1-bit register for signal <slv_reg4<11>>.
+    Found 1-bit register for signal <slv_reg4<12>>.
+    Found 1-bit register for signal <slv_reg4<13>>.
+    Found 1-bit register for signal <slv_reg4<14>>.
+    Found 1-bit register for signal <slv_reg4<15>>.
+    Found 1-bit register for signal <slv_reg4<16>>.
+    Found 1-bit register for signal <slv_reg4<17>>.
+    Found 1-bit register for signal <slv_reg4<18>>.
+    Found 1-bit register for signal <slv_reg4<19>>.
+    Found 1-bit register for signal <slv_reg4<20>>.
+    Found 1-bit register for signal <slv_reg4<21>>.
+    Found 1-bit register for signal <slv_reg4<22>>.
+    Found 1-bit register for signal <slv_reg4<23>>.
+    Found 1-bit register for signal <slv_reg4<24>>.
+    Found 1-bit register for signal <slv_reg4<25>>.
+    Found 1-bit register for signal <slv_reg4<26>>.
+    Found 1-bit register for signal <slv_reg4<27>>.
+    Found 1-bit register for signal <slv_reg4<28>>.
+    Found 1-bit register for signal <slv_reg4<29>>.
+    Found 1-bit register for signal <slv_reg4<30>>.
+    Found 1-bit register for signal <slv_reg4<31>>.
+    Found 1-bit register for signal <slv_reg5<0>>.
+    Found 1-bit register for signal <slv_reg5<1>>.
+    Found 1-bit register for signal <slv_reg5<2>>.
+    Found 1-bit register for signal <slv_reg5<3>>.
+    Found 1-bit register for signal <slv_reg5<4>>.
+    Found 1-bit register for signal <slv_reg5<5>>.
+    Found 1-bit register for signal <slv_reg5<6>>.
+    Found 1-bit register for signal <slv_reg5<7>>.
+    Found 1-bit register for signal <slv_reg5<8>>.
+    Found 1-bit register for signal <slv_reg5<9>>.
+    Found 1-bit register for signal <slv_reg5<10>>.
+    Found 1-bit register for signal <slv_reg5<11>>.
+    Found 1-bit register for signal <slv_reg5<12>>.
+    Found 1-bit register for signal <slv_reg5<13>>.
+    Found 1-bit register for signal <slv_reg5<14>>.
+    Found 1-bit register for signal <slv_reg5<15>>.
+    Found 1-bit register for signal <slv_reg5<16>>.
+    Found 1-bit register for signal <slv_reg5<17>>.
+    Found 1-bit register for signal <slv_reg5<18>>.
+    Found 1-bit register for signal <slv_reg5<19>>.
+    Found 1-bit register for signal <slv_reg5<20>>.
+    Found 1-bit register for signal <slv_reg5<21>>.
+    Found 1-bit register for signal <slv_reg5<22>>.
+    Found 1-bit register for signal <slv_reg5<23>>.
+    Found 1-bit register for signal <slv_reg5<24>>.
+    Found 1-bit register for signal <slv_reg5<25>>.
+    Found 1-bit register for signal <slv_reg5<26>>.
+    Found 1-bit register for signal <slv_reg5<27>>.
+    Found 1-bit register for signal <slv_reg5<28>>.
+    Found 1-bit register for signal <slv_reg5<29>>.
+    Found 1-bit register for signal <slv_reg5<30>>.
+    Found 1-bit register for signal <slv_reg5<31>>.
+    Found 1-bit register for signal <slv_reg6<0>>.
+    Found 1-bit register for signal <slv_reg6<1>>.
+    Found 1-bit register for signal <slv_reg6<2>>.
+    Found 1-bit register for signal <slv_reg6<3>>.
+    Found 1-bit register for signal <slv_reg6<4>>.
+    Found 1-bit register for signal <slv_reg6<5>>.
+    Found 1-bit register for signal <slv_reg6<6>>.
+    Found 1-bit register for signal <slv_reg6<7>>.
+    Found 1-bit register for signal <slv_reg6<8>>.
+    Found 1-bit register for signal <slv_reg6<9>>.
+    Found 1-bit register for signal <slv_reg6<10>>.
+    Found 1-bit register for signal <slv_reg6<11>>.
+    Found 1-bit register for signal <slv_reg6<12>>.
+    Found 1-bit register for signal <slv_reg6<13>>.
+    Found 1-bit register for signal <slv_reg6<14>>.
+    Found 1-bit register for signal <slv_reg6<15>>.
+    Found 1-bit register for signal <slv_reg6<16>>.
+    Found 1-bit register for signal <slv_reg6<17>>.
+    Found 1-bit register for signal <slv_reg6<18>>.
+    Found 1-bit register for signal <slv_reg6<19>>.
+    Found 1-bit register for signal <slv_reg6<20>>.
+    Found 1-bit register for signal <slv_reg6<21>>.
+    Found 1-bit register for signal <slv_reg6<22>>.
+    Found 1-bit register for signal <slv_reg6<23>>.
+    Found 1-bit register for signal <slv_reg6<24>>.
+    Found 1-bit register for signal <slv_reg6<25>>.
+    Found 1-bit register for signal <slv_reg6<26>>.
+    Found 1-bit register for signal <slv_reg6<27>>.
+    Found 1-bit register for signal <slv_reg6<28>>.
+    Found 1-bit register for signal <slv_reg6<29>>.
+    Found 1-bit register for signal <slv_reg6<30>>.
+    Found 1-bit register for signal <slv_reg6<31>>.
+    Found 1-bit register for signal <slv_reg7<0>>.
+    Found 1-bit register for signal <slv_reg7<1>>.
+    Found 1-bit register for signal <slv_reg7<2>>.
+    Found 1-bit register for signal <slv_reg7<3>>.
+    Found 1-bit register for signal <slv_reg7<4>>.
+    Found 1-bit register for signal <slv_reg7<5>>.
+    Found 1-bit register for signal <slv_reg7<6>>.
+    Found 1-bit register for signal <slv_reg7<7>>.
+    Found 1-bit register for signal <slv_reg7<8>>.
+    Found 1-bit register for signal <slv_reg7<9>>.
+    Found 1-bit register for signal <slv_reg7<10>>.
+    Found 1-bit register for signal <slv_reg7<11>>.
+    Found 1-bit register for signal <slv_reg7<12>>.
+    Found 1-bit register for signal <slv_reg7<13>>.
+    Found 1-bit register for signal <slv_reg7<14>>.
+    Found 1-bit register for signal <slv_reg7<15>>.
+    Found 1-bit register for signal <slv_reg7<16>>.
+    Found 1-bit register for signal <slv_reg7<17>>.
+    Found 1-bit register for signal <slv_reg7<18>>.
+    Found 1-bit register for signal <slv_reg7<19>>.
+    Found 1-bit register for signal <slv_reg7<20>>.
+    Found 1-bit register for signal <slv_reg7<21>>.
+    Found 1-bit register for signal <slv_reg7<22>>.
+    Found 1-bit register for signal <slv_reg7<23>>.
+    Found 1-bit register for signal <slv_reg7<24>>.
+    Found 1-bit register for signal <slv_reg7<25>>.
+    Found 1-bit register for signal <slv_reg7<26>>.
+    Found 1-bit register for signal <slv_reg7<27>>.
+    Found 1-bit register for signal <slv_reg7<28>>.
+    Found 1-bit register for signal <slv_reg7<29>>.
+    Found 1-bit register for signal <slv_reg7<30>>.
+    Found 1-bit register for signal <slv_reg7<31>>.
+    Found 1-bit register for signal <slv_reg8<0>>.
+    Found 1-bit register for signal <slv_reg8<1>>.
+    Found 1-bit register for signal <slv_reg8<2>>.
+    Found 1-bit register for signal <slv_reg8<3>>.
+    Found 1-bit register for signal <slv_reg8<4>>.
+    Found 1-bit register for signal <slv_reg8<5>>.
+    Found 1-bit register for signal <slv_reg8<6>>.
+    Found 1-bit register for signal <slv_reg8<7>>.
+    Found 1-bit register for signal <slv_reg8<8>>.
+    Found 1-bit register for signal <slv_reg8<9>>.
+    Found 1-bit register for signal <slv_reg8<10>>.
+    Found 1-bit register for signal <slv_reg8<11>>.
+    Found 1-bit register for signal <slv_reg8<12>>.
+    Found 1-bit register for signal <slv_reg8<13>>.
+    Found 1-bit register for signal <slv_reg8<14>>.
+    Found 1-bit register for signal <slv_reg8<15>>.
+    Found 1-bit register for signal <slv_reg8<16>>.
+    Found 1-bit register for signal <slv_reg8<17>>.
+    Found 1-bit register for signal <slv_reg8<18>>.
+    Found 1-bit register for signal <slv_reg8<19>>.
+    Found 1-bit register for signal <slv_reg8<20>>.
+    Found 1-bit register for signal <slv_reg8<21>>.
+    Found 1-bit register for signal <slv_reg8<22>>.
+    Found 1-bit register for signal <slv_reg8<23>>.
+    Found 1-bit register for signal <slv_reg8<24>>.
+    Found 1-bit register for signal <slv_reg8<25>>.
+    Found 1-bit register for signal <slv_reg8<26>>.
+    Found 1-bit register for signal <slv_reg8<27>>.
+    Found 1-bit register for signal <slv_reg8<28>>.
+    Found 1-bit register for signal <slv_reg8<29>>.
+    Found 1-bit register for signal <slv_reg8<30>>.
+    Found 1-bit register for signal <slv_reg8<31>>.
+    Found 1-bit register for signal <slv_reg9<0>>.
+    Found 1-bit register for signal <slv_reg9<1>>.
+    Found 1-bit register for signal <slv_reg9<2>>.
+    Found 1-bit register for signal <slv_reg9<3>>.
+    Found 1-bit register for signal <slv_reg9<4>>.
+    Found 1-bit register for signal <slv_reg9<5>>.
+    Found 1-bit register for signal <slv_reg9<6>>.
+    Found 1-bit register for signal <slv_reg9<7>>.
+    Found 1-bit register for signal <slv_reg9<8>>.
+    Found 1-bit register for signal <slv_reg9<9>>.
+    Found 1-bit register for signal <slv_reg9<10>>.
+    Found 1-bit register for signal <slv_reg9<11>>.
+    Found 1-bit register for signal <slv_reg9<12>>.
+    Found 1-bit register for signal <slv_reg9<13>>.
+    Found 1-bit register for signal <slv_reg9<14>>.
+    Found 1-bit register for signal <slv_reg9<15>>.
+    Found 1-bit register for signal <slv_reg9<16>>.
+    Found 1-bit register for signal <slv_reg9<17>>.
+    Found 1-bit register for signal <slv_reg9<18>>.
+    Found 1-bit register for signal <slv_reg9<19>>.
+    Found 1-bit register for signal <slv_reg9<20>>.
+    Found 1-bit register for signal <slv_reg9<21>>.
+    Found 1-bit register for signal <slv_reg9<22>>.
+    Found 1-bit register for signal <slv_reg9<23>>.
+    Found 1-bit register for signal <slv_reg9<24>>.
+    Found 1-bit register for signal <slv_reg9<25>>.
+    Found 1-bit register for signal <slv_reg9<26>>.
+    Found 1-bit register for signal <slv_reg9<27>>.
+    Found 1-bit register for signal <slv_reg9<28>>.
+    Found 1-bit register for signal <slv_reg9<29>>.
+    Found 1-bit register for signal <slv_reg9<30>>.
+    Found 1-bit register for signal <slv_reg9<31>>.
+    Found 1-bit register for signal <slv_reg10<0>>.
+    Found 1-bit register for signal <slv_reg10<1>>.
+    Found 1-bit register for signal <slv_reg10<2>>.
+    Found 1-bit register for signal <slv_reg10<3>>.
+    Found 1-bit register for signal <slv_reg10<4>>.
+    Found 1-bit register for signal <slv_reg10<5>>.
+    Found 1-bit register for signal <slv_reg10<6>>.
+    Found 1-bit register for signal <slv_reg10<7>>.
+    Found 1-bit register for signal <slv_reg10<8>>.
+    Found 1-bit register for signal <slv_reg10<9>>.
+    Found 1-bit register for signal <slv_reg10<10>>.
+    Found 1-bit register for signal <slv_reg10<11>>.
+    Found 1-bit register for signal <slv_reg10<12>>.
+    Found 1-bit register for signal <slv_reg10<13>>.
+    Found 1-bit register for signal <slv_reg10<14>>.
+    Found 1-bit register for signal <slv_reg10<15>>.
+    Found 1-bit register for signal <slv_reg10<16>>.
+    Found 1-bit register for signal <slv_reg10<17>>.
+    Found 1-bit register for signal <slv_reg10<18>>.
+    Found 1-bit register for signal <slv_reg10<19>>.
+    Found 1-bit register for signal <slv_reg10<20>>.
+    Found 1-bit register for signal <slv_reg10<21>>.
+    Found 1-bit register for signal <slv_reg10<22>>.
+    Found 1-bit register for signal <slv_reg10<23>>.
+    Found 1-bit register for signal <slv_reg10<24>>.
+    Found 1-bit register for signal <slv_reg10<25>>.
+    Found 1-bit register for signal <slv_reg10<26>>.
+    Found 1-bit register for signal <slv_reg10<27>>.
+    Found 1-bit register for signal <slv_reg10<28>>.
+    Found 1-bit register for signal <slv_reg10<29>>.
+    Found 1-bit register for signal <slv_reg10<30>>.
+    Found 1-bit register for signal <slv_reg10<31>>.
+    Found 1-bit register for signal <slv_reg11<0>>.
+    Found 1-bit register for signal <slv_reg11<1>>.
+    Found 1-bit register for signal <slv_reg11<2>>.
+    Found 1-bit register for signal <slv_reg11<3>>.
+    Found 1-bit register for signal <slv_reg11<4>>.
+    Found 1-bit register for signal <slv_reg11<5>>.
+    Found 1-bit register for signal <slv_reg11<6>>.
+    Found 1-bit register for signal <slv_reg11<7>>.
+    Found 1-bit register for signal <slv_reg11<8>>.
+    Found 1-bit register for signal <slv_reg11<9>>.
+    Found 1-bit register for signal <slv_reg11<10>>.
+    Found 1-bit register for signal <slv_reg11<11>>.
+    Found 1-bit register for signal <slv_reg11<12>>.
+    Found 1-bit register for signal <slv_reg11<13>>.
+    Found 1-bit register for signal <slv_reg11<14>>.
+    Found 1-bit register for signal <slv_reg11<15>>.
+    Found 1-bit register for signal <slv_reg11<16>>.
+    Found 1-bit register for signal <slv_reg11<17>>.
+    Found 1-bit register for signal <slv_reg11<18>>.
+    Found 1-bit register for signal <slv_reg11<19>>.
+    Found 1-bit register for signal <slv_reg11<20>>.
+    Found 1-bit register for signal <slv_reg11<21>>.
+    Found 1-bit register for signal <slv_reg11<22>>.
+    Found 1-bit register for signal <slv_reg11<23>>.
+    Found 1-bit register for signal <slv_reg11<24>>.
+    Found 1-bit register for signal <slv_reg11<25>>.
+    Found 1-bit register for signal <slv_reg11<26>>.
+    Found 1-bit register for signal <slv_reg11<27>>.
+    Found 1-bit register for signal <slv_reg11<28>>.
+    Found 1-bit register for signal <slv_reg11<29>>.
+    Found 1-bit register for signal <slv_reg11<30>>.
+    Found 1-bit register for signal <slv_reg11<31>>.
+    Found 1-bit register for signal <slv_reg12<0>>.
+    Found 1-bit register for signal <slv_reg12<1>>.
+    Found 1-bit register for signal <slv_reg12<2>>.
+    Found 1-bit register for signal <slv_reg12<3>>.
+    Found 1-bit register for signal <slv_reg12<4>>.
+    Found 1-bit register for signal <slv_reg12<5>>.
+    Found 1-bit register for signal <slv_reg12<6>>.
+    Found 1-bit register for signal <slv_reg12<7>>.
+    Found 1-bit register for signal <slv_reg12<8>>.
+    Found 1-bit register for signal <slv_reg12<9>>.
+    Found 1-bit register for signal <slv_reg12<10>>.
+    Found 1-bit register for signal <slv_reg12<11>>.
+    Found 1-bit register for signal <slv_reg12<12>>.
+    Found 1-bit register for signal <slv_reg12<13>>.
+    Found 1-bit register for signal <slv_reg12<14>>.
+    Found 1-bit register for signal <slv_reg12<15>>.
+    Found 1-bit register for signal <slv_reg12<16>>.
+    Found 1-bit register for signal <slv_reg12<17>>.
+    Found 1-bit register for signal <slv_reg12<18>>.
+    Found 1-bit register for signal <slv_reg12<19>>.
+    Found 1-bit register for signal <slv_reg12<20>>.
+    Found 1-bit register for signal <slv_reg12<21>>.
+    Found 1-bit register for signal <slv_reg12<22>>.
+    Found 1-bit register for signal <slv_reg12<23>>.
+    Found 1-bit register for signal <slv_reg12<24>>.
+    Found 1-bit register for signal <slv_reg12<25>>.
+    Found 1-bit register for signal <slv_reg12<26>>.
+    Found 1-bit register for signal <slv_reg12<27>>.
+    Found 1-bit register for signal <slv_reg12<28>>.
+    Found 1-bit register for signal <slv_reg12<29>>.
+    Found 1-bit register for signal <slv_reg12<30>>.
+    Found 1-bit register for signal <slv_reg12<31>>.
+    Found 1-bit register for signal <slv_reg13<0>>.
+    Found 1-bit register for signal <slv_reg13<1>>.
+    Found 1-bit register for signal <slv_reg13<2>>.
+    Found 1-bit register for signal <slv_reg13<3>>.
+    Found 1-bit register for signal <slv_reg13<4>>.
+    Found 1-bit register for signal <slv_reg13<5>>.
+    Found 1-bit register for signal <slv_reg13<6>>.
+    Found 1-bit register for signal <slv_reg13<7>>.
+    Found 1-bit register for signal <slv_reg13<8>>.
+    Found 1-bit register for signal <slv_reg13<9>>.
+    Found 1-bit register for signal <slv_reg13<10>>.
+    Found 1-bit register for signal <slv_reg13<11>>.
+    Found 1-bit register for signal <slv_reg13<12>>.
+    Found 1-bit register for signal <slv_reg13<13>>.
+    Found 1-bit register for signal <slv_reg13<14>>.
+    Found 1-bit register for signal <slv_reg13<15>>.
+    Found 1-bit register for signal <slv_reg13<16>>.
+    Found 1-bit register for signal <slv_reg13<17>>.
+    Found 1-bit register for signal <slv_reg13<18>>.
+    Found 1-bit register for signal <slv_reg13<19>>.
+    Found 1-bit register for signal <slv_reg13<20>>.
+    Found 1-bit register for signal <slv_reg13<21>>.
+    Found 1-bit register for signal <slv_reg13<22>>.
+    Found 1-bit register for signal <slv_reg13<23>>.
+    Found 1-bit register for signal <slv_reg13<24>>.
+    Found 1-bit register for signal <slv_reg13<25>>.
+    Found 1-bit register for signal <slv_reg13<26>>.
+    Found 1-bit register for signal <slv_reg13<27>>.
+    Found 1-bit register for signal <slv_reg13<28>>.
+    Found 1-bit register for signal <slv_reg13<29>>.
+    Found 1-bit register for signal <slv_reg13<30>>.
+    Found 1-bit register for signal <slv_reg13<31>>.
+    Found 1-bit register for signal <slv_reg14<0>>.
+    Found 1-bit register for signal <slv_reg14<1>>.
+    Found 1-bit register for signal <slv_reg14<2>>.
+    Found 1-bit register for signal <slv_reg14<3>>.
+    Found 1-bit register for signal <slv_reg14<4>>.
+    Found 1-bit register for signal <slv_reg14<5>>.
+    Found 1-bit register for signal <slv_reg14<6>>.
+    Found 1-bit register for signal <slv_reg14<7>>.
+    Found 1-bit register for signal <slv_reg14<8>>.
+    Found 1-bit register for signal <slv_reg14<9>>.
+    Found 1-bit register for signal <slv_reg14<10>>.
+    Found 1-bit register for signal <slv_reg14<11>>.
+    Found 1-bit register for signal <slv_reg14<12>>.
+    Found 1-bit register for signal <slv_reg14<13>>.
+    Found 1-bit register for signal <slv_reg14<14>>.
+    Found 1-bit register for signal <slv_reg14<15>>.
+    Found 1-bit register for signal <slv_reg14<16>>.
+    Found 1-bit register for signal <slv_reg14<17>>.
+    Found 1-bit register for signal <slv_reg14<18>>.
+    Found 1-bit register for signal <slv_reg14<19>>.
+    Found 1-bit register for signal <slv_reg14<20>>.
+    Found 1-bit register for signal <slv_reg14<21>>.
+    Found 1-bit register for signal <slv_reg14<22>>.
+    Found 1-bit register for signal <slv_reg14<23>>.
+    Found 1-bit register for signal <slv_reg14<24>>.
+    Found 1-bit register for signal <slv_reg14<25>>.
+    Found 1-bit register for signal <slv_reg14<26>>.
+    Found 1-bit register for signal <slv_reg14<27>>.
+    Found 1-bit register for signal <slv_reg14<28>>.
+    Found 1-bit register for signal <slv_reg14<29>>.
+    Found 1-bit register for signal <slv_reg14<30>>.
+    Found 1-bit register for signal <slv_reg14<31>>.
+    Found 1-bit register for signal <slv_reg15<0>>.
+    Found 1-bit register for signal <slv_reg15<1>>.
+    Found 1-bit register for signal <slv_reg15<2>>.
+    Found 1-bit register for signal <slv_reg15<3>>.
+    Found 1-bit register for signal <slv_reg15<4>>.
+    Found 1-bit register for signal <slv_reg15<5>>.
+    Found 1-bit register for signal <slv_reg15<6>>.
+    Found 1-bit register for signal <slv_reg15<7>>.
+    Found 1-bit register for signal <slv_reg15<8>>.
+    Found 1-bit register for signal <slv_reg15<9>>.
+    Found 1-bit register for signal <slv_reg15<10>>.
+    Found 1-bit register for signal <slv_reg15<11>>.
+    Found 1-bit register for signal <slv_reg15<12>>.
+    Found 1-bit register for signal <slv_reg15<13>>.
+    Found 1-bit register for signal <slv_reg15<14>>.
+    Found 1-bit register for signal <slv_reg15<15>>.
+    Found 1-bit register for signal <slv_reg15<16>>.
+    Found 1-bit register for signal <slv_reg15<17>>.
+    Found 1-bit register for signal <slv_reg15<18>>.
+    Found 1-bit register for signal <slv_reg15<19>>.
+    Found 1-bit register for signal <slv_reg15<20>>.
+    Found 1-bit register for signal <slv_reg15<21>>.
+    Found 1-bit register for signal <slv_reg15<22>>.
+    Found 1-bit register for signal <slv_reg15<23>>.
+    Found 1-bit register for signal <slv_reg15<24>>.
+    Found 1-bit register for signal <slv_reg15<25>>.
+    Found 1-bit register for signal <slv_reg15<26>>.
+    Found 1-bit register for signal <slv_reg15<27>>.
+    Found 1-bit register for signal <slv_reg15<28>>.
+    Found 1-bit register for signal <slv_reg15<29>>.
+    Found 1-bit register for signal <slv_reg15<30>>.
+    Found 1-bit register for signal <slv_reg15<31>>.
+    Found 2-bit register for signal <mem_read_prev>.
+    Summary:
+	inferred 514 D-type flip-flop(s).
+	inferred 530 Multiplexer(s).
+Unit <user_logic> synthesized.
+
+Synthesizing Unit <spiifc>.
+    Related source file is "c:/users/mjlyons/workspace/vspi/src/spi_base/spiifc.v".
+        AddrBits = 12
+    Found 1-bit register for signal <ssFastToggleReg>.
+    Found 1-bit register for signal <ssSlowToggle>.
+    Found 8-bit register for signal <rcByteReg>.
+    Found 1-bit register for signal <rcStarted>.
+    Found 3-bit register for signal <rcBitIndexReg>.
+    Found 8-bit register for signal <debug_reg>.
+    Found 8-bit register for signal <stateReg>.
+    Found 12-bit register for signal <rcMemAddrReg>.
+    Found 12-bit register for signal <txMemAddrReg>.
+    Found 3-bit register for signal <txBitAddr>.
+    Found 12-bit register for signal <rcMemAddrNext>.
+    Found 8-bit register for signal <rcMemDataReg>.
+    Found 1-bit register for signal <rcMemWEReg>.
+    Found 1-bit register for signal <ssPrev>.
+    Found 3-bit subtractor for signal <rcBitIndex[2]_GND_3_o_sub_17_OUT> created at line 184.
+    Found 12-bit adder for signal <txMemAddr[11]_GND_3_o_add_19_OUT> created at line 190.
+    Found 12-bit adder for signal <rcMemAddr[11]_GND_3_o_add_43_OUT> created at line 218.
+    Found 3-bit subtractor for signal <GND_3_o_GND_3_o_sub_22_OUT<2:0>> created at line 192.
+    Found 1-bit 8-to-1 multiplexer for signal <SPI_MISO> created at line 125.
+    Summary:
+	inferred   4 Adder/Subtractor(s).
+	inferred  79 D-type flip-flop(s).
+	inferred  28 Multiplexer(s).
+Unit <spiifc> synthesized.
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Adders/Subtractors                                   : 4
+ 12-bit adder                                          : 2
+ 3-bit subtractor                                      : 2
+# Registers                                            : 31
+ 1-bit register                                        : 5
+ 12-bit register                                       : 3
+ 2-bit register                                        : 1
+ 3-bit register                                        : 2
+ 32-bit register                                       : 16
+ 8-bit register                                        : 4
+# Multiplexers                                         : 558
+ 1-bit 2-to-1 multiplexer                              : 521
+ 1-bit 8-to-1 multiplexer                              : 1
+ 12-bit 2-to-1 multiplexer                             : 6
+ 3-bit 2-to-1 multiplexer                              : 7
+ 32-bit 2-to-1 multiplexer                             : 19
+ 8-bit 2-to-1 multiplexer                              : 4
+# Xors                                                 : 1
+ 1-bit xor2                                            : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Reading core <ipcore_dir/buffermem.ngc>.
+Loading core <buffermem> for timing and area information for instance <mosiMem>.
+Loading core <buffermem> for timing and area information for instance <misoMem>.
+WARNING:Xst:2677 - Node <rcByteReg_0> of sequential type is unconnected in block <spiifc>.
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# Adders/Subtractors                                   : 4
+ 12-bit adder                                          : 2
+ 3-bit subtractor                                      : 2
+# Registers                                            : 592
+ Flip-Flops                                            : 592
+# Multiplexers                                         : 557
+ 1-bit 2-to-1 multiplexer                              : 520
+ 1-bit 8-to-1 multiplexer                              : 1
+ 12-bit 2-to-1 multiplexer                             : 6
+ 3-bit 2-to-1 multiplexer                              : 7
+ 32-bit 2-to-1 multiplexer                             : 19
+ 8-bit 2-to-1 multiplexer                              : 4
+# Xors                                                 : 1
+ 1-bit xor2                                            : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+
+Optimizing unit <user_logic> ...
+
+Optimizing unit <spiifc> ...
+WARNING:Xst:1710 - FF/Latch <stateReg_2> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_3> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_4> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_5> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_6> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_7> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <stateReg_2> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_3> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_4> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_5> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_6> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <stateReg_7> (without init value) has a constant value of 0 in block <spiifc>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2677 - Node <spi/debug_reg_7> of sequential type is unconnected in block <user_logic>.
+WARNING:Xst:2677 - Node <spi/debug_reg_6> of sequential type is unconnected in block <user_logic>.
+WARNING:Xst:2677 - Node <spi/debug_reg_5> of sequential type is unconnected in block <user_logic>.
+WARNING:Xst:2677 - Node <spi/debug_reg_4> of sequential type is unconnected in block <user_logic>.
+WARNING:Xst:2677 - Node <spi/debug_reg_3> of sequential type is unconnected in block <user_logic>.
+WARNING:Xst:2677 - Node <spi/debug_reg_2> of sequential type is unconnected in block <user_logic>.
+WARNING:Xst:2677 - Node <spi/debug_reg_1> of sequential type is unconnected in block <user_logic>.
+WARNING:Xst:2677 - Node <spi/debug_reg_0> of sequential type is unconnected in block <user_logic>.
+
+Mapping all equations...
+Building and optimizing final netlist ...
+PACKER Warning: Lut spi/Mmux_n010431 is driving XOR and other loads hence can not be packed with the XOR/Carry. This would result in an extra LUT for a feedthrough.
+Found area constraint ratio of 100 (+ 5) on block user_logic, actual ratio is 5.
+FlipFlop spi/rcByteReg_1 has been replicated 1 time(s)
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 579
+ Flip-Flops                                            : 579
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Design Summary                             *
+=========================================================================
+
+Top Level Output File Name         : user_logic.ngc
+
+Primitive and Black Box Usage:
+------------------------------
+# BELS                             : 1131
+#      GND                         : 3
+#      INV                         : 3
+#      LUT1                        : 10
+#      LUT2                        : 21
+#      LUT3                        : 12
+#      LUT4                        : 530
+#      LUT5                        : 122
+#      LUT6                        : 382
+#      MUXCY                       : 22
+#      MUXF7                       : 1
+#      VCC                         : 1
+#      XORCY                       : 24
+# FlipFlops/Latches                : 579
+#      FD                          : 16
+#      FDE                         : 37
+#      FDR                         : 515
+#      FDRE                        : 8
+#      FDSE                        : 3
+# RAMS                             : 4
+#      RAMB16BWER                  : 4
+# Clock Buffers                    : 2
+#      BUFGP                       : 2
+# IO Buffers                       : 123
+#      IBUF                        : 86
+#      OBUF                        : 37
+PACKER Warning: Lut spi/Mmux_n010431 is driving XOR and other loads hence can not be packed with the XOR/Carry. This would result in an extra LUT for a feedthrough.
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 6slx45csg324-2 
+
+
+Slice Logic Utilization: 
+ Number of Slice Registers:             579  out of  54576     1%  
+ Number of Slice LUTs:                 1080  out of  27288     3%  
+    Number used as Logic:              1080  out of  27288     3%  
+
+Slice Logic Distribution: 
+ Number of LUT Flip Flop pairs used:   1097
+   Number with an unused Flip Flop:     518  out of   1097    47%  
+   Number with an unused LUT:            17  out of   1097     1%  
+   Number of fully used LUT-FF pairs:   562  out of   1097    51%  
+   Number of unique control sets:         9
+
+IO Utilization: 
+ Number of IOs:                         158
+ Number of bonded IOBs:                 125  out of    218    57%  
+
+Specific Feature Utilization:
+ Number of Block RAM/FIFO:                4  out of    116     3%  
+    Number using Block RAM only:          4
+ Number of BUFG/BUFGCTRLs:                2  out of     16    12%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+Timing Report
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+Bus2IP_Clk                         | BUFGP                  | 520   |
+SPI_CLK                            | BUFGP                  | 63    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -2
+
+   Minimum period: 6.130ns (Maximum Frequency: 163.132MHz)
+   Minimum input arrival time before clock: 9.060ns
+   Maximum output required time after clock: 8.612ns
+   Maximum combinational path delay: 15.761ns
+
+Timing Details:
+---------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'Bus2IP_Clk'
+  Clock period: 5.714ns (frequency: 175.009MHz)
+  Total number of paths / destination ports: 562 / 537
+-------------------------------------------------------------------------
+Delay:               5.714ns (Levels of Logic = 4)
+  Source:            spi/ssPrev (FF)
+  Destination:       misoMem/U0/xst_blk_mem_generator/gnativebmg.native_blk_mem_gen/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/TRUE_DP.PRIM18.ram (RAM)
+  Source Clock:      Bus2IP_Clk rising
+  Destination Clock: Bus2IP_Clk rising
+
+  Data Path: spi/ssPrev to misoMem/U0/xst_blk_mem_generator/gnativebmg.native_blk_mem_gen/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/TRUE_DP.PRIM18.ram
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FD:C->Q               8   0.525   1.052  spi/ssPrev (spi/ssPrev)
+     LUT3:I1->O            9   0.250   1.204  spi/Mmux_ssFastToggle11 (spi/ssFastToggle)
+     LUT6:I3->O           12   0.235   1.069  spi/txMemAddrReset1 (spi/txMemAddrReset)
+     LUT2:I1->O            2   0.254   0.725  spi/Mmux_n010413 (misoMem_addra<11>)
+     begin scope: 'misoMem:addra<0>'
+     RAMB16BWER:ADDRA2         0.400          U0/xst_blk_mem_generator/gnativebmg.native_blk_mem_gen/valid.cstr/ramloop[0].ram.r/s6_noinit.ram/TRUE_DP.PRIM18.ram
+    ----------------------------------------
+    Total                      5.714ns (1.664ns logic, 4.050ns route)
+                                       (29.1% logic, 70.9% route)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'SPI_CLK'
+  Clock period: 6.130ns (frequency: 163.132MHz)
+  Total number of paths / destination ports: 2786 / 84
+-------------------------------------------------------------------------
+Delay:               6.130ns (Levels of Logic = 3)
+  Source:            spi/ssSlowToggle (FF)
+  Destination:       spi/txMemAddrReg_11 (FF)
+  Source Clock:      SPI_CLK rising
+  Destination Clock: SPI_CLK rising
+
+  Data Path: spi/ssSlowToggle to spi/txMemAddrReg_11
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FD:C->Q              14   0.525   1.127  spi/ssSlowToggle (spi/ssSlowToggle)
+     LUT5:I4->O            6   0.254   1.104  spi/Mmux_state21 (spi/state<1>)
+     LUT6:I3->O           19   0.235   1.261  spi/Mmux_state[7]_state[7]_mux_55_OUT111 (spi/Mmux_state[7]_state[7]_mux_55_OUT11)
+     LUT6:I5->O           12   0.254   1.068  spi/_n0491_inv1 (spi/_n0491_inv)
+     FDE:CE                    0.302          spi/txMemAddrReg_0
+    ----------------------------------------
+    Total                      6.130ns (1.570ns logic, 4.560ns route)
+                                       (25.6% logic, 74.4% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'Bus2IP_Clk'
+  Total number of paths / destination ports: 9953 / 1179
+-------------------------------------------------------------------------
+Offset:              9.060ns (Levels of Logic = 6)
+  Source:            Bus2IP_WrCE<10> (PAD)
+  Destination:       slv_reg5_31 (FF)
+  Destination Clock: Bus2IP_Clk rising
+
+  Data Path: Bus2IP_WrCE<10> to slv_reg5_31
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            68   1.328   2.391  Bus2IP_WrCE_10_IBUF (Bus2IP_WrCE_10_IBUF)
+     LUT6:I1->O            3   0.254   0.766  slv_reg_write_sel[0]_GND_1_o_equal_80_o<0>11 (slv_reg_write_sel[0]_GND_1_o_equal_80_o<0>1)
+     LUT4:I3->O            5   0.254   0.841  slv_reg_write_sel[0]_GND_1_o_equal_80_o<0>211 (slv_reg_write_sel[0]_GND_1_o_equal_80_o<0>21)
+     LUT5:I4->O            3   0.254   0.766  slv_reg_write_sel[0]_GND_1_o_equal_84_o<0>11 (slv_reg_write_sel[0]_GND_1_o_equal_84_o<0>1)
+     LUT4:I3->O           32   0.254   1.628  slv_reg_write_sel[0]_GND_1_o_equal_84_o<0>2 (slv_reg_write_sel[0]_GND_1_o_equal_84_o)
+     LUT4:I2->O            1   0.250   0.000  Mmux__n2030161 (_n2030<23>)
+     FDR:D                     0.074          slv_reg5_23
+    ----------------------------------------
+    Total                      9.060ns (2.668ns logic, 6.392ns route)
+                                       (29.4% logic, 70.6% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'SPI_CLK'
+  Total number of paths / destination ports: 629 / 103
+-------------------------------------------------------------------------
+Offset:              8.484ns (Levels of Logic = 5)
+  Source:            SPI_SS (PAD)
+  Destination:       spi/txMemAddrReg_11 (FF)
+  Destination Clock: SPI_CLK rising
+
+  Data Path: SPI_SS to spi/txMemAddrReg_11
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            11   1.328   1.267  SPI_SS_IBUF (SPI_SS_IBUF)
+     LUT3:I0->O            9   0.235   1.431  spi/Mmux_ssFastToggle11 (spi/ssFastToggle)
+     LUT6:I0->O            2   0.254   0.834  spi/rcByteValid1_1 (spi/rcByteValid1)
+     LUT6:I4->O           19   0.250   1.261  spi/Mmux_state[7]_state[7]_mux_55_OUT111 (spi/Mmux_state[7]_state[7]_mux_55_OUT11)
+     LUT6:I5->O           12   0.254   1.068  spi/_n0491_inv1 (spi/_n0491_inv)
+     FDE:CE                    0.302          spi/txMemAddrReg_0
+    ----------------------------------------
+    Total                      8.484ns (2.623ns logic, 5.861ns route)
+                                       (30.9% logic, 69.1% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'Bus2IP_Clk'
+  Total number of paths / destination ports: 650 / 34
+-------------------------------------------------------------------------
+Offset:              8.612ns (Levels of Logic = 5)
+  Source:            slv_reg4_0 (FF)
+  Destination:       IP2Bus_Data<0> (PAD)
+  Source Clock:      Bus2IP_Clk rising
+
+  Data Path: slv_reg4_0 to IP2Bus_Data<0>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDR:C->Q              2   0.525   1.156  slv_reg4_0 (slv_reg4_0)
+     LUT5:I0->O            1   0.254   0.682  Mmux_IP2Bus_Data110 (Mmux_IP2Bus_Data1)
+     LUT6:I5->O            1   0.254   0.682  Mmux_IP2Bus_Data112 (Mmux_IP2Bus_Data12)
+     LUT6:I5->O            1   0.254   0.958  Mmux_IP2Bus_Data116 (Mmux_IP2Bus_Data16)
+     LUT6:I2->O            1   0.254   0.681  Mmux_IP2Bus_Data121 (IP2Bus_Data_0_OBUF)
+     OBUF:I->O                 2.912          IP2Bus_Data_0_OBUF (IP2Bus_Data<0>)
+    ----------------------------------------
+    Total                      8.612ns (4.453ns logic, 4.159ns route)
+                                       (51.7% logic, 48.3% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'SPI_CLK'
+  Total number of paths / destination ports: 5 / 1
+-------------------------------------------------------------------------
+Offset:              5.953ns (Levels of Logic = 3)
+  Source:            spi/txBitAddr_0 (FF)
+  Destination:       SPI_MISO (PAD)
+  Source Clock:      SPI_CLK rising
+
+  Data Path: spi/txBitAddr_0 to SPI_MISO
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q              9   0.525   1.406  spi/txBitAddr_0 (spi/txBitAddr_0)
+     LUT6:I1->O            1   0.254   0.000  spi/Mmux_SPI_MISO_3 (spi/Mmux_SPI_MISO_3)
+     MUXF7:I1->O           1   0.175   0.681  spi/Mmux_SPI_MISO_2_f7 (SPI_MISO_OBUF)
+     OBUF:I->O                 2.912          SPI_MISO_OBUF (SPI_MISO)
+    ----------------------------------------
+    Total                      5.953ns (3.866ns logic, 2.087ns route)
+                                       (64.9% logic, 35.1% route)
+
+=========================================================================
+Timing constraint: Default path analysis
+  Total number of paths / destination ports: 4656 / 35
+-------------------------------------------------------------------------
+Delay:               15.761ns (Levels of Logic = 8)
+  Source:            Bus2IP_RdCE<5> (PAD)
+  Destination:       IP2Bus_Data<0> (PAD)
+
+  Data Path: Bus2IP_RdCE<5> to IP2Bus_Data<0>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            99   1.328   2.429  Bus2IP_RdCE_5_IBUF (Bus2IP_RdCE_5_IBUF)
+     LUT4:I1->O           33   0.235   1.537  slv_reg_read_sel[0]_GND_1_o_equal_129_o<0>21 (slv_reg_read_sel[0]_GND_1_o_equal_129_o<0>2)
+     LUT5:I4->O           35   0.254   1.846  slv_reg_read_sel[0]_GND_1_o_equal_136_o<0>11 (slv_reg_read_sel[0]_GND_1_o_equal_136_o<0>1)
+     LUT4:I0->O           32   0.254   1.950  slv_reg_read_sel[0]_GND_1_o_equal_140_o<0>11 (slv_reg_read_sel[0]_GND_1_o_equal_140_o<0>1)
+     LUT5:I0->O            1   0.254   0.682  Mmux_IP2Bus_Data119 (Mmux_IP2Bus_Data19)
+     LUT6:I5->O            1   0.254   0.910  Mmux_IP2Bus_Data120 (Mmux_IP2Bus_Data110)
+     LUT6:I3->O            1   0.235   0.681  Mmux_IP2Bus_Data121 (IP2Bus_Data_0_OBUF)
+     OBUF:I->O                 2.912          IP2Bus_Data_0_OBUF (IP2Bus_Data<0>)
+    ----------------------------------------
+    Total                     15.761ns (5.726ns logic, 10.035ns route)
+                                       (36.3% logic, 63.7% route)
+
+=========================================================================
+
+Cross Clock Domains Report:
+--------------------------
+
+Clock to Setup on destination clock Bus2IP_Clk
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+Bus2IP_Clk     |    5.714|         |         |         |
+SPI_CLK        |    5.667|         |         |         |
+---------------+---------+---------+---------+---------+
+
+Clock to Setup on destination clock SPI_CLK
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+Bus2IP_Clk     |    7.481|         |         |         |
+SPI_CLK        |    6.130|         |         |         |
+---------------+---------+---------+---------+---------+
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 24.00 secs
+Total CPU time to Xst completion: 23.64 secs
+ 
+--> 
+
+Total memory usage is 255080 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :   37 (   0 filtered)
+Number of infos    :    2 (   0 filtered)
+

@@ -50,7 +50,7 @@ all: demo.elf secondary-outputs
 demo.elf: $(OBJS)  $(USER_OBJS)
 	@echo Building target: $@
 	@echo Invoking: MicroBlaze g++ linker
-	mb-g++ -L../../demobsp/microblaze_0/lib -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.a -mno-xl-soft-mul -o"demo.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	mb-g++ -L../../standalone_bsp_0/microblaze_0/lib -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.a -mno-xl-soft-mul -o"demo.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo Finished building target: $@
 	@echo ' '
 

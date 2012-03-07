@@ -20,6 +20,10 @@
  PORT fpga_0_Push_Buttons_5Bits_GPIO_IO_I_pin = fpga_0_Push_Buttons_5Bits_GPIO_IO_I_pin, DIR = I, VEC = [0:4]
  PORT fpga_0_clk_1_sys_clk_pin = CLK_S, DIR = I, SIGIS = CLK, CLK_FREQ = 100000000
  PORT fpga_0_rst_1_sys_rst_pin = sys_rst_s, DIR = I, SIGIS = RST, RST_POLARITY = 0
+ PORT spiifc_0_SPI_CLK_pin = spiifc_0_SPI_CLK, DIR = I, SIGIS = CLK, CLK_FREQ = 50000000
+ PORT spiifc_0_SPI_MISO_pin = spiifc_0_SPI_MISO, DIR = O
+ PORT spiifc_0_SPI_MOSI_pin = spiifc_0_SPI_MOSI, DIR = I
+ PORT spiifc_0_SPI_SS_pin = spiifc_0_SPI_SS, DIR = I
 
 
 BEGIN microblaze
@@ -170,6 +174,10 @@ BEGIN spiifc
  PARAMETER C_MEM1_BASEADDR = 0x85011000
  PARAMETER C_MEM1_HIGHADDR = 0x85011FFF
  BUS_INTERFACE SPLB = mb_plb
+ PORT SPI_CLK = spiifc_0_SPI_CLK
+ PORT SPI_MOSI = spiifc_0_SPI_MOSI
+ PORT SPI_MISO = spiifc_0_SPI_MISO
+ PORT SPI_SS = spiifc_0_SPI_SS
 END
 
 BEGIN xps_central_dma

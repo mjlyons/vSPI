@@ -32,7 +32,7 @@
 								<option id="xilinx.gnu.mb.compiler.inferred.usepcmp.2025998320" superClass="xilinx.gnu.mb.compiler.inferred.usepcmp" value="true" valueType="boolean"/>
 								<option id="xilinx.gnu.mb.compiler.inferred.mul.759631855" superClass="xilinx.gnu.mb.compiler.inferred.mul" value="xilinx.gnu.mb.compiler.inferred.mul.32bit" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.inferred.swplatform.includes.8831996" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../demobsp/microblaze_0/include"/>
+									<listOptionValue builtIn="false" value="../../standalone_bsp_0/microblaze_0/include"/>
 								</option>
 								<inputType id="xilinx.gnu.compiler.input.347712346" name="C source files" superClass="xilinx.gnu.compiler.input"/>
 							</tool>
@@ -44,7 +44,7 @@
 								<option id="xilinx.gnu.mb.compiler.inferred.usepcmp.1786658605" superClass="xilinx.gnu.mb.compiler.inferred.usepcmp" value="true" valueType="boolean"/>
 								<option id="xilinx.gnu.mb.compiler.inferred.mul.1923590513" superClass="xilinx.gnu.mb.compiler.inferred.mul" value="xilinx.gnu.mb.compiler.inferred.mul.32bit" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.inferred.swplatform.includes.807993403" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../demobsp/microblaze_0/include"/>
+									<listOptionValue builtIn="false" value="../../standalone_bsp_0/microblaze_0/include"/>
 								</option>
 								<inputType id="xilinx.gnu.mb.cxx.compiler.input.648873885" name="C++ source files" superClass="xilinx.gnu.mb.cxx.compiler.input"/>
 							</tool>
@@ -55,7 +55,7 @@
 								<option id="xilinx.gnu.mb.linker.inferred.usepcmp.1889097504" superClass="xilinx.gnu.mb.linker.inferred.usepcmp" value="true" valueType="boolean"/>
 								<option id="xilinx.gnu.mb.linker.inferred.mul.1038478631" superClass="xilinx.gnu.mb.linker.inferred.mul" value="xilinx.gnu.mb.linker.inferred.mul.32bit" valueType="enumerated"/>
 								<option id="xilinx.gnu.linker.inferred.swplatform.lpath.1046693538" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../demobsp/microblaze_0/lib"/>
+									<listOptionValue builtIn="false" value="../../standalone_bsp_0/microblaze_0/lib"/>
 								</option>
 								<inputType id="xilinx.gnu.linker.input.59786092" superClass="xilinx.gnu.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -69,7 +69,7 @@
 								<option id="xilinx.gnu.mb.linker.inferred.usepcmp.683225781" superClass="xilinx.gnu.mb.linker.inferred.usepcmp" value="true" valueType="boolean"/>
 								<option id="xilinx.gnu.mb.linker.inferred.mul.1665375810" superClass="xilinx.gnu.mb.linker.inferred.mul" value="xilinx.gnu.mb.linker.inferred.mul.32bit" valueType="enumerated"/>
 								<option id="xilinx.gnu.linker.inferred.swplatform.lpath.648441665" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../demobsp/microblaze_0/lib"/>
+									<listOptionValue builtIn="false" value="../../standalone_bsp_0/microblaze_0/lib"/>
 								</option>
 								<inputType id="xilinx.gnu.linker.input.308356398" superClass="xilinx.gnu.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -702,6 +702,9 @@
 				</scannerConfigBuildInfo>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+			<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 		</cconfiguration>
 		<cconfiguration id="xilinx.gnu.mb.exe.release.1874379234">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="xilinx.gnu.mb.exe.release.1874379234" moduleId="org.eclipse.cdt.core.settings" name="Release">
@@ -732,7 +735,7 @@
 								<option id="xilinx.gnu.mb.compiler.inferred.usepcmp.2117022726" superClass="xilinx.gnu.mb.compiler.inferred.usepcmp" value="true" valueType="boolean"/>
 								<option id="xilinx.gnu.mb.compiler.inferred.mul.1935521183" superClass="xilinx.gnu.mb.compiler.inferred.mul" value="xilinx.gnu.mb.compiler.inferred.mul.32bit" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.inferred.swplatform.includes.866562977" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../demobsp/microblaze_0/include"/>
+									<listOptionValue builtIn="false" value="../../standalone_bsp_0/microblaze_0/include"/>
 								</option>
 								<inputType id="xilinx.gnu.compiler.input.794413244" name="C source files" superClass="xilinx.gnu.compiler.input"/>
 							</tool>
@@ -744,7 +747,7 @@
 								<option id="xilinx.gnu.mb.compiler.inferred.usepcmp.1558683552" superClass="xilinx.gnu.mb.compiler.inferred.usepcmp" value="true" valueType="boolean"/>
 								<option id="xilinx.gnu.mb.compiler.inferred.mul.13660006" superClass="xilinx.gnu.mb.compiler.inferred.mul" value="xilinx.gnu.mb.compiler.inferred.mul.32bit" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.inferred.swplatform.includes.1802910256" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../demobsp/microblaze_0/include"/>
+									<listOptionValue builtIn="false" value="../../standalone_bsp_0/microblaze_0/include"/>
 								</option>
 								<inputType id="xilinx.gnu.mb.cxx.compiler.input.2035748458" name="C++ source files" superClass="xilinx.gnu.mb.cxx.compiler.input"/>
 							</tool>
@@ -755,7 +758,7 @@
 								<option id="xilinx.gnu.mb.linker.inferred.usepcmp.2060796612" superClass="xilinx.gnu.mb.linker.inferred.usepcmp" value="true" valueType="boolean"/>
 								<option id="xilinx.gnu.mb.linker.inferred.mul.1077867032" superClass="xilinx.gnu.mb.linker.inferred.mul" value="xilinx.gnu.mb.linker.inferred.mul.32bit" valueType="enumerated"/>
 								<option id="xilinx.gnu.linker.inferred.swplatform.lpath.1203525340" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../demobsp/microblaze_0/lib"/>
+									<listOptionValue builtIn="false" value="../../standalone_bsp_0/microblaze_0/lib"/>
 								</option>
 								<inputType id="xilinx.gnu.linker.input.1104704384" superClass="xilinx.gnu.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -769,7 +772,7 @@
 								<option id="xilinx.gnu.mb.linker.inferred.usepcmp.1468747866" superClass="xilinx.gnu.mb.linker.inferred.usepcmp" value="true" valueType="boolean"/>
 								<option id="xilinx.gnu.mb.linker.inferred.mul.1150761071" superClass="xilinx.gnu.mb.linker.inferred.mul" value="xilinx.gnu.mb.linker.inferred.mul.32bit" valueType="enumerated"/>
 								<option id="xilinx.gnu.linker.inferred.swplatform.lpath.1133642997" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../demobsp/microblaze_0/lib"/>
+									<listOptionValue builtIn="false" value="../../standalone_bsp_0/microblaze_0/lib"/>
 								</option>
 								<inputType id="xilinx.gnu.linker.input.300985381" superClass="xilinx.gnu.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -1402,6 +1405,9 @@
 				</scannerConfigBuildInfo>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+			<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">

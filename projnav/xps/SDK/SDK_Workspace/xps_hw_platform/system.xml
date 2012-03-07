@@ -1,5 +1,5 @@
 
-<EDKSYSTEM EDKVERSION="13.2" EDWVERSION="1.2" TIMESTAMP="Wed Feb 29 10:59:16 2012">
+<EDKSYSTEM EDKVERSION="13.2" EDWVERSION="1.2" TIMESTAMP="Tue Mar 06 16:45:32 2012">
 
   <SYSTEMINFO ARCH="spartan6" DEVICE="xc6slx45" PACKAGE="csg324" PART="xc6slx45csg324-2" SOURCE="C:/Users/mjlyons/workspace/vSPI/projnav/xps/system.xmp" SPEEDGRADE="-2"/>
 
@@ -9,6 +9,10 @@
     <PORT DIR="I" ENDIAN="BIG" LEFT="0" LSB="4" MHS_INDEX="2" MSB="0" NAME="fpga_0_Push_Buttons_5Bits_GPIO_IO_I_pin" RIGHT="4" SIGNAME="fpga_0_Push_Buttons_5Bits_GPIO_IO_I_pin"/>
     <PORT CLKFREQUENCY="100000000" DIR="I" MHS_INDEX="3" NAME="fpga_0_clk_1_sys_clk_pin" SIGIS="CLK" SIGNAME="CLK_S"/>
     <PORT DIR="I" MHS_INDEX="4" NAME="fpga_0_rst_1_sys_rst_pin" RSTPOLARITY="0" SIGIS="RST" SIGNAME="sys_rst_s"/>
+    <PORT CLKFREQUENCY="50000000" DIR="I" MHS_INDEX="5" NAME="spiifc_0_SPI_CLK_pin" SIGIS="CLK" SIGNAME="spiifc_0_SPI_CLK"/>
+    <PORT DIR="O" MHS_INDEX="6" NAME="spiifc_0_SPI_MISO_pin" SIGNAME="spiifc_0_SPI_MISO"/>
+    <PORT DIR="I" MHS_INDEX="7" NAME="spiifc_0_SPI_MOSI_pin" SIGNAME="spiifc_0_SPI_MOSI"/>
+    <PORT DIR="I" MHS_INDEX="8" NAME="spiifc_0_SPI_SS_pin" SIGNAME="spiifc_0_SPI_SS"/>
   </EXTERNALPORTS>
 
   <MODULES>
@@ -4592,49 +4596,53 @@
         <PARAMETER ADDRESS="HIGH" ADDR_TYPE="MEMORY" CHANGEDBY="USER" IS_INSTANTIATED="TRUE" MHS_INDEX="7" MPD_INDEX="16" NAME="C_MEM1_HIGHADDR" TYPE="std_logic_vector" VALUE="0x85011FFF"/>
       </PARAMETERS>
       <PORTS>
-        <PORT BUS="SPLB" CLKFREQUENCY="66666666" DEF_SIGNAME="clk_66_6667MHz" DIR="I" MPD_INDEX="0" NAME="SPLB_Clk" SIGIS="CLK" SIGNAME="clk_66_6667MHz"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_SPLB_Rst" DIR="I" MPD_INDEX="1" NAME="SPLB_Rst" SIGIS="RST" SIGNAME="mb_plb_SPLB_Rst"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_ABus" DIR="I" ENDIAN="BIG" LEFT="0" LSB="31" MPD_INDEX="2" MSB="0" NAME="PLB_ABus" RIGHT="31" SIGNAME="mb_plb_PLB_ABus" VECFORMULA="[0:31]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_UABus" DIR="I" ENDIAN="BIG" LEFT="0" LSB="31" MPD_INDEX="3" MSB="0" NAME="PLB_UABus" RIGHT="31" SIGNAME="mb_plb_PLB_UABus" VECFORMULA="[0:31]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_PAValid" DIR="I" MPD_INDEX="4" NAME="PLB_PAValid" SIGNAME="mb_plb_PLB_PAValid"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_SAValid" DIR="I" MPD_INDEX="5" NAME="PLB_SAValid" SIGNAME="mb_plb_PLB_SAValid"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_rdPrim" DIR="I" MPD_INDEX="6" NAME="PLB_rdPrim" SIGNAME="mb_plb_PLB_rdPrim"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrPrim" DIR="I" MPD_INDEX="7" NAME="PLB_wrPrim" SIGNAME="mb_plb_PLB_wrPrim"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_masterID" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="8" MSB="0" NAME="PLB_masterID" RIGHT="1" SIGNAME="mb_plb_PLB_masterID" VECFORMULA="[0:(C_SPLB_MID_WIDTH-1)]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_abort" DIR="I" MPD_INDEX="9" NAME="PLB_abort" SIGNAME="mb_plb_PLB_abort"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_busLock" DIR="I" MPD_INDEX="10" NAME="PLB_busLock" SIGNAME="mb_plb_PLB_busLock"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_RNW" DIR="I" MPD_INDEX="11" NAME="PLB_RNW" SIGNAME="mb_plb_PLB_RNW"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_BE" DIR="I" ENDIAN="BIG" LEFT="0" LSB="3" MPD_INDEX="12" MSB="0" NAME="PLB_BE" RIGHT="3" SIGNAME="mb_plb_PLB_BE" VECFORMULA="[0:((C_SPLB_DWIDTH/8)-1)]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_MSize" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="13" MSB="0" NAME="PLB_MSize" RIGHT="1" SIGNAME="mb_plb_PLB_MSize" VECFORMULA="[0:1]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_size" DIR="I" ENDIAN="BIG" LEFT="0" LSB="3" MPD_INDEX="14" MSB="0" NAME="PLB_size" RIGHT="3" SIGNAME="mb_plb_PLB_size" VECFORMULA="[0:3]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_type" DIR="I" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="15" MSB="0" NAME="PLB_type" RIGHT="2" SIGNAME="mb_plb_PLB_type" VECFORMULA="[0:2]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_lockErr" DIR="I" MPD_INDEX="16" NAME="PLB_lockErr" SIGNAME="mb_plb_PLB_lockErr"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrDBus" DIR="I" ENDIAN="BIG" LEFT="0" LSB="31" MPD_INDEX="17" MSB="0" NAME="PLB_wrDBus" RIGHT="31" SIGNAME="mb_plb_PLB_wrDBus" VECFORMULA="[0:(C_SPLB_DWIDTH-1)]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrBurst" DIR="I" MPD_INDEX="18" NAME="PLB_wrBurst" SIGNAME="mb_plb_PLB_wrBurst"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_rdBurst" DIR="I" MPD_INDEX="19" NAME="PLB_rdBurst" SIGNAME="mb_plb_PLB_rdBurst"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrPendReq" DIR="I" MPD_INDEX="20" NAME="PLB_wrPendReq" SIGNAME="mb_plb_PLB_wrPendReq"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_rdPendReq" DIR="I" MPD_INDEX="21" NAME="PLB_rdPendReq" SIGNAME="mb_plb_PLB_rdPendReq"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrPendPri" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="22" MSB="0" NAME="PLB_wrPendPri" RIGHT="1" SIGNAME="mb_plb_PLB_wrPendPri" VECFORMULA="[0:1]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_rdPendPri" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="23" MSB="0" NAME="PLB_rdPendPri" RIGHT="1" SIGNAME="mb_plb_PLB_rdPendPri" VECFORMULA="[0:1]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_reqPri" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="24" MSB="0" NAME="PLB_reqPri" RIGHT="1" SIGNAME="mb_plb_PLB_reqPri" VECFORMULA="[0:1]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_TAttribute" DIR="I" ENDIAN="BIG" LEFT="0" LSB="15" MPD_INDEX="25" MSB="0" NAME="PLB_TAttribute" RIGHT="15" SIGNAME="mb_plb_PLB_TAttribute" VECFORMULA="[0:15]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_addrAck" DIR="O" MPD_INDEX="26" NAME="Sl_addrAck" SIGNAME="mb_plb_Sl_addrAck"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_SSize" DIR="O" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="27" MSB="0" NAME="Sl_SSize" RIGHT="1" SIGNAME="mb_plb_Sl_SSize" VECFORMULA="[0:1]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_wait" DIR="O" MPD_INDEX="28" NAME="Sl_wait" SIGNAME="mb_plb_Sl_wait"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rearbitrate" DIR="O" MPD_INDEX="29" NAME="Sl_rearbitrate" SIGNAME="mb_plb_Sl_rearbitrate"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_wrDAck" DIR="O" MPD_INDEX="30" NAME="Sl_wrDAck" SIGNAME="mb_plb_Sl_wrDAck"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_wrComp" DIR="O" MPD_INDEX="31" NAME="Sl_wrComp" SIGNAME="mb_plb_Sl_wrComp"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_wrBTerm" DIR="O" MPD_INDEX="32" NAME="Sl_wrBTerm" SIGNAME="mb_plb_Sl_wrBTerm"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdDBus" DIR="O" ENDIAN="BIG" LEFT="0" LSB="31" MPD_INDEX="33" MSB="0" NAME="Sl_rdDBus" RIGHT="31" SIGNAME="mb_plb_Sl_rdDBus" VECFORMULA="[0:(C_SPLB_DWIDTH-1)]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdWdAddr" DIR="O" ENDIAN="BIG" LEFT="0" LSB="3" MPD_INDEX="34" MSB="0" NAME="Sl_rdWdAddr" RIGHT="3" SIGNAME="mb_plb_Sl_rdWdAddr" VECFORMULA="[0:3]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdDAck" DIR="O" MPD_INDEX="35" NAME="Sl_rdDAck" SIGNAME="mb_plb_Sl_rdDAck"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdComp" DIR="O" MPD_INDEX="36" NAME="Sl_rdComp" SIGNAME="mb_plb_Sl_rdComp"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdBTerm" DIR="O" MPD_INDEX="37" NAME="Sl_rdBTerm" SIGNAME="mb_plb_Sl_rdBTerm"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_MBusy" DIR="O" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="38" MSB="0" NAME="Sl_MBusy" RIGHT="2" SIGNAME="mb_plb_Sl_MBusy" VECFORMULA="[0:(C_SPLB_NUM_MASTERS-1)]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_MWrErr" DIR="O" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="39" MSB="0" NAME="Sl_MWrErr" RIGHT="2" SIGNAME="mb_plb_Sl_MWrErr" VECFORMULA="[0:(C_SPLB_NUM_MASTERS-1)]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_MRdErr" DIR="O" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="40" MSB="0" NAME="Sl_MRdErr" RIGHT="2" SIGNAME="mb_plb_Sl_MRdErr" VECFORMULA="[0:(C_SPLB_NUM_MASTERS-1)]"/>
-        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_MIRQ" DIR="O" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="41" MSB="0" NAME="Sl_MIRQ" RIGHT="2" SIGNAME="mb_plb_Sl_MIRQ" VECFORMULA="[0:(C_SPLB_NUM_MASTERS-1)]"/>
-        <PORT DIR="O" MPD_INDEX="42" NAME="IP2INTC_Irpt" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="__NOC__"/>
+        <PORT DIR="I" IS_INSTANTIATED="TRUE" MHS_INDEX="0" MPD_INDEX="0" NAME="SPI_CLK" SIGNAME="spiifc_0_SPI_CLK"/>
+        <PORT DIR="I" IS_INSTANTIATED="TRUE" MHS_INDEX="1" MPD_INDEX="1" NAME="SPI_MOSI" SIGNAME="spiifc_0_SPI_MOSI"/>
+        <PORT DIR="O" IS_INSTANTIATED="TRUE" MHS_INDEX="2" MPD_INDEX="2" NAME="SPI_MISO" SIGNAME="spiifc_0_SPI_MISO"/>
+        <PORT DIR="I" IS_INSTANTIATED="TRUE" MHS_INDEX="3" MPD_INDEX="3" NAME="SPI_SS" SIGNAME="spiifc_0_SPI_SS"/>
+        <PORT BUS="SPLB" CLKFREQUENCY="66666666" DEF_SIGNAME="clk_66_6667MHz" DIR="I" MPD_INDEX="4" NAME="SPLB_Clk" SIGIS="CLK" SIGNAME="clk_66_6667MHz"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_SPLB_Rst" DIR="I" MPD_INDEX="5" NAME="SPLB_Rst" SIGIS="RST" SIGNAME="mb_plb_SPLB_Rst"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_ABus" DIR="I" ENDIAN="BIG" LEFT="0" LSB="31" MPD_INDEX="6" MSB="0" NAME="PLB_ABus" RIGHT="31" SIGNAME="mb_plb_PLB_ABus" VECFORMULA="[0:31]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_UABus" DIR="I" ENDIAN="BIG" LEFT="0" LSB="31" MPD_INDEX="7" MSB="0" NAME="PLB_UABus" RIGHT="31" SIGNAME="mb_plb_PLB_UABus" VECFORMULA="[0:31]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_PAValid" DIR="I" MPD_INDEX="8" NAME="PLB_PAValid" SIGNAME="mb_plb_PLB_PAValid"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_SAValid" DIR="I" MPD_INDEX="9" NAME="PLB_SAValid" SIGNAME="mb_plb_PLB_SAValid"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_rdPrim" DIR="I" MPD_INDEX="10" NAME="PLB_rdPrim" SIGNAME="mb_plb_PLB_rdPrim"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrPrim" DIR="I" MPD_INDEX="11" NAME="PLB_wrPrim" SIGNAME="mb_plb_PLB_wrPrim"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_masterID" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="12" MSB="0" NAME="PLB_masterID" RIGHT="1" SIGNAME="mb_plb_PLB_masterID" VECFORMULA="[0:(C_SPLB_MID_WIDTH-1)]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_abort" DIR="I" MPD_INDEX="13" NAME="PLB_abort" SIGNAME="mb_plb_PLB_abort"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_busLock" DIR="I" MPD_INDEX="14" NAME="PLB_busLock" SIGNAME="mb_plb_PLB_busLock"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_RNW" DIR="I" MPD_INDEX="15" NAME="PLB_RNW" SIGNAME="mb_plb_PLB_RNW"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_BE" DIR="I" ENDIAN="BIG" LEFT="0" LSB="3" MPD_INDEX="16" MSB="0" NAME="PLB_BE" RIGHT="3" SIGNAME="mb_plb_PLB_BE" VECFORMULA="[0:((C_SPLB_DWIDTH/8)-1)]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_MSize" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="17" MSB="0" NAME="PLB_MSize" RIGHT="1" SIGNAME="mb_plb_PLB_MSize" VECFORMULA="[0:1]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_size" DIR="I" ENDIAN="BIG" LEFT="0" LSB="3" MPD_INDEX="18" MSB="0" NAME="PLB_size" RIGHT="3" SIGNAME="mb_plb_PLB_size" VECFORMULA="[0:3]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_type" DIR="I" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="19" MSB="0" NAME="PLB_type" RIGHT="2" SIGNAME="mb_plb_PLB_type" VECFORMULA="[0:2]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_lockErr" DIR="I" MPD_INDEX="20" NAME="PLB_lockErr" SIGNAME="mb_plb_PLB_lockErr"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrDBus" DIR="I" ENDIAN="BIG" LEFT="0" LSB="31" MPD_INDEX="21" MSB="0" NAME="PLB_wrDBus" RIGHT="31" SIGNAME="mb_plb_PLB_wrDBus" VECFORMULA="[0:(C_SPLB_DWIDTH-1)]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrBurst" DIR="I" MPD_INDEX="22" NAME="PLB_wrBurst" SIGNAME="mb_plb_PLB_wrBurst"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_rdBurst" DIR="I" MPD_INDEX="23" NAME="PLB_rdBurst" SIGNAME="mb_plb_PLB_rdBurst"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrPendReq" DIR="I" MPD_INDEX="24" NAME="PLB_wrPendReq" SIGNAME="mb_plb_PLB_wrPendReq"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_rdPendReq" DIR="I" MPD_INDEX="25" NAME="PLB_rdPendReq" SIGNAME="mb_plb_PLB_rdPendReq"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_wrPendPri" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="26" MSB="0" NAME="PLB_wrPendPri" RIGHT="1" SIGNAME="mb_plb_PLB_wrPendPri" VECFORMULA="[0:1]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_rdPendPri" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="27" MSB="0" NAME="PLB_rdPendPri" RIGHT="1" SIGNAME="mb_plb_PLB_rdPendPri" VECFORMULA="[0:1]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_reqPri" DIR="I" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="28" MSB="0" NAME="PLB_reqPri" RIGHT="1" SIGNAME="mb_plb_PLB_reqPri" VECFORMULA="[0:1]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_PLB_TAttribute" DIR="I" ENDIAN="BIG" LEFT="0" LSB="15" MPD_INDEX="29" MSB="0" NAME="PLB_TAttribute" RIGHT="15" SIGNAME="mb_plb_PLB_TAttribute" VECFORMULA="[0:15]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_addrAck" DIR="O" MPD_INDEX="30" NAME="Sl_addrAck" SIGNAME="mb_plb_Sl_addrAck"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_SSize" DIR="O" ENDIAN="BIG" LEFT="0" LSB="1" MPD_INDEX="31" MSB="0" NAME="Sl_SSize" RIGHT="1" SIGNAME="mb_plb_Sl_SSize" VECFORMULA="[0:1]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_wait" DIR="O" MPD_INDEX="32" NAME="Sl_wait" SIGNAME="mb_plb_Sl_wait"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rearbitrate" DIR="O" MPD_INDEX="33" NAME="Sl_rearbitrate" SIGNAME="mb_plb_Sl_rearbitrate"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_wrDAck" DIR="O" MPD_INDEX="34" NAME="Sl_wrDAck" SIGNAME="mb_plb_Sl_wrDAck"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_wrComp" DIR="O" MPD_INDEX="35" NAME="Sl_wrComp" SIGNAME="mb_plb_Sl_wrComp"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_wrBTerm" DIR="O" MPD_INDEX="36" NAME="Sl_wrBTerm" SIGNAME="mb_plb_Sl_wrBTerm"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdDBus" DIR="O" ENDIAN="BIG" LEFT="0" LSB="31" MPD_INDEX="37" MSB="0" NAME="Sl_rdDBus" RIGHT="31" SIGNAME="mb_plb_Sl_rdDBus" VECFORMULA="[0:(C_SPLB_DWIDTH-1)]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdWdAddr" DIR="O" ENDIAN="BIG" LEFT="0" LSB="3" MPD_INDEX="38" MSB="0" NAME="Sl_rdWdAddr" RIGHT="3" SIGNAME="mb_plb_Sl_rdWdAddr" VECFORMULA="[0:3]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdDAck" DIR="O" MPD_INDEX="39" NAME="Sl_rdDAck" SIGNAME="mb_plb_Sl_rdDAck"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdComp" DIR="O" MPD_INDEX="40" NAME="Sl_rdComp" SIGNAME="mb_plb_Sl_rdComp"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_rdBTerm" DIR="O" MPD_INDEX="41" NAME="Sl_rdBTerm" SIGNAME="mb_plb_Sl_rdBTerm"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_MBusy" DIR="O" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="42" MSB="0" NAME="Sl_MBusy" RIGHT="2" SIGNAME="mb_plb_Sl_MBusy" VECFORMULA="[0:(C_SPLB_NUM_MASTERS-1)]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_MWrErr" DIR="O" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="43" MSB="0" NAME="Sl_MWrErr" RIGHT="2" SIGNAME="mb_plb_Sl_MWrErr" VECFORMULA="[0:(C_SPLB_NUM_MASTERS-1)]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_MRdErr" DIR="O" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="44" MSB="0" NAME="Sl_MRdErr" RIGHT="2" SIGNAME="mb_plb_Sl_MRdErr" VECFORMULA="[0:(C_SPLB_NUM_MASTERS-1)]"/>
+        <PORT BUS="SPLB" DEF_SIGNAME="mb_plb_Sl_MIRQ" DIR="O" ENDIAN="BIG" LEFT="0" LSB="2" MPD_INDEX="45" MSB="0" NAME="Sl_MIRQ" RIGHT="2" SIGNAME="mb_plb_Sl_MIRQ" VECFORMULA="[0:(C_SPLB_NUM_MASTERS-1)]"/>
+        <PORT DIR="O" MPD_INDEX="46" NAME="IP2INTC_Irpt" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="__NOC__"/>
       </PORTS>
       <BUSINTERFACES>
         <BUSINTERFACE BUSNAME="mb_plb" BUSSTD="PLBV46" BUSSTD_PSF="PLBV46" IS_INSTANTIATED="TRUE" MHS_INDEX="0" MPD_INDEX="0" NAME="SPLB" TYPE="SLAVE">

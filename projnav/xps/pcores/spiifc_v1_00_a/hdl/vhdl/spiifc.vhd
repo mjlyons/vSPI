@@ -171,7 +171,10 @@ entity spiifc is
   port
   (
     -- ADD USER PORTS BELOW THIS LINE ------------------
-    --USER ports added here
+    SPI_CLK                        : in  std_logic;
+    SPI_MOSI                       : in  std_logic;
+    SPI_MISO                       : out std_logic;
+    SPI_SS                         : in  std_logic;
     -- ADD USER PORTS ABOVE THIS LINE ------------------
 
     -- DO NOT EDIT BELOW THIS LINE ---------------------
@@ -414,7 +417,10 @@ architecture IMP of spiifc is
     port
     (
       -- ADD USER PORTS BELOW THIS LINE ------------------
-      --USER ports added here
+      SPI_CLK                        : in  std_logic;
+      SPI_MOSI                       : in  std_logic;
+      SPI_MISO                       : out std_logic;
+      SPI_SS                         : in  std_logic;
       -- ADD USER PORTS ABOVE THIS LINE ------------------
 
       -- DO NOT EDIT BELOW THIS LINE ---------------------
@@ -589,7 +595,10 @@ begin
     port map
     (
       -- MAP USER PORTS BELOW THIS LINE ------------------
-      --USER ports mapped here
+      SPI_CLK                        => SPI_CLK,
+      SPI_MOSI                       => SPI_MOSI,
+      SPI_MISO                       => SPI_MISO,
+      SPI_SS                         => SPI_SS,
       -- MAP USER PORTS ABOVE THIS LINE ------------------
 
       Bus2IP_Clk                     => ipif_Bus2IP_Clk,

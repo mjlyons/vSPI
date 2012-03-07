@@ -17,7 +17,7 @@ CC_DEPS += \
 src/%.o: ../src/%.cc
 	@echo Building file: $<
 	@echo Invoking: MicroBlaze g++ compiler
-	mb-g++ -Wall -O0 -g3 -c -fmessage-length=0 -I../../demobsp/microblaze_0/include -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.a -mno-xl-soft-mul -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	mb-g++ -Wall -O0 -g3 -c -fmessage-length=0 -I../../standalone_bsp_0/microblaze_0/include -mxl-barrel-shift -mxl-pattern-compare -mcpu=v8.20.a -mno-xl-soft-mul -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
 	@echo Finished building: $<
 	@echo ' '
 

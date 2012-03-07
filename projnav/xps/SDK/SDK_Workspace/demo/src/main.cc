@@ -85,7 +85,7 @@ int DmaCopy(void * pSrc, void * pDest, size_t byteCount)
 
 int main()
 {
-	int status;
+	int status, i;
 
 	// Initialize system
 	if (XST_SUCCESS != (status = InitDma())) {
@@ -99,6 +99,42 @@ int main()
 	// Test DMA
 	SpiifcDmaTest();
 
+	// Spiifc loopback: anything sent to spiifc is sent back
+	while (1) {
+		/*
+		for (i = 0; i < 1024; i++) {
+			pMisoBase[i] = pMosiBase[i];
+		}
+		*/
+
+		xil_printf(
+				"pMosiBase = [ 0x%08x 0x%08x 0x%08x ... ]\n"
+				"pMisoBase = [ 0x%08x 0x%08x 0x%08x ... ]\n"
+				"\n",
+				pMosiBase[0], pMosiBase[1], pMosiBase[2],
+				pMisoBase[0], pMisoBase[1], pMisoBase[2]);
+
+		DmaCopy(pMosiBase, pMisoBase, DMA_BUFFER_BYTE_SIZE);
+
+		//xil_printf("debug_out: 0x%08X\n", pSpiifcBase[0]);
+		/*
+		xil_printf("pMosiBase = [ 0x%02X 0x%02X 0x%02X 0x%02X ]\n",
+				pMosiBase[0] & 0xFF, (pMosiBase[0] >> 8) & 0xFF,
+				(pMosiBase[0] >> 16) & 0xFF, (pMosiBase[0] >> 24) & 0xFF);
+
+		xil_printf("pMisoBase = [ 0x%02X 0x%02X 0x%02X 0x%02X ]\n",
+				pMisoBase[0] & 0xFF, (pMisoBase[0] >> 8) & 0xFF,
+				(pMisoBase[0] >> 16) & 0xFF, (pMisoBase[0] >> 24) & 0xFF);
+		*/
+	}
+
+	/*
+	int i = 0;
+	for (i = 0; i < 40000000; i++) { ; }
+	for (i = 0; i < 1024; i++) {
+		xil_printf("pMOSI[i] = 0x%08X\n", pMosiBase[i]);
+	}
+	*/
 }
 
 void SpiifcPioTest()
@@ -142,10 +178,14 @@ void SpiifcDmaTest()
 
 	// Pattern DMA memory buffer
 	for(i = 0; i < DMA_BUFFER_BYTE_SIZE/4; i++) {
-		pMosiBase[i] = ((i*4)   & 0xFF) << 24 |
-				       ((i*4+1) & 0xFF) << 16 |
-				       ((i*4+2) & 0xFF) << 8  |
-				       ((i*4+3) & 0xFF);
+
+		pMosiBase[i] = ((i*4+3) & 0xFF) << 24 |
+				       ((i*4+2) & 0xFF) << 16 |
+				       ((i*4+1) & 0xFF) << 8  |
+				       ((i*4+0) & 0xFF);
+
+		//pMosiBase[i] = 0xAABBCCDD;
+		//xil_printf("0x%08X\n", pMosiBase[i]);
 	}
 
 	// DMA buffer to Spiifc.MISO buffer
@@ -158,14 +198,15 @@ void SpiifcDmaTest()
 	u32 expectedDmaWord = 0;
 	int failWords = 0;
 	for (i = 0; i < (DMA_BUFFER_BYTE_SIZE/4); i++) {
-		expectedDmaWord = ((i*4+0) & 0xFF) << 24 |
-				          ((i*4+1) & 0xFF) << 16 |
-				          ((i*4+2) & 0xFF) << 8  |
-				          ((i*4+3) & 0xFF) << 0;
+		expectedDmaWord = ((i*4+3) & 0xFF) << 24 |
+				          ((i*4+2) & 0xFF) << 16 |
+				          ((i*4+1) & 0xFF) << 8  |
+				          ((i*4+0) & 0xFF) << 0;
+
 		if (pMisoBase[i] != expectedDmaWord) {
 			xil_printf(
 					"[FAIL] DMA mem word [i]: expected=0x%08X, actual=0x%08X\n",
-					expectedDmaWord, pMisoBase);
+					expectedDmaWord, pMisoBase[i]);
 		}
 	}
 	if (0 == failWords) {
