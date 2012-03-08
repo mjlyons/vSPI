@@ -36,12 +36,12 @@ wire [7:0]  rcMemData;
 wire        rcMemWE;
 
 spiloopmem your_instance_name (
-  .clka(spi_clk), // input clka
+  .clka(SysClk), // input clka
   .ena(1'b1), // input ena
   .wea(rcMemWE), // input [0 : 0] wea
   .addra(rcMemAddr), // input [11 : 0] addra
   .dina(rcMemData), // input [7 : 0] dina
-  .clkb(spi_clk), // input clkb
+  .clkb(SysClk), // input clkb
   .enb(1'b1), // input enb
   .addrb(txMemAddr), // input [11 : 0] addrb
   .doutb(txMemData) // output [7 : 0] doutb
@@ -62,6 +62,7 @@ spiifc mySpiIfc (
   .debug_out(debug_out)
 );
 
-assign leds = debug_out ;
+//assign leds = debug_out ;
+assign leds = txMemData;
 
 endmodule

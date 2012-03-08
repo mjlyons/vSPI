@@ -60,7 +60,7 @@ always @(posedge SysClk) begin
 end
 
 buffermem spiMemTx (
-  .clka(spi_clk), // input clkb
+  .clka(SysClk), // input clkb
   .ena(1'b1), // input enb
   .wea(1'b0), // input [0 : 0] web
   .addra(spi_addr), // input [11 : 0] addrb
@@ -80,7 +80,7 @@ wire [ 7:0] spi_rcMem_data;
 wire [ 7:0] debug_out;
 wire [ 7:0] spi_rcMem_doutb_dummy;
 buffermem spiMemRc (
-  .clka(spi_clk),
+  .clka(SysClk),
   .ena(1'b1),
   .wea(spi_rcMem_we),
   .addra(spi_rcMem_addr),
@@ -108,6 +108,6 @@ spiifc mySpiIfc (
   .debug_out(debug_out)
 );
 
-assign leds = /* rcMem_douta[7:0] */ debug_out ;
+assign leds =  rcMem_douta[7:0] /* debug_out */;
 
 endmodule

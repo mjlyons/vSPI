@@ -85,15 +85,19 @@ reg             [7:0] rcByte_reg;     // Register backing 'rcByte'
 reg             [2:0] rcBitIndex_reg; // Register backing 'rcBitIndex'
 reg    [AddrBits-1:0] rcMemAddr_reg;  // Byte addr to write MOSI data to
 reg             [7:0] debug_reg;      // register backing debug_out signal
+reg             [2:0] txBitIndex_reg; // Register backing txBitIndex
+reg    [AddrBits-1:0] txMemAddr_reg;  // Register backing txAddr
 //
 // Wires
 //
 wire                  risingSpiClk;   // Did the SPI_CLK rise since last SysClk cycle?
 wire                  validSpiBit;    // Are the SPI MOSI/MISO bits new and valid?
-reg                   state;          // Current state in the module's state machine (always @* effectively wire)
+reg             [7:0] state;          // Current state in the module's state machine (always @* effectively wire)
 wire                  rcByteValid;    // rcByte is valid and new
 wire            [7:0] rcByte;         // Byte received from master
 wire            [2:0] rcBitIndex;     // Bit of rcByte to write to next
+reg             [2:0] txBitIndex;     // bit of txByte to send to master next
+reg    [AddrBits-1:0] txMemAddr_oreg; // Wirereg piped to txMemAddr output
 
 // Save buffered SPI inputs
 always @(posedge SysClk) begin
@@ -156,8 +160,29 @@ always @(posedge SysClk) begin
 end
 
 // Outgoing MISO data buffer management
-// TODO: implement
-assign SPI_MISO = 1'b0;
+always @(*) begin
+  if (Reset || (state == `STATE_GET_CMD && rcByteValid && rcByte == `CMD_WRITE_START)) begin
+    txBitIndex <= 3'd7;
+    txMemAddr_oreg <= 0;
+  end else begin
+    txBitIndex <= txBitIndex_reg;
+    if (state == `STATE_WRITING && validSpiBit && txBitIndex == 0) begin
+      txMemAddr_oreg <= txMemAddr_reg + 1;
+    end else begin
+      txMemAddr_oreg <= txMemAddr_reg;
+    end
+  end
+end
+always @(posedge SysClk) begin
+  txMemAddr_reg <= txMemAddr;
+  if (validSpiBit && state == `STATE_WRITING) begin
+    txBitIndex_reg <= (txBitIndex == 0 ? 7 : txBitIndex - 1);
+  end else begin
+    txBitIndex_reg <= txBitIndex;
+  end
+end
+assign txMemAddr = txMemAddr_oreg;
+assign SPI_MISO = txMemData[txBitIndex];
 
 // State machine
 always @(*) begin
