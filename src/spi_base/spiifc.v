@@ -72,11 +72,12 @@ output          [7:0] debug_out;
 // Registers
 //
 reg                   SPI_CLK_reg;    // Stabalized version of SPI_CLK
-reg                   SPI_CLK_reg1;
+//reg                   SPI_CLK_reg1;
 reg                   SPI_SS_reg;     // Stabalized version of SPI_SS
-reg                   SPI_SS_reg1;
+//reg                   SPI_SS_reg1;
 reg                   SPI_MOSI_reg;   // Stabalized version of SPI_MOSI
-reg                   SPI_MOSI_reg1;
+//reg                   SPI_MOSI_reg1;
+
 reg                   prev_spiClk;    // Value of SPI_CLK during last SysClk cycle
 reg                   prev_spiSS;     // Value of SPI_SS during last SysClk cycle
 reg             [7:0] state_reg;      // Register backing the 'state' wire
@@ -96,13 +97,23 @@ wire            [2:0] rcBitIndex;     // Bit of rcByte to write to next
 
 // Save buffered SPI inputs
 always @(posedge SysClk) begin
-  SPI_CLK_reg1 <= SPI_CLK;
-  SPI_CLK_reg <= SPI_CLK_reg1;
-  SPI_SS_reg1 <= SPI_SS;
-  SPI_SS_reg <= SPI_SS_reg1;
-  SPI_MOSI_reg1 <= SPI_MOSI;
-  SPI_MOSI_reg <= SPI_MOSI_reg1;
+//  SPI_CLK_reg1 <= SPI_CLK;
+//  SPI_CLK_reg <= SPI_CLK_reg1;
+//  SPI_SS_reg1 <= SPI_SS;
+//  SPI_SS_reg <= SPI_SS_reg1;
+//  SPI_MOSI_reg1 <= SPI_MOSI;
+//  SPI_MOSI_reg <= SPI_MOSI_reg1;
+  SPI_CLK_reg <= SPI_CLK;
+  SPI_SS_reg <= SPI_SS;
+  SPI_MOSI_reg <= SPI_MOSI;
 end
+
+//wire SPI_CLK_reg;
+//wire SPI_SS_reg;
+//wire SPI_MOSI_reg;
+//assign SPI_CLK_reg = SPI_CLK;
+//assign SPI_SS_reg = SPI_SS;
+//assign SPI_MOSI_reg = SPI_MOSI;
 
 // Detect new valid bit
 always @(posedge SysClk) begin
