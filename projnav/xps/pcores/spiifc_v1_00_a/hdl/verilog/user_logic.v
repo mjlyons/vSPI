@@ -196,7 +196,7 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
   
   // Mem0: Memory buffer storing data coming from master
   buffermem mosiMem (
-    .clka(SPI_CLK),        // input clka
+    .clka(Bus2IP_Clk),        // input clka
     .ena(1'b1),         // input ena
     .wea(mosiMem_wea),               // Always writing, never reading
     .addra({mosiMem_addra}),  // input [11 : 0] addra
@@ -212,7 +212,7 @@ output     [0 : C_NUM_INTR-1]             IP2Bus_IntrEvent;
 
   // Mem1: Memory buffer storing data to send to master
   buffermem misoMem (
-    .clka(SPI_CLK),        // input clka
+    .clka(Bus2IP_Clk),        // input clka
     .ena(1'b1),               // input ena
     .wea(1'b0),               // Always reading, never writing
     .addra({misoMem_addra}),  // input [11 : 0] addra

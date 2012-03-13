@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2012-03-07T12:09:17</DateModified>
-  <ModuleName>spiwrap</ModuleName>
+  <DateModified>2012-03-07T22:01:00</DateModified>
+  <ModuleName>spiloop</ModuleName>
   <SummaryTimeStamp>2012-03-07T10:02:06</SummaryTimeStamp>
   <SavedFilePath>C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/devl/projnav/iseconfig/spiifc.xreport</SavedFilePath>
   <ImplementationReportsDirectory>C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/devl/projnav\</ImplementationReportsDirectory>
-  <DateInitialized>2012-03-07T09:46:20</DateInitialized>
+  <DateInitialized>2012-03-07T22:01:00</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
  <body>
