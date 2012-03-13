@@ -1,83 +1,149 @@
-from cheetah_py import *
-from time import *
+import sys
+import spilib
+import time
+import datetime
+import random
 
-def print_usage():
-  print \
-"""
-usage: spitest.py PORT
+#
+# SingleBytePacketTest: 
+#
+# Sends a predefined pattern of single-byte SPI transmissions (master-out)
+#
+def SingleBytePacketsSendTest():
+  packetsToSend = [[0x55],[0xAA],[0x33],[0x66],[0xCC],[0x99],[0xF0],\
+                   [0x0F],[0xFF],[0x00]]
+  packetIndex = 0
+  while True:
+    dataToSend = packetsToSend[packetIndex]
+    
+    sys.stdout.write("Sending: [")
+    for sendByte in dataToSend:
+      sys.stdout.write(" 0x%02x" % (sendByte))
+    sys.stdout.write(" ]\n")
+    spi.SendToSlave(dataToSend)
+  
+    packetIndex = (packetIndex + 1) % len(packetsToSend)
+    time.sleep(1)
+  
+    packetIndex + 1
+
+#
+# MultiBytePacketSendTest:
+#
+# Sends a predefined single multi-byte packet over SPI (master-out)
+#
+def MultiBytePacketSendTest():
+  dataToSend = [0x01, 0x55, 0xAA, 0x33, 0x66, 0xCC, 0x99, 0xF0, 0xFF, 0x0F]
+  sys.stdout.write("Sending: [")
+  for sendByte in dataToSend:
+    sys.stdout.write(" 0x%02x" % (sendByte))
+  sys.stdout.write(" ]\n")
+  spi.SendToSlave(dataToSend)
+
+#
+# LoopbackTest:
+#
+# Sends randomly generated blocks of data over SPI, then reads back 
+# data. Assumes that slave is using a common read and write buffer
+# and reads the block of data back. The test verifies that the block of 
+# data is identical to the one sent. The test will run continuously
+# until a received packet does not match the sent packet.
+#
+def LoopbackTest():
+  passCount = 0
+  loopbackErrors = 0
+  packetByteSize = 4096
+  while loopbackErrors == 0:
+    print("PassCount: %d" % (passCount))
+  
+    dataToSend = []
+    for randIndex in range(packetByteSize):
+      dataToSend.append(random.randint(0, 255))
+    
+    print("Sending [0x%x 0x%x 0x%x 0x%x 0x%x ...]" % (
+        dataToSend[0], dataToSend[1], dataToSend[2],
+        dataToSend[3], dataToSend[4]))
+    
+    # Send some data to the slave
+    sys.stdout.write("Sending data to slave...");
+    spi.SendToSlave(dataToSend)
+    sys.stdout.write("done!\n")
+   
+    # Receive some data from the slave
+    recvData = spi.RecvFromSlave(packetByteSize)
+    
+    # Make sure bytes sent match bytes received
+    if len(recvData) != packetByteSize:
+      sys.stdout.write("[FAIL] Did not receive 4096 bytes from spiifc\n")
+      sys.exit(0)
+    for byteIndex in range(packetByteSize):
+      if recvData[byteIndex] != dataToSend[byteIndex]:
+        sys.stdout.write("[FAIL] mismatch at index %d: sent=0x%x, recv=0x%x\n" \
+            % (byteIndex, dataToSend[byteIndex], recvData[byteIndex]))
+        loopbackErrors = loopbackErrors + 1
+        if loopbackErrors >= 5:
+          break
+    if 0 == loopbackErrors:
+      sys.stdout.write("[PASS] All loopback SPI bytes match.\n");
+      passCount = passCount + 1
+
+  # Print number of passed tests before failure
+  print("PassCount: %d" % (passCount))
+
+
+#
+# PrintCliSyntax:
+#
+# Displays the syntax for the command line interface (CLI)
+def PrintCliSyntax():
+  print """
+Syntax:
+  spitest.py test [random-seed]
+            
+Valid tests (case sensitive): 
+  - SingleBytePacketsSend
+  - MultiBytePacketSend
+  - Loopback
 """
 
-if (len(sys.argv) < 2):
-  print_usage()
+#
+# Main
+#  
+
+# Parse CLI
+if len(sys.argv) < 2 or len(sys.argv) > 3:
+  PrintCliSyntax()
   sys.exit(1)
 
-port      = int(sys.argv[1])
-mode      = 3
-bitrate   = 30000  # kbps
-byteCount = 4096   # bytes
-
-# Open the device
-handle = ch_open(port)
-if (handle <= 0):
-  print "Unable to open Cheetah device on port %d" % port
-  print "Error code = %d (%s)" % (handle, ch_status_string(handle))
+# Retreive specified test function(s)
+cliTest = sys.argv[1]
+testMapping = {'SingleBytePacketsSend' : [SingleBytePacketsSendTest],
+               'MultiBytePacketSend' : [MultiBytePacketSendTest],
+               'Loopback' : [LoopbackTest]}
+if cliTest not in testMapping:
+  sys.stderr.write('%s is not a valid test.\n' % (cliTest,))
+  PrintCliSyntax()
   sys.exit(1)
+testsToRun = testMapping[cliTest]
 
-print "Opened Cheetah device on port %d" % port
-
-ch_host_ifce_speed_string = ""
-if (ch_host_ifce_speed(handle)):
-  ch_host_ifce_speed_string = "high speed"
+# Seed random number generator
+if len(sys.argv) == 3:
+  seed = int(sys.argv[2])
 else:
-  ch_host_ifce_speed_string = "full speed"
-print "Host interface is %s" % ch_host_ifce_speed_string
+  seed = datetime.datetime.utcnow().microsecond
 
-# Ensure that SPI subsystem is configured
-ch_spi_configure(handle, (mode >> 1), mode & 1, CH_SPI_BITORDER_MSB, 0x0)
-print "SPI configuration set to mode %d, MSB shift, SS[2:0] active low" % mode
-sys.stdout.flush()
+# Initialize Cheetah SPI/USB adapter
+spi = spilib.SpiComm()
 
-# Set the bitrate
-bitrate = ch_spi_bitrate(handle, bitrate)
-print "Bitrate set to %d kHz" % bitrate
-sys.stdout.flush()
+# Seed random
+print("Random seed: %d" % seed)
+random.seed(seed)
 
-# Create 4KB of fake data so we can exchange it for real data
-data_in = array('B', [0 for i in range(byteCount)])
-
-ch_spi_queue_clear(handle)
-ch_spi_queue_oe(handle, 1)
-ch_spi_queue_ss(handle, 0x1)
-ch_spi_queue_byte(handle, 1, 1)    # Sending data to FPGA
-ch_spi_queue_byte(handle, 1, 0xFF)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0xF0)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x33)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x55)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x12)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x34)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x56)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x78)   # Sending bytes
-ch_spi_queue_byte(handle, 1, 0x9A)   # Sending bytes
-ch_spi_queue_ss(handle, 0)
-(actualByteCount, data_in) = ch_spi_batch_shift(handle, byteCount)
-for i in range(actualByteCount):
-  sys.stdout.write("%x " % data_in[i])
-sys.stdout.write("\n")
-
-ch_spi_queue_clear(handle)
-ch_spi_queue_oe(handle, 1)
-ch_spi_queue_ss(handle, 0x1)
-ch_spi_queue_byte(handle, 1, 3)      # Receiving data from FPGA
-for i in range(1024):
-  ch_spi_queue_byte(handle, 1, 0x00)   # Sending bytes (1024 bytes of gibberish)
-ch_spi_queue_ss(handle, 0)
-(actualByteCount, data_in) = ch_spi_batch_shift(handle, byteCount)
-for i in range(actualByteCount):
-  sys.stdout.write("%x " % data_in[i])
-sys.stdout.write("\n")
-
+# Run specified test
+for testToRun in testsToRun:
+  testToRun()
 
 # Close and exit
-ch_close(handle)
+sys.stdout.write("Exiting...\n")
 sys.exit(0)
 
