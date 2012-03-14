@@ -5,5 +5,8 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
+<msg type="warning" file="HDLCompiler" num="1016" delta="unknown" >"C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/devl/projnav/../../../../../../test/spi_base/spiifc_writereg_tb.v" Line 45: Port <arg fmt="%s" index="1">regAddr</arg> is not connected to this instance
+</msg>
+
 </messages>
 

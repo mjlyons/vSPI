@@ -30,6 +30,10 @@ module spiifc(
   rcMemAddr,
   rcMemData,
   rcMemWE,
+  regAddr,
+  regReadData,
+  regWriteEn,
+  regWriteData,
   debug_out
 );
 
@@ -37,6 +41,7 @@ module spiifc(
 // Parameters
 //
 parameter AddrBits = 12;
+parameter RegAddrBits = 4;
 
 //
 // Defines
@@ -47,36 +52,49 @@ parameter AddrBits = 12;
 `define CMD_WRITE_MORE    8'd4
 `define CMD_INTERRUPT     8'd5
 
+`define CMD_REG_BASE      8'd128
+`define CMD_REG_BIT       7
+`define CMD_REG_WE_BIT    6
+`define CMD_REG_ID_MASK   8'h3F
+
 `define STATE_GET_CMD     8'd0
 `define STATE_READING     8'd1
 `define STATE_WRITING     8'd2
 `define STATE_WRITE_INTR  8'd3
+`define STATE_BUILD_WORD  8'd4
+`define STATE_SEND_WORD   8'd5
 
 //
 // Input/Outputs
 //
-input                 Reset;
-input                 SysClk;
-input                 SPI_CLK;
-output                SPI_MISO;     // outgoing (from respect of this module)
-input                 SPI_MOSI;     // incoming (from respect of this module)
-input                 SPI_SS;
-output [AddrBits-1:0] txMemAddr;    // outgoing data
-input           [7:0] txMemData;
-output [AddrBits-1:0] rcMemAddr;    // incoming data
-output          [7:0] rcMemData;
-output                rcMemWE;
+input                    Reset;
+input                    SysClk;
+
+input                    SPI_CLK;
+output                   SPI_MISO;     // outgoing (from respect of this module)
+input                    SPI_MOSI;     // incoming (from respect of this module)
+input                    SPI_SS;
+
+output [AddrBits-1:0]    txMemAddr;    // outgoing data
+input           [7:0]    txMemData;
+output [AddrBits-1:0]    rcMemAddr;    // incoming data
+output          [7:0]    rcMemData;
+output                   rcMemWE;
+
+output [RegAddrBits-1:0] regAddr;       // Register read address (combinational)
+input             [31:0] regReadData;   // Result of register read
+output                   regWriteEn;    // Enable write to register, otherwise read
+output            [31:0] regWriteData;  // Register write data
+
+
 output          [7:0] debug_out;
 
 //
 // Registers
 //
 reg                   SPI_CLK_reg;    // Stabalized version of SPI_CLK
-//reg                   SPI_CLK_reg1;
 reg                   SPI_SS_reg;     // Stabalized version of SPI_SS
-//reg                   SPI_SS_reg1;
 reg                   SPI_MOSI_reg;   // Stabalized version of SPI_MOSI
-//reg                   SPI_MOSI_reg1;
 
 reg                   prev_spiClk;    // Value of SPI_CLK during last SysClk cycle
 reg                   prev_spiSS;     // Value of SPI_SS during last SysClk cycle
@@ -87,6 +105,12 @@ reg    [AddrBits-1:0] rcMemAddr_reg;  // Byte addr to write MOSI data to
 reg             [7:0] debug_reg;      // register backing debug_out signal
 reg             [2:0] txBitIndex_reg; // Register backing txBitIndex
 reg    [AddrBits-1:0] txMemAddr_reg;  // Register backing txAddr
+
+reg             [7:0] command;        // Command being handled
+reg            [31:0] rcWord;         // Incoming word being built
+reg             [1:0] rcWordByteId;   // Which byte the in the rcWord to map to
+reg [RegAddrBits-1:0] regAddr_reg;    // Address of register to read/write to
+
 //
 // Wires
 //
@@ -101,23 +125,10 @@ reg    [AddrBits-1:0] txMemAddr_oreg; // Wirereg piped to txMemAddr output
 
 // Save buffered SPI inputs
 always @(posedge SysClk) begin
-//  SPI_CLK_reg1 <= SPI_CLK;
-//  SPI_CLK_reg <= SPI_CLK_reg1;
-//  SPI_SS_reg1 <= SPI_SS;
-//  SPI_SS_reg <= SPI_SS_reg1;
-//  SPI_MOSI_reg1 <= SPI_MOSI;
-//  SPI_MOSI_reg <= SPI_MOSI_reg1;
   SPI_CLK_reg <= SPI_CLK;
   SPI_SS_reg <= SPI_SS;
   SPI_MOSI_reg <= SPI_MOSI;
 end
-
-//wire SPI_CLK_reg;
-//wire SPI_SS_reg;
-//wire SPI_MOSI_reg;
-//assign SPI_CLK_reg = SPI_CLK;
-//assign SPI_SS_reg = SPI_SS;
-//assign SPI_MOSI_reg = SPI_MOSI;
 
 // Detect new valid bit
 always @(posedge SysClk) begin
@@ -166,20 +177,29 @@ always @(*) begin
     txMemAddr_oreg <= 0;
   end else begin
     txBitIndex <= txBitIndex_reg;
+
+    //txMemAddr_oreg <= txMemAddr_reg;
     if (state == `STATE_WRITING && validSpiBit && txBitIndex == 0) begin
       txMemAddr_oreg <= txMemAddr_reg + 1;
     end else begin
       txMemAddr_oreg <= txMemAddr_reg;
     end
+    
   end
 end
 always @(posedge SysClk) begin
-  txMemAddr_reg <= txMemAddr;
   if (validSpiBit && state == `STATE_WRITING) begin
     txBitIndex_reg <= (txBitIndex == 0 ? 7 : txBitIndex - 1);
   end else begin
     txBitIndex_reg <= txBitIndex;
   end
+
+  txMemAddr_reg <= txMemAddr;
+//  if (state == `STATE_WRITING && validSpiBit && txBitIndex == 0) begin
+//    txMemAddr_reg <= txMemAddr + 1;
+//  end else begin
+//    txMemAddr_reg <= txMemAddr;  
+//  end
 end
 assign txMemAddr = txMemAddr_oreg;
 assign SPI_MISO = txMemData[txBitIndex];
@@ -205,13 +225,37 @@ always @(posedge SysClk) begin
       state_reg <= `STATE_WRITING;
     end else if (`CMD_WRITE_MORE == rcByte) begin
       state_reg <= `STATE_WRITING;
+    end else if (rcByte[`CMD_REG_BIT] != 0) begin
+      // Register access
+      rcWordByteId <= 0;
+      regAddr_reg <= rcByte & `CMD_REG_ID_MASK;
+      command <= `CMD_REG_BASE;               // Write reg           Read reg
+      state_reg <= (rcByte[`CMD_REG_WE_BIT] ? `STATE_BUILD_WORD : `STATE_SEND_WORD);      
     end else if (`CMD_INTERRUPT == rcByte) begin
       // TODO: NYI
-    end   
+    end
+  end else if (`STATE_BUILD_WORD == state && rcByteValid) begin
+    if (0 == rcWordByteId) begin
+      rcWord[31:24] <= rcByte;
+      rcWordByteId <= 1;
+    end else if (1 == rcWordByteId) begin
+      rcWord[23:16] <= rcByte;
+      rcWordByteId <= 2;
+    end else if (2 == rcWordByteId) begin
+      rcWord[15:8] <= rcByte;
+      rcWordByteId <= 3;
+    end else if (3 == rcWordByteId) begin
+      rcWord[7:0] <= rcByte;
+    end
   end else begin
     state_reg <= state;
   end
 end
+
+// Register logic
+assign regAddr = regAddr_reg;
+assign regWriteEn = (`STATE_BUILD_WORD == state && rcByteValid && 3 == rcWordByteId ? 1 : 0);
+assign regWriteData = {rcWord[31:8], rcByte};
 
 // Debugging
 always @(posedge SysClk) begin
