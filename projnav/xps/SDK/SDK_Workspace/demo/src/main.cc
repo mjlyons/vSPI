@@ -140,6 +140,8 @@ int main()
 
 void SpiifcPioTest()
 {
+	int i = 0;
+
 	xil_printf("Testing Spiifc PIO...\n");
 
 	// PIO Write to Spiifc memmap regions
@@ -169,6 +171,14 @@ void SpiifcPioTest()
     } else {
     	xil_printf("[FAIL] (actual=0x%08X)\n", *pMisoBase);
     }
+
+	for (i = 0; i < 16; i++) {
+		pSpiifcBase[i] = (i << 24) | (i << 16) | (i << 8) | i;
+	}
+	for (i = 0; i < 16; i++) {
+		xil_printf("Reg%d=0x%08x\n", i, pSpiifcBase[i]);
+	}
+
     xil_printf("\n");
 }
 
