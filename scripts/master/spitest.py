@@ -41,7 +41,7 @@ def MultiBytePacketSendTest():
   spi.SendToSlave(dataToSend)
 
 #
-# LoopbackTest:
+# MemLoopbackTest:
 #
 # Sends randomly generated blocks of data over SPI, then reads back 
 # data. Assumes that slave is using a common read and write buffer
@@ -49,10 +49,10 @@ def MultiBytePacketSendTest():
 # data is identical to the one sent. The test will run continuously
 # until a received packet does not match the sent packet.
 #
-def LoopbackTest():
+def MemLoopbackTest():
   passCount = 0
   loopbackErrors = 0
-  packetByteSize = 4096
+  packetByteSize = 4000
   while loopbackErrors == 0:
     print("PassCount: %d" % (passCount))
   
@@ -66,11 +66,11 @@ def LoopbackTest():
     
     # Send some data to the slave
     sys.stdout.write("Sending data to slave...");
-    spi.SendToSlave(dataToSend)
+    spi.WriteMemory(dataToSend)
     sys.stdout.write("done!\n")
    
     # Receive some data from the slave
-    recvData = spi.RecvFromSlave(packetByteSize)
+    recvData = spi.ReadMemory(packetByteSize)
     
     # Make sure bytes sent match bytes received
     if len(recvData) != packetByteSize:
@@ -90,6 +90,51 @@ def LoopbackTest():
   # Print number of passed tests before failure
   print("PassCount: %d" % (passCount))
 
+#
+# RegLoopbackTest:
+#
+# Randomly writes and reads to vSPI's register and makes sure
+# values are as expected
+# 
+def RegLoopbackTest():
+  # First, zero out all registers
+  print("Zeroing all registers...")
+  for regId in range(16):
+    spi.WriteReg(regId=regId, value=0)
+  
+  # Second, check that all registers are zeroed
+  print("Checking all registers are zeroed...")
+  for regId in range(16):
+    regVal = spi.ReadReg(regId)
+    if (0 != regVal):
+      sys.stdout.write("ERROR: Reg %d was not zeroed (was 0x%08x)\n" % \
+          (regId, regVal))
+      return
+
+  # Local mapping of expected register values
+  expectedRegs = list(0 for i in range(16))
+
+  # Random read and writes
+  passCount = 0
+  while (True):
+    print("")
+    regWriteId = random.randint(0, 15)
+    regReadId = random.randint(0, 15)
+    regWriteVal = random.randint(0, 0xFFFFFFFF)
+
+    print("Writing Reg%d=0x%08x" % (regWriteId, regWriteVal))
+    spi.WriteReg(regId=regWriteId, value=regWriteVal)
+    expectedRegs[regWriteId] = regWriteVal
+
+    print("Checking Reg%d==0x%08x" % (regReadId, expectedRegs[regReadId]))
+    regReadVal = spi.ReadReg(regReadId)
+    if (expectedRegs[regReadId] != regReadVal):
+      sys.stderr.write("ERROR: Reg %d - expected=0x%08x, actual=0x%08x\n" % \
+          (expectedRegs[regReadId], regReadVal))
+      return
+    
+    passCount = passCount + 1
+    print("PASS [%d]" % (passCount))
 
 #
 # PrintCliSyntax:
@@ -103,7 +148,8 @@ Syntax:
 Valid tests (case sensitive): 
   - SingleBytePacketsSend
   - MultiBytePacketSend
-  - Loopback
+  - MemLoopback
+  - RegLoopback
 """
 
 #
@@ -119,7 +165,8 @@ if len(sys.argv) < 2 or len(sys.argv) > 3:
 cliTest = sys.argv[1]
 testMapping = {'SingleBytePacketsSend' : [SingleBytePacketsSendTest],
                'MultiBytePacketSend' : [MultiBytePacketSendTest],
-               'Loopback' : [LoopbackTest]}
+               'MemLoopback' : [MemLoopbackTest],
+               'RegLoopback' : [RegLoopbackTest]}
 if cliTest not in testMapping:
   sys.stderr.write('%s is not a valid test.\n' % (cliTest,))
   PrintCliSyntax()
