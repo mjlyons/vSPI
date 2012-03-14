@@ -115,6 +115,10 @@ int main()
 				pMosiBase[0], pMosiBase[1], pMosiBase[2],
 				pMisoBase[0], pMisoBase[1], pMisoBase[2]);
         */
+		for (i = 0; i < 16; i++) {
+			xil_printf("Reg%d=0x%08x\n", i, pSpiifcBase[i]);
+		}
+
 		DmaCopy(pMosiBase, pMisoBase, DMA_BUFFER_BYTE_SIZE);
 
 		//xil_printf("debug_out: 0x%08X\n", pSpiifcBase[0]);
