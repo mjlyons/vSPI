@@ -147,6 +147,19 @@ def ReadRegsTest():
     print("Reg%d = 0x%08x" % (regId, regVal))
 
 #
+# WriteRegsTest
+#
+# Writes a test pattern to the spi registers
+#
+def WriteRegsTest():
+  for regId in range(16):
+    regVal = 255 - regId
+    regVal = (regVal * 256) + regVal
+    regVal = (regVal * 256 * 256) + regVal
+    print("Reg%d = 0x%08x" % (regId, regVal))
+    spi.WriteReg(regId=regId, value=regVal) 
+
+#
 # PrintCliSyntax:
 #
 # Displays the syntax for the command line interface (CLI)
@@ -161,6 +174,7 @@ Valid tests (case sensitive):
   - MemLoopback
   - RegLoopback
   - ReadRegs
+  - WriteRegsTest
 """
 
 #
@@ -178,7 +192,8 @@ testMapping = {'SingleBytePacketsSend' : [SingleBytePacketsSendTest],
                'MultiBytePacketSend' : [MultiBytePacketSendTest],
                'MemLoopback' : [MemLoopbackTest],
                'RegLoopback' : [RegLoopbackTest],
-               'ReadRegs' : [ReadRegsTest]}
+               'ReadRegs' : [ReadRegsTest],
+               'WriteRegs' : [WriteRegsTest]}
 if cliTest not in testMapping:
   sys.stderr.write('%s is not a valid test.\n' % (cliTest,))
   PrintCliSyntax()
