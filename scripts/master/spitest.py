@@ -137,6 +137,16 @@ def RegLoopbackTest():
     print("PASS [%d]" % (passCount))
 
 #
+# ReadRegsTest
+#
+# Reads out the value of all registers
+#
+def ReadRegsTest():
+  for regId in range(16):
+    regVal = spi.ReadReg(regId)
+    print("Reg%d = 0x%08x" % (regId, regVal))
+
+#
 # PrintCliSyntax:
 #
 # Displays the syntax for the command line interface (CLI)
@@ -150,6 +160,7 @@ Valid tests (case sensitive):
   - MultiBytePacketSend
   - MemLoopback
   - RegLoopback
+  - ReadRegs
 """
 
 #
@@ -166,7 +177,8 @@ cliTest = sys.argv[1]
 testMapping = {'SingleBytePacketsSend' : [SingleBytePacketsSendTest],
                'MultiBytePacketSend' : [MultiBytePacketSendTest],
                'MemLoopback' : [MemLoopbackTest],
-               'RegLoopback' : [RegLoopbackTest]}
+               'RegLoopback' : [RegLoopbackTest],
+               'ReadRegs' : [ReadRegsTest]}
 if cliTest not in testMapping:
   sys.stderr.write('%s is not a valid test.\n' % (cliTest,))
   PrintCliSyntax()
