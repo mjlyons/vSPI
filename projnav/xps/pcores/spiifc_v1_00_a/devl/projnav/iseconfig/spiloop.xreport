@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2012-03-07T21:28:58</DateModified>
-  <ModuleName>spiifc</ModuleName>
+  <DateModified>2012-03-13T14:31:01</DateModified>
+  <ModuleName>spiloop</ModuleName>
   <SummaryTimeStamp>2012-03-07T21:27:48</SummaryTimeStamp>
   <SavedFilePath>C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/devl/projnav/iseconfig/spiloop.xreport</SavedFilePath>
   <ImplementationReportsDirectory>C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/devl/projnav\</ImplementationReportsDirectory>

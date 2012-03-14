@@ -32,7 +32,8 @@ module spiifc_writereg_tb;
 	reg SPI_MOSI;
 	reg SPI_SS;
 	reg [7:0] txMemData;
-
+  reg [31:0] regReadData_wreg;
+    
 	// Outputs
 	wire SPI_MISO;
 	wire [11:0] txMemAddr;
@@ -40,6 +41,13 @@ module spiifc_writereg_tb;
 	wire [7:0] rcMemData;
 	wire rcMemWE;
   wire [7:0] debug_out;
+  wire [3:0] regAddr;
+
+  wire [31:0] regWriteData;
+  wire        regWE;
+
+  // Register bank
+  reg [31:0] regbank [0:15];
 
 	// Instantiate the Unit Under Test (UUT)
 	spiifc uut (
@@ -54,6 +62,10 @@ module spiifc_writereg_tb;
 		.rcMemAddr(rcMemAddr), 
 		.rcMemData(rcMemData), 
 		.rcMemWE(rcMemWE),
+    .regAddr(regAddr),
+    .regReadData(regReadData_wreg),
+    .regWriteData(regWriteData),
+    .regWriteEn(regWE),
     .debug_out(debug_out)
 	);
 
@@ -71,6 +83,16 @@ module spiifc_writereg_tb;
 
   always begin
     #20 SysClk = ~SysClk;
+  end
+
+  // Register bank
+  always @(*) begin                 // Read reg
+    regReadData_wreg <= regbank[regAddr];
+  end
+  always @(posedge SysClk) begin    // Write reg
+    if (regWE) begin
+      regbank[regAddr] <= regWriteData;
+    end
   end
 
   reg SPI_CLK_en;

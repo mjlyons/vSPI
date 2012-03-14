@@ -202,6 +202,7 @@
     <property xil_pn:name="Create Mask File" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Create ReadBack Data Files" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Cross Clock Analysis" xil_pn:value="false" xil_pn:valueState="default"/>
+    <property xil_pn:name="Custom Waveform Configuration File Behav" xil_pn:value="tb_writereg.wcfg" xil_pn:valueState="non-default"/>
     <property xil_pn:name="DSP Utilization Ratio" xil_pn:value="100" xil_pn:valueState="default"/>
     <property xil_pn:name="Delay Values To Be Read from SDF" xil_pn:value="Setup Time" xil_pn:valueState="default"/>
     <property xil_pn:name="Device" xil_pn:value="xc6slx45" xil_pn:valueState="non-default"/>
@@ -438,7 +439,7 @@
     <property xil_pn:name="Use Custom Simulation Command File Map" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Custom Simulation Command File Par" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Custom Simulation Command File Translate" xil_pn:value="false" xil_pn:valueState="default"/>
-    <property xil_pn:name="Use Custom Waveform Configuration File Behav" xil_pn:value="false" xil_pn:valueState="default"/>
+    <property xil_pn:name="Use Custom Waveform Configuration File Behav" xil_pn:value="true" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Use Custom Waveform Configuration File Map" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Custom Waveform Configuration File Par" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Custom Waveform Configuration File Translate" xil_pn:value="false" xil_pn:valueState="default"/>

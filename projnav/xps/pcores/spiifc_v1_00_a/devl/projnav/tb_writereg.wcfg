@@ -10,7 +10,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="30" />
+   <WVObjectSize size="33" />
    <wvobject fp_name="/spiifc_writereg_tb/SPI_MISO" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">SPI_MISO</obj_property>
       <obj_property name="ObjectShortName">SPI_MISO</obj_property>
@@ -149,6 +149,21 @@
    <wvobject fp_name="/spiifc_writereg_tb/uut/rcWord" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">rcWord[31:0]</obj_property>
       <obj_property name="ObjectShortName">rcWord[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiifc_writereg_tb/uut/regReadByte_oreg" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">regReadByte_oreg[7:0]</obj_property>
+      <obj_property name="ObjectShortName">regReadByte_oreg[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiifc_writereg_tb/uut/txBitIndex" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">txBitIndex[2:0]</obj_property>
+      <obj_property name="ObjectShortName">txBitIndex[2:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spiifc_writereg_tb/uut/txBitIndex_reg" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">txBitIndex_reg[2:0]</obj_property>
+      <obj_property name="ObjectShortName">txBitIndex_reg[2:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
 </wave_config>

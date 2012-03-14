@@ -35,6 +35,21 @@ wire [11:0] rcMemAddr;
 wire [7:0]  rcMemData;
 wire        rcMemWE;
 
+wire [3:0]  regAddr;
+wire [31:0] regWriteData;
+wire        regWE;
+reg  [31:0] regReadData_wreg;
+reg  [31:0] regbank [0:15];
+
+always @(*) begin                 // Read reg
+  regReadData_wreg <= regbank[regAddr];
+end
+always @(posedge SysClk) begin    // Write reg
+  if (regWE) begin
+    regbank[regAddr] <= regWriteData;
+  end
+end
+
 spiloopmem your_instance_name (
   .clka(SysClk), // input clka
   .ena(1'b1), // input ena
@@ -59,6 +74,10 @@ spiifc mySpiIfc (
   .rcMemAddr(rcMemAddr),
   .rcMemData(rcMemData),
   .rcMemWE(rcMemWE),
+  .regAddr(regAddr),
+  .regReadData(regReadData_wreg),
+  .regWriteData(regWriteData),
+  .regWriteEn(regWE),
   .debug_out(debug_out)
 );
 
