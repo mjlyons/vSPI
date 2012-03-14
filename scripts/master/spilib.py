@@ -7,7 +7,7 @@ class SpiComm:
   
   _port = 0         # Change if using multiple Cheetahs
   _mode = 3         # spiifc SPI mode
-  _bitrate = 27900  # kbps
+  _bitrate = 22000  # kbps
 
   handle = None     # handle to Cheetah SPI
 
