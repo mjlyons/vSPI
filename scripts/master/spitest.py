@@ -4,6 +4,12 @@ import time
 import datetime
 import random
 
+def GenRandomByteArray(byteCount):
+  dataToSend = []
+  for byteIndex in range(byteCount):
+    dataToSend.append(random.randint(0, 255))
+  return dataToSend
+
 #
 # SingleBytePacketTest: 
 #
@@ -56,9 +62,7 @@ def MemLoopbackTest():
   while loopbackErrors == 0:
     print("PassCount: %d" % (passCount))
   
-    dataToSend = []
-    for randIndex in range(packetByteSize):
-      dataToSend.append(random.randint(0, 255))
+    dataToSend = GenRandomByteArray(packetByteSize)
     
     print("Sending [0x%x 0x%x 0x%x 0x%x 0x%x ...]" % (
         dataToSend[0], dataToSend[1], dataToSend[2],
@@ -160,6 +164,64 @@ def WriteRegsTest():
     spi.WriteReg(regId=regId, value=regVal) 
 
 #
+# XpsLoopbackTest
+#
+# Tests loopback utilizing the XPS/XSDK system and SPI memory + SPI.r0
+#
+def XpsLoopbackTest():
+  dataBytes = 4096
+  
+  passCount = 0
+
+  while (True):
+    print("Starting run %d..." % (passCount + 1))
+
+    # Generate random data blob
+    dataToSend = GenRandomByteArray(dataBytes)
+  
+    # Send data blob
+    print("Sending data to FPGA")
+    spi.WriteMemory(dataToSend)
+  
+    # Set SPI.reg0 = 0x1 (M->S transfer complete)
+    print("Setting spi.r0[0] = 1")
+    spi.WriteReg(regId=0, value=0x1)
+  
+    # Wait for microblaze to finish DMAing data from MOSI to MISO buffer
+    print("Waiting for FPGA's DMA to complete (poll spi.r0[1])")
+    while 0 == (spi.ReadReg(regId=0) & 0x2):
+      pass
+  
+    # Read MISO buffer
+    print("Read data back from FPGA")
+    recvData = spi.ReadMemory(len(dataToSend))
+  
+    print("Verify: comparing send and received data")
+    # Verify loopbacked data matches original data
+    errorCount = 0
+    if len(recvData) != len(dataToSend):
+      sys.stdout.write("[ERROR] received data blob length (%d) does not " + \
+                       "match original length (%d)" % \
+                       (len(recvData), len(dataToSend)))
+      errorCount = errorCount + 1
+      return
+    for byteIndex in range(len(dataToSend)):
+      if dataToSend[byteIndex] != recvData[byteIndex]:
+        print("[ERROR] transmission mismatch - Index %d, Expect:0x%02x, " + \
+              "Actual:0x%02x" % (byteIndex, dataToSend[byteIndex], \
+              recvData[byteIndex]))
+        errorCount = errorCount + 1
+        if errorCount >= 5:
+          print("Stopping due to errors...")
+          return
+    
+    if 0 == errorCount:
+      print("[PASS] Loopbacked without any errors\n")
+      passCount = passCount + 1
+    else:
+      return
+  
+#
 # PrintCliSyntax:
 #
 # Displays the syntax for the command line interface (CLI)
@@ -175,6 +237,7 @@ Valid tests (case sensitive):
   - RegLoopback
   - ReadRegs
   - WriteRegsTest
+  - XpsLoopback
 """
 
 #
@@ -193,7 +256,8 @@ testMapping = {'SingleBytePacketsSend' : [SingleBytePacketsSendTest],
                'MemLoopback' : [MemLoopbackTest],
                'RegLoopback' : [RegLoopbackTest],
                'ReadRegs' : [ReadRegsTest],
-               'WriteRegs' : [WriteRegsTest]}
+               'WriteRegs' : [WriteRegsTest],
+               'XpsLoopback' : [XpsLoopbackTest]}
 if cliTest not in testMapping:
   sys.stderr.write('%s is not a valid test.\n' % (cliTest,))
   PrintCliSyntax()
