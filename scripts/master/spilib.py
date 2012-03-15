@@ -6,7 +6,7 @@ class SpiComm:
   
   _port = 0         # Change if using multiple Cheetahs
   _mode = 3         # spiifc SPI mode
-  _bitrate = 30000  # bytes
+  _bitrate = 22000  # kbps
 
   handle = None     # handle to Cheetah SPI
 
@@ -34,24 +34,48 @@ class SpiComm:
     ch_spi_queue_clear(self.handle)
     ch_spi_queue_oe(self.handle, 1)
     ch_spi_queue_ss(self.handle, 0x1)
-    ch_spi_queue_byte(self.handle, 1, 1)     # Sending data to slave
     for byte in byteArray:
       ch_spi_queue_byte(self.handle, 1, byte)
     ch_spi_queue_ss(self.handle, 0)
+    ch_spi_queue_oe(self.handle, 0)
     (actualByteCount, data_in) = ch_spi_batch_shift(self.handle, byteCount)
     
-  def RecvFromSlave(self, byteCount):
+  def RecvFromSlave(self, command, byteCount):
     totalByteCount = byteCount + 1          # Extra byte for cmd
     data_in = array('B', [0 for i in range(totalByteCount)])
     actualByteCount = 0
     ch_spi_queue_clear(self.handle)
     ch_spi_queue_oe(self.handle, 1)
-    ch_spi_queue_ss(self.handle, 0x1)
-    ch_spi_queue_byte(self.handle, 1, 3)    # Receive data from slave
-    for byteIndex in range(byteCount):
-      ch_spi_queue_byte(self.handle, 1, 0)
-    ch_spi_queue_ss(self.handle, 0)
+    ch_spi_queue_ss(self.handle, 1)
+    ch_spi_queue_byte(self.handle, 1, command)    # Receive data from slave
+    ch_spi_queue_byte(self.handle, byteCount, 0xFF)
+    ch_spi_queue_ss(self.handle, 0x0)
+    ch_spi_queue_oe(self.handle, 0)
     (actualByteCount, data_in) = ch_spi_batch_shift(self.handle,
         totalByteCount)
-    return data_in
+    return data_in[1:]
+
+  def ReadMemory(self, byteCount):
+    return self.RecvFromSlave(0x3, byteCount)
+
+  def WriteMemory(self, bytesToWrite):
+    bytePacket = [0x01]
+    bytePacket.extend(bytesToWrite)
+    return self.SendToSlave(bytePacket)
+
+  def ReadReg(self, regId):
+    commandCode = 0x80 + regId
+    regValBytes = self.RecvFromSlave(commandCode, 4)
+    regValWord = 0
+    for regValByte in regValBytes:
+      regValWord = (regValWord * 256) + regValByte
+    return regValWord
+
+  def WriteReg(self, regId, value):
+    commandCode = 0xC0 + regId
+    bytesToSend = [commandCode, 0, 0, 0, 0]
+    for sendByteId in range(4,0,-1):
+      bytesToSend[sendByteId] = value % 256
+      value = value / 256
+    self.SendToSlave(bytesToSend)
 
