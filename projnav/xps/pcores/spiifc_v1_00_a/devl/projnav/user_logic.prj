@@ -1,3 +1,0 @@
-verilog work "../../../../../../src/spi_base/spiifc.v"
-verilog work "ipcore_dir/buffermem.v"
-verilog work "../../hdl/verilog/user_logic.v"

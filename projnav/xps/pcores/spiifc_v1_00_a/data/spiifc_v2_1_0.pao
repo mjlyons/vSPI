@@ -1,7 +1,7 @@
 ##############################################################################
 ## Filename:          C:\Users\mjlyons\workspace\vSPI\projnav\xps\pcores/spiifc_v1_00_a/data/spiifc_v2_1_0.pao
 ## Description:       Peripheral Analysis Order
-## Date:              Tue Mar 06 14:12:58 2012 (by Create and Import Peripheral Wizard)
+## Date:              Wed Mar 14 16:37:23 2012 (by Create and Import Peripheral Wizard)
 ##############################################################################
 
 lib proc_common_v3_00_a proc_common_pkg vhdl

@@ -1,1 +1,0 @@
-xst -intstyle ise -ifn "C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/devl/projnav/user_logic.xst" -ofn "C:/Users/mjlyons/workspace/vSPI/projnav/xps/pcores/spiifc_v1_00_a/devl/projnav/user_logic.syr" 
