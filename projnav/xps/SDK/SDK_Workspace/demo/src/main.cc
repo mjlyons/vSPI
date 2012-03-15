@@ -101,36 +101,27 @@ int main()
 
 	// Spiifc loopback: anything sent to spiifc is sent back
 	while (1) {
-		/*
-		for (i = 0; i < 1024; i++) {
-			pMisoBase[i] = pMosiBase[i];
-		}
-		*/
 
-		/*
-		xil_printf(
-				"pMosiBase = [ 0x%08x 0x%08x 0x%08x ... ]\n"
-				"pMisoBase = [ 0x%08x 0x%08x 0x%08x ... ]\n"
-				"\n",
-				pMosiBase[0], pMosiBase[1], pMosiBase[2],
-				pMisoBase[0], pMisoBase[1], pMisoBase[2]);
-        */
-		for (i = 0; i < 16; i++) {
-			xil_printf("Reg%d=0x%08x\n", i, pSpiifcBase[i]);
-		}
+//		//
+//		// Print values of all SPI registers
+//		//
+//		for (i = 0; i < 16; i++) {
+//			xil_printf("Reg%d=0x%08x\n", i, pSpiifcBase[i]);
+//		}
 
-		DmaCopy(pMosiBase, pMisoBase, DMA_BUFFER_BYTE_SIZE);
+		// Wait for M->S transfer to complete
+		//xil_printf("Waiting for M->S transfer to complete..\n");
+		while(0 == (pSpiifcBase[0] & 0x1)) { ; }
+		pSpiifcBase[0] &= (~0x1);		// Handling MOSI transfer completion
 
-		//xil_printf("debug_out: 0x%08X\n", pSpiifcBase[0]);
-		/*
-		xil_printf("pMosiBase = [ 0x%02X 0x%02X 0x%02X 0x%02X ]\n",
-				pMosiBase[0] & 0xFF, (pMosiBase[0] >> 8) & 0xFF,
-				(pMosiBase[0] >> 16) & 0xFF, (pMosiBase[0] >> 24) & 0xFF);
+		// Initiating DMA transfer
+		//xil_printf("DMA MOSI buffer to MISO buffer\n");
+		DmaCopy(pMosiBase, pMisoBase, 4096);
 
-		xil_printf("pMisoBase = [ 0x%02X 0x%02X 0x%02X 0x%02X ]\n",
-				pMisoBase[0] & 0xFF, (pMisoBase[0] >> 8) & 0xFF,
-				(pMisoBase[0] >> 16) & 0xFF, (pMisoBase[0] >> 24) & 0xFF);
-		*/
+		// DMA done, set flag for master
+		//xil_printf("DMA completed\n");
+		pSpiifcBase[0] |= 0x2;
+
 	}
 
 	/*
