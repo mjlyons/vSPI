@@ -48,7 +48,7 @@ Of course, if you use spilib, all of this protocol stuff is taken for you. Just 
  
  The EDK peripheral takes care of a lot of the setup if you're using a Xilinx Microblaze system with a PLB system bus. RAMBs are included for the MISO and MOSI buffers and a register file is provided for the spiifc registers. 
  
- To access the registers, simply access the peripheral's main memory mapped region. For example, if the region is mapped to 0x850 00000, you could do the following:
+ To access the registers, simply access the peripheral's main memory mapped region. For example, if the region is mapped to 0x85000000, you could do the following:
  
      u32 * pSpiifcBase = (u32 *)0x85000000;
      pSpiifcBase[0] = 0xFEEDFACE;             // write 0xFEEDFACE to spi register 0
