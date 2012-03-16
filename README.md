@@ -44,7 +44,7 @@ The first byte is the command. The remaining bytes of the packet depend on the c
 
 Of course, if you use spilib, all of this protocol stuff is taken for you. Just call the provided functions for each of the commands. 
 
-# EDK peripheral
+## EDK peripheral
  
  The EDK peripheral takes care of a lot of the setup if you're using a Xilinx Microblaze system with a PLB system bus. RAMBs are included for the MISO and MOSI buffers and a register file is provided for the spiifc registers. 
  
