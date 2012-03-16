@@ -24,8 +24,9 @@ You'll want to use a dual port memory so that spiifc has one port and you can ac
 
 spiifc also provides access to a register bank of 16 registers. This is useful for  synchronizing control between the slave and master. For example, if the slave wants to indicate that new data is available in the MISO buffer, it could change a register value. The master could poll this register periodically to see if it should perform another read. Again, spiifc provides an interface for the regfile, but you must provide it yourself.
 
-- The spiifc.v verilog in /src/spi_base
-- The spiifc testbenches are in /test/spi_base
+The spiifc.v verilog in /src/spi_base
+
+The spiifc testbenches are in /test/spi_base
 
 ## Protocol
 
@@ -33,13 +34,13 @@ spiifc uses a really simple protocol. All data is transmitted such that the firs
 
 The first byte is the command. The remaining bytes of the packet depend on the command. Here are descriptions of the commands from the master's point of view:
 
--**Read Start (0x01)**: Sends the data stored in the MISO buffer to the master, starting at the byte (address 0) in the MISO buffer. SPI sends a bit back to the master for every bit it sends to the slave, so just send as many garbage bytes as you want to read out from the MISO buffer.
+- **Read Start (0x01)**: Sends the data stored in the MISO buffer to the master, starting at the byte (address 0) in the MISO buffer. SPI sends a bit back to the master for every bit it sends to the slave, so just send as many garbage bytes as you want to read out from the MISO buffer.
 
--**Write Start (0x03)**: Writes data into the MOSI buffer, starting at address zero. Just write as many bytes as you want after the command, and they will be recorded in the buffer.
+- **Write Start (0x03)**: Writes data into the MOSI buffer, starting at address zero. Just write as many bytes as you want after the command, and they will be recorded in the buffer.
 
--**Read Register (0x80 to 0x8F)**: Reads the value stored in one of the sixteen registers. Write four garbage bytes after the command to get the 32-bit register value. The first byte is most significant, the fourth is the least significant. The least significant four bits indicate which register to read from.
+- **Read Register (0x80 to 0x8F)**: Reads the value stored in one of the sixteen registers. Write four garbage bytes after the command to get the 32-bit register value. The first byte is most significant, the fourth is the least significant. The least significant four bits indicate which register to read from.
 
--**Write register (0xC0 to 0xCF)**: Writes a value to one of the sixteen registers. The four bytes after the command is the value to write. The most significant byte is first, the least significant is last. The least significant four bits indicate the register to write to. 
+- **Write register (0xC0 to 0xCF)**: Writes a value to one of the sixteen registers. The four bytes after the command is the value to write. The most significant byte is first, the least significant is last. The least significant four bits indicate the register to write to. 
 
 Of course, if you use spilib, all of this protocol stuff is taken for you. Just call the provided functions for each of the commands. 
 
