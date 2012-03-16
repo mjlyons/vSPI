@@ -1,4 +1,4 @@
-# What's vSPI"?
+# What's "vSPI"?
 
 vSPI is a Verilog implementation of an SPI slave. Think of it as a very fast serial port. It can reliably transfer data at 27.9 mbps on an Atlys FPGA devkit (a Spartan-6 with a 100 MHz system clock).
 
@@ -14,7 +14,9 @@ So far, vSPI consists of three parts:
 
 - **spilib python library**: spilib is a python library that is used on your PC to make talking with spiifc easier. It is currently built on TotalPhase's Cheetah SPI USB/SPI adapter API. It makes interactions between a PC (master) and spiifc (slave) simple. 
 
-# spiifc
+# Components
+
+## spiifc
 
 spiifc uses two 4KB buffers to send data to the master (master in, slave out - MISO) and to receive data from the master (MOSI). Spiifc provides interfaces to these buffer SRAMs but you must provide the SRAMs. When spiifc receives data from the master, it writes each byte in succession to the MOSI buffer. When the transfer is complete, you'll be able to access the transfer by reading the SRAM. Sending data is similar: write your transmission to the MISO buffer. The master will then be able to access the data on it's next read. 
 
@@ -25,7 +27,7 @@ spiifc also provides access to a register bank of 16 registers. This is useful f
 - The spiifc.v verilog in /src/spi_base
 - The spiifc testbenches are in /test/spi_base
 
-# Protocol
+## Protocol
 
 spiifc uses a really simple protocol. All data is transmitted such that the first bit is the most significant, and the last bit is the least significant  
 
@@ -41,14 +43,14 @@ The first byte is the command. The remaining bytes of the packet depend on the c
 
 Of course, if you use spilib, all of this protocol stuff is taken for you. Just call the provided functions for each of the commands. 
 
- # EDK peripheral
+# EDK peripheral
  
  The EDK peripheral takes care of a lot of the setup if you're using a Xilinx Microblaze system with a PLB system bus. RAMBs are included for the MISO and MOSI buffers and a register file is provided for the spiifc registers. 
  
  To access the registers, simply access the peripheral's main memory mapped region. For example, if the region is mapped to 0x850 00000, you could do the following:
  
      u32 * pSpiifcBase = (u32 *)0x85000000;
-     pSpiifcBase[0] = 0xFEEDFACE;  // write 0xFEEDFACE to spi register 0
+     pSpiifcBase[0] = 0xFEEDFACE;             // write 0xFEEDFACE to spi register 0
      xil_printf("0x%08x\n", pSpiifcBase[15]); // write the value in spi register 15
 
 The MOSI buffer (Memory 0) and MISO buffer (Memory 1) have their own memory mapped regions and are directly accessible as well. 
@@ -63,7 +65,7 @@ There is no interrupt support right now, but it might be added later.
 - An example EDK project is in /projnav/xps
 - An example XSDK workspace is /projnav/xps/SDK/SDK_Workspace
 
-# spilib
+## spilib
 
 spilib is a python library for controlling a Cheetah USB/SPI adapter to communicate with vSPI. Functions for all spiifc commands are supported. 
 
