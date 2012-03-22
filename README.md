@@ -111,6 +111,9 @@ Note that the EDK demo can only operate vSPI at 22 mbps. This is a result of the
 
 vSPI has been tested on an Atlys Spartan-6 LX45-2 FPGA interacting with a Cheetah USB/SPI adapter. Max speed is 27.9 mbps with a 100 MHz system clock. Please let me know if you can or cannot get it to work on other hardware. 
 
+vSPI has also been tested on a custom-designed platform for remote-controlled helicopters based on low power Spartan-6L LX150. The MISO and MOSI buffers in the PLB peripheral needed to be regenerated due to the slight technology change switching to low power, but nothing else. vSPI has been used to send and receive test vectors, and remotely display the helicopter's video camera live. Video demo: 
+[http://flic.kr/p/bEZpAK](http://flic.kr/p/bEZpAK).
+
 # License 
 
 If you use vSPI, whether for free or commercial purposes, I only ask that you let me know so that I can publicly keep track of who is using it. I don't care if you use it as is or modify it, so long as it isn't used in technologies to physically hurt or kill anyone (missile guidance systems, etc.).
