@@ -236,7 +236,7 @@ Valid tests (case sensitive):
   - MemLoopback
   - RegLoopback
   - ReadRegs
-  - WriteRegsTest
+  - WriteRegs
   - XpsLoopback
 """
 

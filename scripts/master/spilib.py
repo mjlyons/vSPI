@@ -6,7 +6,6 @@ class SpiComm:
   
   _port = 0         # Change if using multiple Cheetahs
   _mode = 3         # spiifc SPI mode
-  _bitrate = 22000  # kbps
 
   handle = None     # handle to Cheetah SPI
 
@@ -15,14 +14,14 @@ class SpiComm:
     def __init__(self, msg):
       self.msg = msg
 
-  def __init__(self):
+  def __init__(self, kbpsBitrate=9000):
     self.handle = ch_open(self._port)
     if (self.handle <= 0):
       raise SpiCommError("Unable to open Cheetah device on port %d.\nError code = %d (%s)" % (self._port, self.handle, ch_status_string(self.handle)))
     ch_host_ifce_speed(self.handle)
     ch_spi_configure(self.handle, (self._mode >> 1), self._mode & 1, 
         CH_SPI_BITORDER_MSB, 0x0)
-    ch_spi_bitrate(self.handle, self._bitrate)
+    ch_spi_bitrate(self.handle, kbpsBitrate)
 
   def __del__(self):
     ch_close(self.handle)
