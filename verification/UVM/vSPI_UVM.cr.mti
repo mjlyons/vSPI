@@ -1,0 +1,34 @@
+{E:/Projects/Verification/vSPI Verification/UVM/interface.sv} {1 {vlog -work work -vopt -sv -stats=none {E:/Projects/Verification/vSPI Verification/UVM/interface.sv}
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+-- Compiling interface Intf
+
+Top level modules:
+	--none--
+
+} {} {}} {E:/Projects/Verification/vSPI Verification/UVM/dut.sv} {1 {vlog -work work -vopt -sv -stats=none {E:/Projects/Verification/vSPI Verification/UVM/dut.sv}
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+-- Compiling module spiifc
+
+Top level modules:
+	spiifc
+
+} {} {}} {E:/Projects/Verification/vSPI Verification/UVM/top.sv} {1 {vlog -work work -vopt -sv -stats=none {E:/Projects/Verification/vSPI Verification/UVM/top.sv}
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+** Note: (vlog-2286) E:/Projects/Verification/vSPI Verification/UVM/top.sv(16): Using implicit +incdir+C:/questasim64_2021.1/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
+-- Compiling module top
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Importing package my_pkg
+
+Top level modules:
+	top
+
+} {} {}} {E:/Projects/Verification/vSPI Verification/UVM/my_pkg.sv} {1 {vlog -work work -vopt -sv -stats=none {E:/Projects/Verification/vSPI Verification/UVM/my_pkg.sv}
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+** Note: (vlog-2286) E:/Projects/Verification/vSPI Verification/UVM/my_pkg.sv(1): Using implicit +incdir+C:/questasim64_2021.1/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
+-- Compiling package my_pkg
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+
+Top level modules:
+	--none--
+
+} {} {}}
