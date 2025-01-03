@@ -8,10 +8,3 @@ at the American University in Cairo (AUC),
 in collaboration with the Ministry of Communications and Information Technology in Egypt (MCIT).
 
 for more information about the course: [Syllabus](https://aucegypt0.sharepoint.com/sites/documents/SSE/Forms/AllItems.aspx?id=%2Fsites%2Fdocuments%2FSSE%2FCND212%5FDigital%20Testing%20and%20Verification%2Epdf&parent=%2Fsites%2Fdocuments%2FSSE&p=true&ga=1)
-<<<<<<<< HEAD:verification/README.md
-========
-
-Submitted to:
-Dr. Omar El-Dash
-Eng. Amr Abd-ElAzim
->>>>>>>> origin/verification:verification/ReadMe.txt
