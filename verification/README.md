@@ -1,3 +1,5 @@
+DISCLAIMER: The code in `verification/` was authored by @atefitani. This code was not authored or verified by the original author (@mjlyons).
+
 This was a final project of:
 
 the subject                          : (Digital Testing and Verification),
