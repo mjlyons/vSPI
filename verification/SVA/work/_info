@@ -1,0 +1,143 @@
+m255
+K4
+z2
+!s99 nomlopt
+!s11f vlog 2021.1 2021.01, Jan 19 2021
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dE:/Projects/Verification/vSPI Verification/UVM
+T_opt
+!s110 1735850725
+VWQmgY4Ggo^iS=9I19hjce1
+04 3 4 work top fast 0
+=1-3417eb7cd232-6776fae4-2bf-2fb8
+!s124 OEM100
+o-quiet -auto_acc_if_foreign -work work +acc
+Z0 tCvgOpt 0
+n@_opt
+OL;O;2021.1;73
+vassertions
+Z1 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z2 !s110 1735850720
+!i10b 1
+!s100 2hQQW7mAWb=@A];1N?8;N2
+If436@SOXK6D?Ke2YUEVPm3
+S1
+Z3 dE:/Projects/Verification/vSPI Verification/SVA
+w1734970536
+8E:/Projects/Verification/vSPI Verification/SVA/assertions.sv
+FE:/Projects/Verification/vSPI Verification/SVA/assertions.sv
+!i122 0
+L0 3 201
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+Z5 OL;L;2021.1;73
+r1
+!s85 0
+31
+!s108 1735850719.000000
+!s107 E:/Projects/Verification/vSPI Verification/SVA/assertions.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|E:/Projects/Verification/vSPI Verification/SVA/assertions.sv|
+!i113 0
+Z6 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R0
+YIntf
+R1
+R2
+!i10b 1
+!s100 D4gi;Xc`ZzRbk?Z7F9hzd1
+IX;>_R6JOV4ZQkO]9YY2il0
+S1
+R3
+w1734970479
+8E:/Projects/Verification/vSPI Verification/SVA/interface.sv
+FE:/Projects/Verification/vSPI Verification/SVA/interface.sv
+!i122 2
+L0 6 0
+R4
+R5
+r1
+!s85 0
+31
+Z7 !s108 1735850720.000000
+!s107 E:/Projects/Verification/vSPI Verification/SVA/interface.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|E:/Projects/Verification/vSPI Verification/SVA/interface.sv|
+!i113 0
+R6
+R0
+n@intf
+vspiifc
+R1
+R2
+!i10b 1
+!s100 lEge>An=1FID3H3b47ORQ0
+IhOE^ifWlhbTOTV:QhTBh>3
+S1
+R3
+w1717896384
+8E:/Projects/Verification/vSPI Verification/SVA/DUT.sv
+FE:/Projects/Verification/vSPI Verification/SVA/DUT.sv
+!i122 1
+L0 24 268
+R4
+R5
+r1
+!s85 0
+31
+R7
+!s107 E:/Projects/Verification/vSPI Verification/SVA/DUT.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|E:/Projects/Verification/vSPI Verification/SVA/DUT.sv|
+!i113 0
+R6
+R0
+vtb
+R1
+R2
+!i10b 1
+!s100 g4D]:CnV8h][]Gf_G@c7O0
+I[MA<VJG?n9Ml<OaI`Q35a0
+S1
+R3
+w1735507354
+8E:/Projects/Verification/vSPI Verification/SVA/tb.sv
+FE:/Projects/Verification/vSPI Verification/SVA/tb.sv
+!i122 3
+L0 3 139
+R4
+R5
+r1
+!s85 0
+31
+R7
+!s107 E:/Projects/Verification/vSPI Verification/SVA/tb.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|E:/Projects/Verification/vSPI Verification/SVA/tb.sv|
+!i113 0
+R6
+R0
+vtop
+R1
+R2
+!i10b 1
+!s100 Nn<nAo:H739mdiI[zZ^]a1
+Id4D>C`<L47dkoE8?MG;FL3
+S1
+R3
+w1734970251
+8E:/Projects/Verification/vSPI Verification/SVA/top.sv
+FE:/Projects/Verification/vSPI Verification/SVA/top.sv
+!i122 4
+L0 14 45
+R4
+R5
+r1
+!s85 0
+31
+R7
+!s107 E:/Projects/Verification/vSPI Verification/SVA/top.sv|
+!s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|E:/Projects/Verification/vSPI Verification/SVA/top.sv|
+!i113 0
+R6
+R0

@@ -1,0 +1,36 @@
+{E:/Projects/Verification/vSPI Verification/SVA/top.sv} {1 {vlog -work work -vopt -sv -stats=none {E:/Projects/Verification/vSPI Verification/SVA/top.sv}
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+-- Compiling module top
+
+Top level modules:
+	top
+
+} {} {}} {E:/Projects/Verification/vSPI Verification/SVA/assertions.sv} {1 {vlog -work work -vopt -sv -stats=none {E:/Projects/Verification/vSPI Verification/SVA/assertions.sv}
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+-- Compiling module assertions
+
+Top level modules:
+	assertions
+
+} {} {}} {E:/Projects/Verification/vSPI Verification/SVA/interface.sv} {1 {vlog -work work -vopt -sv -stats=none {E:/Projects/Verification/vSPI Verification/SVA/interface.sv}
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+-- Compiling interface Intf
+
+Top level modules:
+	--none--
+
+} {} {}} {E:/Projects/Verification/vSPI Verification/SVA/DUT.sv} {1 {vlog -work work -vopt -sv -stats=none {E:/Projects/Verification/vSPI Verification/SVA/DUT.sv}
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+-- Compiling module spiifc
+
+Top level modules:
+	spiifc
+
+} {} {}} {E:/Projects/Verification/vSPI Verification/SVA/tb.sv} {1 {vlog -work work -vopt -sv -stats=none {E:/Projects/Verification/vSPI Verification/SVA/tb.sv}
+QuestaSim-64 vlog 2021.1 Compiler 2021.01 Jan 19 2021
+-- Compiling module tb
+
+Top level modules:
+	tb
+
+} {} {}}
